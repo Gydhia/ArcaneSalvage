@@ -1,6 +1,8 @@
 using System;
+using DG.Tweening;
 using Unity.Entities.UniversalDelegates;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 namespace Code.Scripts.Game.Player
@@ -11,13 +13,22 @@ namespace Code.Scripts.Game.Player
         [SerializeField] private float moveSpeed;
         
         private Rigidbody2D _rigidbody2D;
-        private SpriteRenderer _spriteRenderer;
+        private SpriteRenderer _spriteRendererWeapon;
         private InputManager _inputManager;
+
+        private Animator playerAnimator;
+        private Animator playerWeaponAnimator;
+
+        public UnityEvent spawnProjectile;
 
         private void Start()
         {
-            TryGetComponent(out _spriteRenderer);
+            TryGetComponent(out playerAnimator);
+            transform.GetChild(0).TryGetComponent(out _spriteRendererWeapon);
             TryGetComponent(out _rigidbody2D);
+
+            transform.GetChild(0).TryGetComponent(out playerWeaponAnimator);
+            
             _inputManager = InputManager.Instance;
         }
 
@@ -25,19 +36,29 @@ namespace Code.Scripts.Game.Player
         {
             //Debug.Log($"Touch : {_inputManager.IsTouching} | CanMove : {_inputManager.CanMove}'{InputManager.Instance.CanMove} | MoveDirection : {_inputManager.MoveDirection.ToString()}");
 
+            if (_rigidbody2D.velocity.magnitude > 0.01f)
+            {
+                playerAnimator.SetBool("Idle",false);
+            }
+            else
+            {
+                playerAnimator.SetBool("Idle",true);
+            }
+            
             if (InputManager.Instance.CanMove)
             {
-                Debug.Log($"Moving | {InputManager.Instance.CanMove}");
                 Vector2 moveDir = _inputManager.MoveDirection;
                 _rigidbody2D.velocity = moveDir * moveSpeed;
                 if (moveDir.x > 0)
                 {
-                    _spriteRenderer.flipX = false;
+                    transform.DORotate(Vector3.zero, 0.2f, RotateMode.Fast);
+                    _spriteRendererWeapon.sortingOrder = 1;
                 }
 
                 if (moveDir.x < 0)
                 {
-                    _spriteRenderer.flipX = true;
+                    transform.DORotate(Vector3.down * 180, 0.2f, RotateMode.Fast);
+                    _spriteRendererWeapon.sortingOrder = -1;
                 }
             }
             else

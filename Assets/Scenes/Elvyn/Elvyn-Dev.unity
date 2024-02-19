@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f43e07b70090941bf82486d85600ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joyStickDeadZone: 50
+  joyStickDeadZone: 10
   maxMagnitude: 1
 --- !u!4 &601374477
 Transform:
@@ -316,11 +316,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3201425272144251357, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5556943
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3201425272144251357, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13322489
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3201425272144251357, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
       propertyPath: m_LocalPosition.z
