@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joyStickDeadZone: 10
   maxMagnitude: 1
+  isPhaseTwo: 0
 --- !u!4 &601374477
 Transform:
   m_ObjectHideFlags: 0

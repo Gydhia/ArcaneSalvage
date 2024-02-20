@@ -1,6 +1,7 @@
 using Code.Scripts.Helper;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Code.Scripts.Game.Player
 {
@@ -8,6 +9,7 @@ namespace Code.Scripts.Game.Player
     {
         [SerializeField] private float joyStickDeadZone = 2;
         [SerializeField] private float maxMagnitude = 1;
+        [SerializeField] private bool isPhaseTwo;
         
         private InputActions _inputActions;
         
@@ -15,7 +17,6 @@ namespace Code.Scripts.Game.Player
         private Vector2 _moveDirection;
         
         private bool _isTouching;
-        private bool _isPhaseTwo;
         private bool _canMove;
 
         public Vector2 MoveDirection => _moveDirection;
@@ -25,8 +26,8 @@ namespace Code.Scripts.Game.Player
 
         public bool IsPhaseTwo
         {
-            get => _isPhaseTwo;
-            set => _isPhaseTwo = value;
+            get => isPhaseTwo;
+            set => isPhaseTwo = value;
         }
 
         private void OnEnable()
@@ -62,7 +63,17 @@ namespace Code.Scripts.Game.Player
                 _canMove = (GetTouchPos() - _initTouchPos).magnitude > joyStickDeadZone;
                 if (_canMove)
                 {
-                    _moveDirection = Vector2.ClampMagnitude(GetTouchPos() - _initTouchPos, maxMagnitude);
+                    if (isPhaseTwo)
+                    {
+                        Vector2 phaseTwoVector = Vector2.ClampMagnitude(GetTouchPos() - _initTouchPos, maxMagnitude);
+                        phaseTwoVector.y = 0;
+                        _moveDirection = phaseTwoVector.normalized;
+                    }
+                    else
+                    {
+                        _moveDirection = Vector2.ClampMagnitude(GetTouchPos() - _initTouchPos, maxMagnitude);
+                    }
+                    
                 }
             }
             else
