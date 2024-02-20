@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
+using Unity.Mathematics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class MovingAuthoring : MonoBehaviour
@@ -13,7 +15,7 @@ public class MovingAuthoring : MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new Moving
             {
-                MoveSpeedValue = authoring.MoveSpeedValue
+                MoveSpeedValue = authoring.MoveSpeedValue,
             });
         }
     }
@@ -22,5 +24,6 @@ public class MovingAuthoring : MonoBehaviour
 public struct Moving : IComponentData
 {
     public float MoveSpeedValue;
+    public float3 Direction;
 }
 
