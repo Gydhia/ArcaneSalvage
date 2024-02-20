@@ -433,26 +433,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 3550504709261149385, guid: 6c307c27580b7df4aa7051d45284c9dd, type: 3}
-      propertyPath: _phasePortal
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3550504709261149385, guid: 6c307c27580b7df4aa7051d45284c9dd, type: 3}
-      propertyPath: _keyFragments.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3550504709261149385, guid: 6c307c27580b7df4aa7051d45284c9dd, type: 3}
-      propertyPath: _keyFragments.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3550504709261149385, guid: 6c307c27580b7df4aa7051d45284c9dd, type: 3}
-      propertyPath: _keyFragments.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3550504709261149385, guid: 6c307c27580b7df4aa7051d45284c9dd, type: 3}
-      propertyPath: _keyFragments.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8427510578978670115, guid: 6c307c27580b7df4aa7051d45284c9dd, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.37350744
