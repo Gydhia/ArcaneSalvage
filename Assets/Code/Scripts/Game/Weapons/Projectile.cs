@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public class Bullet : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
+
     public float bulletLife = 1f;  // Defines how long before the bullet is destroyed
     public float rotation = 0f;
     public float speed = 1f;
-    public float damages = 1f;
+    public sbyte damages = 1;
 
     private Vector2 spawnPoint;
     private float timer = 0f;
@@ -47,11 +48,10 @@ public class Bullet : MonoBehaviour
         if (!other.gameObject.activeInHierarchy)
             return;
 
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Ennemy"))
         {
-            //HealthComponent player = other.GetComponent<HealthComponent>();
-            hit.AddListener(GameObject.FindGameObjectsWithTag("Player").GetComponent<HealthComponent>().TakeDamage(damages));
+            other.GetComponent<HealthComponent>().TakeDamage(damages);
         }
-
+        
     }
 }
