@@ -1,45 +1,46 @@
 using UnityEngine;
-namespace Code.Scripts.Game.Player { 
+
+namespace Code.Scripts.Game.Player
+{
     public class LevelSystem : MonoBehaviour
     {
-        public int CurrentLevel = 1;
-        public float CurrentXP = 0f;
-        public float XpRequiredMultiplier = 1.5f;
-        public float XpGainMultiplier = 1.0f;
+        public int currentLevel = 1;
+        public float currentXP = 0f;
+        public float xpRequiredMultiplier = 1.5f;
+        public float xpGainMultiplier = 1.0f;
+        public float requiredXPForNextLevel;
 
-        private bool levelUpTriggered = false;
 
-        public void GainXP(float xpAmount)
+        public void GainXP(float xpAmount, float xpGainMultiplicator)
         {
-            CurrentXP += xpAmount * XpGainMultiplier;
-
-            if (!levelUpTriggered)
-            {
-                CheckForLevelUp();
-            }
+            xpGainMultiplier = xpGainMultiplicator;
+            currentXP += xpAmount * xpGainMultiplier;
+            CheckForLevelUp();
         }
 
-        private float CalculateRequiredXPForNextLevel()
+        public float CalculateRequiredXPForNextLevel()
         {
-            return Mathf.Pow(CurrentLevel, XpRequiredMultiplier) * 100;
+            requiredXPForNextLevel = Mathf.Pow(currentLevel, xpRequiredMultiplier) * 100;
+            return requiredXPForNextLevel;
         }
 
         private void CheckForLevelUp()
         {
-            while (CurrentXP >= CalculateRequiredXPForNextLevel())
+            if (currentXP >= CalculateRequiredXPForNextLevel())
             {
                 LevelUp();
-                levelUpTriggered = true;
             }
         }
 
         private void LevelUp()
         {
-            CurrentLevel++;
-            CurrentXP -= CalculateRequiredXPForNextLevel();
+            requiredXPForNextLevel = CalculateRequiredXPForNextLevel();
 
-            Debug.Log("Congratulations! You've reached level " + CurrentLevel);
-            levelUpTriggered = false;
+            if (currentXP >= requiredXPForNextLevel)
+            {
+                currentLevel++;
+                currentXP -= requiredXPForNextLevel;
+            }
         }
     }
 }
