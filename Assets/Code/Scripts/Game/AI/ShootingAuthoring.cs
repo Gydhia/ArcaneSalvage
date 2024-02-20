@@ -5,10 +5,13 @@ using UnityEngine;
 
 public class ShootingAuthoring : MonoBehaviour
 {
+    public List<Transform> Shooters = new List<Transform>();
     public float FireRange;
     public float FireRate;
     public GameObject ProjectilePrefab;
     public float BulletMoveSpeed;
+    public int NumberOfShoot;
+    public float AngleDifference;
     private int _cooldownID = CooldownManager.NewId;
 
     private class Baker: Baker<ShootingAuthoring> 
@@ -22,6 +25,8 @@ public class ShootingAuthoring : MonoBehaviour
                 FireRate = authoring.FireRate,
                 ProjectilePrefabEntity = GetEntity(authoring.ProjectilePrefab, TransformUsageFlags.Dynamic),
                 BulletMoveSpeed = authoring.BulletMoveSpeed,
+                NumberOfShoot = authoring.NumberOfShoot,
+                AngleDifference = authoring.AngleDifference,
                 CooldownID = authoring._cooldownID
             });
         }
@@ -34,5 +39,7 @@ public struct Shooting : IComponentData
     public float FireRate;
     public Entity ProjectilePrefabEntity;
     public float BulletMoveSpeed;
+    public int NumberOfShoot;
+    public float AngleDifference;
     public int CooldownID;
 }

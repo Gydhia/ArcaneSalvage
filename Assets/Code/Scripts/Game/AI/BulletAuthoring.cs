@@ -12,16 +12,11 @@ public class BulletAuthoring : MonoBehaviour
         public override void Bake(BulletAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.None);
-            AddComponent(entity, new Bullet
-            {
-                Lifetime = authoring.Lifetime,
-            });
+            AddComponent(entity, new Bullet());
         }
     }
 }
 
 public struct Bullet : IComponentData
 {
-    public float Lifetime;
-    public float Damage;
 }

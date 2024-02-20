@@ -5,22 +5,17 @@ using UnityEngine;
 
 public class EnemyAuthoring : MonoBehaviour
 {
-    public float Life;
-
     private class Baker : Baker<EnemyAuthoring>
     {
         public override void Bake(EnemyAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.None);
-            AddComponent(entity, new Enemy
-            {
-                Life = authoring.Life,
-            });
+            AddComponent(entity, new Enemy());
         }
     }
 }
 
 public struct Enemy : IComponentData
 {
-    public float Life;
+
 }
