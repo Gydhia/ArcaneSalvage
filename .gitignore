@@ -25,7 +25,7 @@
 
 # Visual Studio cache directory
 .vs/
-
+.vscode
 # JetBrains Rider
 .idea/
 
@@ -49,6 +49,7 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+*.asset
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -73,3 +74,4 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+.vsconfig
