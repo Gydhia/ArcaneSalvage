@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
-  m_Name: FoamAnimated
+  m_Name: ExportedAsset
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
   - {fileID: 172243015, guid: 6f7542ff109c31e4b8aab9b939875e5d, type: 3}
@@ -24,8 +24,8 @@ MonoBehaviour:
   - {fileID: -1219163449, guid: 6f7542ff109c31e4b8aab9b939875e5d, type: 3}
   - {fileID: 1734982652, guid: 6f7542ff109c31e4b8aab9b939875e5d, type: 3}
   - {fileID: -1019656374, guid: 6f7542ff109c31e4b8aab9b939875e5d, type: 3}
-  m_MinSpeed: 1
-  m_MaxSpeed: 1
+  m_MinSpeed: 11
+  m_MaxSpeed: 11
   m_AnimationStartTime: 0
   m_AnimationStartFrame: 0
   m_TileColliderType: 0
