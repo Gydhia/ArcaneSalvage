@@ -1,3 +1,4 @@
+using System;
 using Code.Scripts.Helper;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,6 +25,8 @@ namespace Code.Scripts.Game.Player
         public bool IsTouching => _isTouching;
         public bool CanMove => _canMove;
 
+        public Action<Vector2> OnTouchStart;
+
         public bool IsPhaseTwo
         {
             get => isPhaseTwo;
@@ -47,6 +50,8 @@ namespace Code.Scripts.Game.Player
             {
                 _isTouching = true;
                 _initTouchPos = _inputActions.MovePointer.Position.ReadValue<Vector2>();
+                
+                OnTouchStart?.Invoke(_initTouchPos);
             };
 
             _inputActions.MovePointer.Touch.canceled += ctx =>
