@@ -12,6 +12,7 @@ public class GameManager : Singleton<GameManager>
     // Player reference
     public PlayerBehaviour PlayerRef { get; private set; }
     public SceneController SceneControllerRef { get; private set; }
+    public InputManager InputManagerRef { get; private set; }
 
 
     // Gameloop
@@ -95,6 +96,7 @@ public class GameManager : Singleton<GameManager>
     public void PlayerEnterPortal()
     {
         SceneControllerRef.LoadScene("Alexis-SubDev");
+        InputManagerRef.IsPhaseTwo = true;
     }
 
     #endregion

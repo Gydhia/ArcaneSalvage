@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  _flipSprite: 1
   spawnProjectile:
     m_PersistentCalls:
       m_Calls: []
