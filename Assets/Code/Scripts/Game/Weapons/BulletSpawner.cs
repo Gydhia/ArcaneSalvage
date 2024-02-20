@@ -70,14 +70,14 @@ public class BulletSpawner : MonoBehaviour
     {
         if (bullet)
         {
-            spawnedBullet = Instantiate(bullet, new Vector3(transform.position.x - spawnedBullet.transform.localScale.x, transform.position.y - spawnedBullet.transform.localScale.y, transform.position.z), Quaternion.identity);
+            spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
             spawnedBullet.GetComponent<Projectile>().speed = speed;
             spawnedBullet.GetComponent<Projectile>().bulletLife = bulletLife;
             if (target != null)
             {
                 Vector2 direction = target.position - transform.position;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                spawnedBullet.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
+                spawnedBullet.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle - 90));
             }
         }
     }
