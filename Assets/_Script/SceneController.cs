@@ -8,6 +8,7 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController Instance;
     public GameObject LoadingScreen;
+    public Slider LoadingSlider;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class SceneController : MonoBehaviour
         {
             float progressValue = Mathf.Clamp01(operation.progress / 0.9f);
 
-            LoadingScreen.GetComponent<Slider>().value = progressValue;
+            LoadingSlider.value = progressValue;
 
             yield return null;
         }
