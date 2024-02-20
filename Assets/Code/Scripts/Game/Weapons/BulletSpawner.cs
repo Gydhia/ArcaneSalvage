@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Transforms;
 using UnityEngine;
 
 
@@ -13,7 +14,7 @@ public class BulletSpawner : MonoBehaviour
     public GameObject bullet;
     public float bulletLife = 1f;
     public float speed = 1f;
-    public GameObject target;
+    public Transform target;
 
 
     [Header("Spawner Attributes")]
@@ -59,7 +60,7 @@ public class BulletSpawner : MonoBehaviour
             float distance = Vector3.Distance(playerPosition, enemy.transform.position);
             if (distance < minDistance)
             {
-                target = enemy;
+                target = enemy.transform;
                 minDistance = distance;
             }
         }
@@ -69,13 +70,15 @@ public class BulletSpawner : MonoBehaviour
     {
         if (bullet)
         {
-            spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+            spawnedBullet = Instantiate(bullet, new Vector3(transform.position.x - spawnedBullet.transform.localScale.x, transform.position.y - spawnedBullet.transform.localScale.y, transform.position.z), Quaternion.identity);
             spawnedBullet.GetComponent<Projectile>().speed = speed;
             spawnedBullet.GetComponent<Projectile>().bulletLife = bulletLife;
-
-            Vector3 direction = target.transform.position - transform.position; // Direction vers la cible
-            Quaternion rotation = Quaternion.LookRotation(direction); // Calcul de la rotation nécessaire
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10); // Applique la rotation avec interpolation
+            if (target != null)
+            {
+                Vector2 direction = target.position - transform.position;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                spawnedBullet.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
+            }
         }
     }
 }
