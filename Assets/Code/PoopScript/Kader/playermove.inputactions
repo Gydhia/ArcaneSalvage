@@ -1,0 +1,74 @@
+{
+    "name": "playermove",
+    "maps": [
+        {
+            "name": "ActionMap",
+            "id": "f9943708-795d-43e0-9373-56f297ca4ae0",
+            "actions": [
+                {
+                    "name": "SpawnGO",
+                    "type": "Button",
+                    "id": "dc545532-7031-4bd1-b702-2bd43cae3c2d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SpawnECS",
+                    "type": "Button",
+                    "id": "f67f1d22-c863-4260-b2e4-539286652019",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SpawnECSWithPooling",
+                    "type": "Button",
+                    "id": "db81e6d0-edb3-4c73-9b96-e837ded49b27",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1602861c-439b-4c05-aa71-16e8e9539c23",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnGO",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dedecf8c-1630-4ec3-a000-f43d5ba26bcc",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnECS",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4635729a-739a-4887-b037-75ae5d6fea83",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnECSWithPooling",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
