@@ -33,7 +33,7 @@ public partial struct GameManagerSystem : ISystem
         
         inputComponent = entityManager.GetComponentData<InputComponent>(inputEntity);
         gameManagerComponent = entityManager.GetComponentData<GameManagerComponent>(gameManagerEntity);
-        inputTextEntity = entityManager.GetComponentObject<TMP_InputField>(gameManagerEntity);
+        //inputTextEntity = entityManager.GetComponentObject<TMP_InputField>(gameManagerEntity);
         
         SpawnGO(ref state);
         SpawnECS(ref state);
