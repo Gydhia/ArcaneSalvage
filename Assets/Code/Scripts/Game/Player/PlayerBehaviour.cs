@@ -1,9 +1,7 @@
 using System;
 using DG.Tweening;
-using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace Code.Scripts.Game.Player
 {
@@ -64,6 +62,15 @@ namespace Code.Scripts.Game.Player
             else
             {
                 _rigidbody2D.velocity = Vector2.zero;
+            }
+        }
+        void OnDestroy()
+        {
+            DOTween.Kill(transform);
+            DOTween.Kill(gameObject);
+            foreach (Transform child in transform)
+            {
+                DOTween.Kill(child);
             }
         }
     }

@@ -1,28 +1,17 @@
+using Code.Scripts.Game.Player;
+using Code.Scripts.Helper;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance { get; private set; }
-
-
-    private void Awake()
-    {
-        // Singleton
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
 
 
     // Player reference
-
+    public PlayerBehaviour PlayerRef { get; private set; }
+    public SceneController SceneControllerRef { get; private set; }
 
 
     // Gameloop
@@ -31,19 +20,27 @@ public class GameManager : MonoBehaviour
         // Get Player Ref;
 
         SetupGameLoop();
+        PlayerRef = FindObjectOfType<PlayerBehaviour>();
+        SceneControllerRef = FindObjectOfType<SceneController>();
     }
 
     #region GameLoop
+    [Header("Phase 1")]
     [SerializeField] private List<KeyFragment> _keyFragments;
     [SerializeField] private PhasePortal _phasePortal;
-
     private KeyFragment _keyFragment = null;
+
+    [Header("Phase 2")]
+    [SerializeField] private GameObject Boss;
 
     private void SetupGameLoop()
     {
-        AddListenerToKeys();
-        SetKeyFragmentActive(_keyFragments[0]);
-        _phasePortal.gameObject.SetActive(false);
+        if(AddListenerToKeys())
+        {
+            SetKeyFragmentActive(_keyFragments[0]);
+            _phasePortal.gameObject.SetActive(false);
+        }
+        
     }
 
     private void OpenPortal()
@@ -51,13 +48,16 @@ public class GameManager : MonoBehaviour
         _phasePortal.gameObject.SetActive(true);
     }
 
-    private void AddListenerToKeys()
+    private bool AddListenerToKeys()
     {
+        if(_keyFragments.Count == 0) { return false; }
+
         foreach (var keyFragment in _keyFragments)
         {
             keyFragment.KeyFragmentFoundDelegate += KeyFound;
             keyFragment.gameObject.SetActive(false);
         }
+        return true;
     }
 
     private void SetKeyFragmentActive(KeyFragment keyFragment)
@@ -74,7 +74,6 @@ public class GameManager : MonoBehaviour
         _keyFragment.gameObject.SetActive(false);
         _keyFragment = null;
     }
-
 
     private void KeyFound(KeyFragment keyFragment)
     {
@@ -95,7 +94,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayerEnterPortal()
     {
-        // Load scene
+        SceneControllerRef.LoadScene("Alexis-SubDev");
     }
 
     #endregion

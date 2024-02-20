@@ -44,9 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2858a9e3149f8834db7bd4b2b303dc5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _keyFragments:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _keyFragments: []
   _phasePortal: {fileID: 0}
