@@ -12,7 +12,6 @@ namespace Code.Scripts.Game.Player
         [SerializeField] private bool _phaseOne = true;
         
         private Rigidbody2D _rigidbody2D;
-        private SpriteRenderer _spriteRendererWeapon;
         private InputManager _inputManager;
 
         private Animator playerAnimator;
@@ -25,7 +24,6 @@ namespace Code.Scripts.Game.Player
             TryGetComponent(out playerAnimator);
             if(transform.childCount > 0) 
             { 
-                transform.GetChild(0).TryGetComponent(out _spriteRendererWeapon);
                 transform.GetChild(0).TryGetComponent(out playerWeaponAnimator);
             }
             TryGetComponent(out _rigidbody2D);
@@ -58,13 +56,12 @@ namespace Code.Scripts.Game.Player
                     if (moveDir.x > 0)
                     {
                         transform.DORotate(Vector3.zero, 0.2f, RotateMode.Fast);
-                        _spriteRendererWeapon.sortingOrder = 1;
+                        
                     }
 
                     if (moveDir.x < 0)
                     {
                         transform.DORotate(Vector3.down * 180, 0.2f, RotateMode.Fast);
-                        _spriteRendererWeapon.sortingOrder = -1;
                     }
 
                 }

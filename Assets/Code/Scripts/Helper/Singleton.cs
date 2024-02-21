@@ -5,7 +5,9 @@ using UnityEngine;
     public class Singleton<T> : MonoBehaviour
         where T : MonoBehaviour
     {
-        private void Awake()
+        public bool DontDestroyOnLoad = true;
+        
+        protected virtual void Awake()
         {
             if(_instance != null && _instance.gameObject != gameObject)
             {
@@ -14,7 +16,8 @@ using UnityEngine;
             }
 
             _instance = GetComponent<T>();
-            DontDestroyOnLoad(_instance);
+            if(DontDestroyOnLoad)
+                DontDestroyOnLoad(_instance);
         }
 
         public static T Instance
