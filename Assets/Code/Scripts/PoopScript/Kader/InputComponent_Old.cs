@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
-public struct InputComponent : IComponentData
+public struct InputComponent_Old : IComponentData
 {
     public bool pressing1;
     public bool pressing2;

@@ -14,7 +14,7 @@ public partial struct GameManagerSystem : ISystem
     private Entity gameManagerEntity;
     private Entity inputTextEntity;
 
-    private InputComponent inputComponent;
+    private InputComponent_Old _inputComponentOld;
     private GameManagerComponent gameManagerComponent;
 
     public void OnCreate(ref SystemState state)
@@ -26,12 +26,12 @@ public partial struct GameManagerSystem : ISystem
     {
         entityManager = state.EntityManager;
         
-        inputEntity = SystemAPI.GetSingletonEntity<InputComponent>();
+        inputEntity = SystemAPI.GetSingletonEntity<InputComponent_Old>();
         gameManagerEntity = SystemAPI.GetSingletonEntity<GameManagerComponent>();
 
         
         
-        inputComponent = entityManager.GetComponentData<InputComponent>(inputEntity);
+        _inputComponentOld = entityManager.GetComponentData<InputComponent_Old>(inputEntity);
         gameManagerComponent = entityManager.GetComponentData<GameManagerComponent>(gameManagerEntity);
         //inputTextEntity = entityManager.GetComponentObject<TMP_InputField>(gameManagerEntity);
         
@@ -54,7 +54,7 @@ public partial struct GameManagerSystem : ISystem
     private float nextPressTime;
     private void SpawnECS(ref SystemState state)
     {
-        if (inputComponent.pressing2 && nextPressTime < SystemAPI.Time.ElapsedTime)
+        if (_inputComponentOld.pressing2 && nextPressTime < SystemAPI.Time.ElapsedTime)
         {
             NativeArray<Entity> entityArray = new NativeArray<Entity>(gameManagerComponent.nbrEntity, Allocator.Temp);
             entityManager.Instantiate(gameManagerComponent.EntityECS, entityArray);

@@ -12,6 +12,7 @@ public partial struct MovementSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<InputComponent>();
+        state.RequireForUpdate<Moving>();
     }
 
     [BurstCompile]

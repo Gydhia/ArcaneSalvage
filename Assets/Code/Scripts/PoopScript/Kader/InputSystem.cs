@@ -10,9 +10,9 @@ public partial class InputSystem : SystemBase
     
     protected override void OnCreate()
     {
-        if (!SystemAPI.TryGetSingleton<InputComponent>(out InputComponent input))
+        if (!SystemAPI.TryGetSingleton<InputComponent_Old>(out InputComponent_Old input))
         {
-            EntityManager.CreateEntity(typeof(InputComponent));
+            EntityManager.CreateEntity(typeof(InputComponent_Old));
         }
 
         controls = new Playermove();
@@ -25,6 +25,6 @@ public partial class InputSystem : SystemBase
         bool isPressing2 = controls.ActionMap.SpawnECS.ReadValue<float>() == 1 ? true : false;
         bool isPressing3 = controls.ActionMap.SpawnECSWithPooling.ReadValue<float>() == 1 ? true : false;
         
-        SystemAPI.SetSingleton(new InputComponent{pressing1 = isPressing1, pressing2 = isPressing2, pressing3 = isPressing3});
+        SystemAPI.SetSingleton(new InputComponent_Old{pressing1 = isPressing1, pressing2 = isPressing2, pressing3 = isPressing3});
     }
 }
