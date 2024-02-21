@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
@@ -5,21 +6,31 @@ public class WeaponManager : MonoBehaviour
     enum GameModePhase { Phase1, Phase2 }
 
     [SerializeField] private GameModePhase gameModePhase;
-    public Weapon currentWeapon;
+    private Weapon currentWeapon;
     public GameObject bow;
     public GameObject wand;
 
-    public Transform target;
+    private Transform target;
 
     private float timer = 0f;
 
-    public void ChangeWeapon(Weapon newWeapon)
+    public void ChooseWeapon(int newWeapon)
     {
         if (currentWeapon != null)
+            currentWeapon.gameObject.SetActive(false);
+
+        switch(newWeapon)
         {
-            Destroy(currentWeapon.gameObject);
+            case 1 :
+                currentWeapon = bow.GetComponent<Weapon>();
+                break;
+            case 2:
+                currentWeapon = wand.GetComponent<Weapon>();
+                break;
+            default:
+                currentWeapon = bow.GetComponent<Weapon>();
+                break;
         }
-        currentWeapon = Instantiate(newWeapon, transform);
     }
 
     public void UpgradeWeapon(float extraDamage, float extraFireRate)
@@ -30,6 +41,7 @@ public class WeaponManager : MonoBehaviour
             currentWeapon.firingRate += extraFireRate;
         }
     }
+
 
     void Update()
     {
