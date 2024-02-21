@@ -14,6 +14,19 @@ public class WeaponManager : MonoBehaviour
 
     private float timer = 0f;
 
+    public static WeaponManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
+    }
+
     public void ChooseWeapon(int newWeapon)
     {
         if (currentWeapon != null)
@@ -38,25 +51,27 @@ public class WeaponManager : MonoBehaviour
         switch(infos.upgradeType)
         {
             case UpgradeType.Angle:
-                //
+                currentWeapon.attackType = Weapon.AttackType.Angle;
                 break;
             case UpgradeType.MoreArrow:
-                //
+                currentWeapon.attackType = Weapon.AttackType.MoreArrow;
                 break;
             case UpgradeType.FireRate:
-                //
+                currentWeapon.firingRate -= 0.1f;
                 break;
             case UpgradeType.Piercing:
-                //
+                currentWeapon.attackType = Weapon.AttackType.Piercing;
                 break;
             case UpgradeType.Exploding:
-                //
+                currentWeapon.attackType = Weapon.AttackType.Exploding;
+                break;
+            case UpgradeType.Damage:
+                currentWeapon.damage += 1f;
                 break;
             default:
                 break;
         }
     }
-
 
     void Update()
     {
@@ -68,7 +83,7 @@ public class WeaponManager : MonoBehaviour
                 if (gameModePhase == GameModePhase.Phase1)
                 {
                     FindClosestEnemy();
-                        currentWeapon.Fire(target);
+                        currentWeapon.ChoosingFire(target);
                 }
                 else
                 {

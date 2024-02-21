@@ -41,7 +41,7 @@ namespace ArcanaSalvage.UI
 
         public void SendCard()
         {
-            //WeaponManager.Instance.UpgradeWeapon(cardInfo)
+            WeaponManager.Instance.UpgradeWeapon(m_cardInfo);
         }
 
         public CardInfo GetCardInfo()
