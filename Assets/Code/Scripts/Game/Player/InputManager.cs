@@ -13,6 +13,7 @@ namespace Code.Scripts.Game.Player
         [SerializeField] private float joyStickDeadZone = 2;
         [SerializeField] private float maxMagnitude = 1;
         [SerializeField] private bool isPhaseTwo;
+        [SerializeField] private bool _isActive = true;
         
         private InputActions _inputActions;
         
@@ -35,6 +36,12 @@ namespace Code.Scripts.Game.Player
             set => isPhaseTwo = value;
         }
 
+        public bool IsActive
+        {
+            get => _isActive;
+            set => _isActive = value;
+        }
+
         private void OnEnable()
         {
             _inputActions = new InputActions();
@@ -43,7 +50,10 @@ namespace Code.Scripts.Game.Player
 
         private void OnDisable()
         {
-            _inputActions.Disable();
+            if(_inputActions != null)
+            {
+                _inputActions.Disable();
+            }
         }
         
         void Start()
@@ -60,8 +70,8 @@ namespace Code.Scripts.Game.Player
 
             _inputActions.MovePointer.Touch.canceled += ctx =>
             {
-                _isTouching = false; 
-                
+                _isTouching = false;
+                Debug.Log("test");
             };
         }
         
@@ -72,8 +82,28 @@ namespace Code.Scripts.Game.Player
         
         void Update()
         {
+            if(!_isActive) 
+            {
+                _moveDirection = Vector2.zero;
+                return; 
+            }
             if (_isTouching)
             {
+                if(isPhaseTwo)
+                {
+                    Vector2 pos = GetTouchPos();
+                    _canMove = pos != Vector2.zero;
+
+                    if(pos.x < Screen.width /2)
+                    {
+                        _moveDirection = new Vector2(-maxMagnitude, 0);
+                    }
+                    else
+                    {
+                        _moveDirection = new Vector2(maxMagnitude, 0);
+                    }
+                    return;
+                }
                 _canMove = (GetTouchPos() - _initTouchPos).magnitude > joyStickDeadZone;
                 if (_canMove)
                 {
@@ -99,6 +129,11 @@ namespace Code.Scripts.Game.Player
         private Vector2 GetTouchPos()
         {
             return _inputActions.MovePointer.Position.ReadValue<Vector2>();
+        }
+
+        public void SetActive(bool value)
+        {
+
         }
     }
 }

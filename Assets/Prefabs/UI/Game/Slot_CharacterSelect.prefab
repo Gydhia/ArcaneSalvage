@@ -281,8 +281,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_upradeIcon: {fileID: 4282813721505027941}
-  m_upradeName: {fileID: 3174799940280632194}
-  m_upradeDescription: {fileID: 4382307012049209772}
+  m_upgradeName: {fileID: 3174799940280632194}
+  m_upgradeDescription: {fileID: 4382307012049209772}
+  m_price: 0
   m_upgradeButton: {fileID: 8012020157413836355}
 --- !u!114 &8012020157413836355
 MonoBehaviour:
@@ -327,7 +328,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7172708116215774165}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4667103690249443206}
+        m_TargetAssemblyTypeName: ArcanaSalvage.UI.UIUpgrade, Assembly-CSharp
+        m_MethodName: SendCard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2972985108243727254
 GameObject:
   m_ObjectHideFlags: 0
