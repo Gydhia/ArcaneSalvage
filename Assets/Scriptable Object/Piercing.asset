@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57d79bda52c7eb4dace2243ec703575, type: 3}
   m_Name: Piercing
   m_EditorClassIdentifier: 
+  upgradeType: 5
   icon: {fileID: 21300000, guid: bfa9342055be84620a135d4e80743a53, type: 3}
-  name: Piercing arrow
+  nameOfCard: Piercing shot
   description: Your arrows pierce through enemies.
   price: 0

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57d79bda52c7eb4dace2243ec703575, type: 3}
   m_Name: Exploding Arrows
   m_EditorClassIdentifier: 
+  upgradeType: 2
   icon: {fileID: 21300000, guid: bfa9342055be84620a135d4e80743a53, type: 3}
-  name: Exploding Arrow
+  nameOfCard: Exploding
   description: Your arrows explode into several other arrows
   price: 0

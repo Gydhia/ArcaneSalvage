@@ -83,7 +83,6 @@ public class UpgradeSystem : MonoBehaviour
 
     public void OpenMenu()
     {
-
         visual.SetActive(true);
         DisplayCardMenu();
     }
