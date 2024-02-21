@@ -43,7 +43,10 @@ public partial struct TriggerBulletSystem : ISystem
 
             //Ignoring Bullet overlapping other Bullets
             if (isBodyATrigger && isBodyBTrigger)
+            {
+                Debug.Log("Bullet overlapping");
                 return;
+            }
                 
 
             bool isBodyADynamic = PhysicsVelocityGroup.HasComponent(entityA);
@@ -52,7 +55,11 @@ public partial struct TriggerBulletSystem : ISystem
             //Ignoring overlapping static bodies
             if ((isBodyATrigger && !isBodyBDynamic) ||
                 (isBodyBTrigger && !isBodyADynamic))
+            {
+                Debug.Log("Overlapping static bodies");
                 return;
+            }
+                
 
             var triggerEntity = isBodyADynamic ? entityA : entityB;
             var dynamicEntity = isBodyADynamic ? entityB : entityA;
