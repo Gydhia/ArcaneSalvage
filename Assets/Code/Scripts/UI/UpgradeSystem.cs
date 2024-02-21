@@ -1,96 +1,112 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using ArcanaSalvage.UI;
 
 public class UpgradeSystem : MonoBehaviour
 {
 
-
-    public List<GameObject> listOfCard;
-    public Transform horizontalLayoutObject;
-
+    public CardManager cardManager;
+    public List<CardInfo> listOfCard;
     public int nbrOfCardToDisplay = 3;
+    public Transform cardUIParent;
 
-    public List<GameObject> pickedCards = new List<GameObject>(); 
+    public GameObject visual;
 
-    private void Start()
+    private void Awake()
     {
-        foreach (var item in listOfCard)
-        {
-            GameObject instance = Instantiate(item, horizontalLayoutObject);
-        }
-    }
-    private void Update()
-    {
-        foreach (var item in pickedCards)
-        {
-            item.SetActive(true);
-        }
-        foreach (var item in listOfCard)
-        {
-            item.SetActive(true);
-        }
+        visual.SetActive(false);
+        listOfCard = cardManager.cardInfos;
     }
 
-    public void displayCardMenu()
+    public void DisplayCardMenu()
     {
-        pickedCards.Clear();
-        displayListOfCard(listOfCard, false);
+    List<CardInfo> pickedCards = PickRandomCards(nbrOfCardToDisplay);
+    DisplayListOfCard(true, pickedCards);
+    }
 
-        List<GameObject> copieListOfCard = ShuffleCopy<GameObject>(listOfCard, new System.Random());
-        if (listOfCard.Count > 0)
+    private List<CardInfo> PickRandomCards(int count)
+    {
+        List<CardInfo> pickedCards = new List<CardInfo>();
+        List<CardInfo> copyOfCards = new List<CardInfo>(listOfCard);
+
+        for (int i = 0; i < count; i++)
         {
-            for (int i = 0; i < nbrOfCardToDisplay; i++)
+            int randomIndex = Random.Range(0, copyOfCards.Count);
+            pickedCards.Add(copyOfCards[randomIndex]);
+            copyOfCards.RemoveAt(randomIndex);
+        }
+        return pickedCards;
+    }
+
+
+    private void DisplayListOfCard(bool displayBool, List<CardInfo> cards = null)
+    {
+        foreach (CardInfo card in listOfCard)
+        {
+            bool shouldDisplay = (cards == null || cards.Contains(card));
+
+            GameObject cardUI = FindCardUI(card);
+
+            if (cardUI != null)
             {
-                int randomIndex = Random.Range(0, copieListOfCard.Count);
-                pickedCards.Add(copieListOfCard[randomIndex]);
-                copieListOfCard.RemoveAt(randomIndex);
+                cardUI.SetActive(shouldDisplay && displayBool);
             }
-            foreach (var item in pickedCards)
-            {
-                Debug.Log(item);
-            }
-            displayListOfCard(pickedCards, true);
         }
     }
+
+    private GameObject FindCardUI(CardInfo card)
+    {
+        if (cardUIParent == null)
+        {
+            Debug.LogError("cardUIParent n'est pas assigné");
+            return null;
+        }
+
+        foreach (Transform child in cardUIParent)
+        {
+            UIUpgrade uiUpgrade = child.GetComponent<UIUpgrade>();
+
+            if (uiUpgrade != null)
+            {
+                CardInfo uiCard = uiUpgrade.GetCardInfo();
+
+                if (uiCard != null && uiCard == card)
+                {
+                    return child.gameObject;
+                }
+            }
+        }
+
+        return null;
+    }
+
 
     public void OpenMenu()
     {
-        gameObject.SetActive(true);
-        displayCardMenu();
-    }
 
-    public void Refresh()
-    {
-        displayCardMenu();
+        visual.SetActive(true);
+        DisplayCardMenu();
     }
 
     public void CloseMenu()
     {
-        gameObject.SetActive(false);
+        visual.SetActive(false);
     }
 
-    private void displayListOfCard(List<GameObject> listOfCard, bool displayBool)
-    {
-        foreach (GameObject item in listOfCard)
-        {
-            item.SetActive(displayBool);
-        }
-    }
 
-    public List<T> ShuffleCopy<T>(List<T> list, System.Random generator)
-    {
-        List<T> copy = new List<T>(list);
 
-        int n = copy.Count;
-        while (n > 1)
+    private void ShuffleCopy<T>(List<T> listToShuffle)
+    {
+        System.Random rng = new System.Random();
+        int n = listToShuffle.Count;
+        while(n > 1)
         {
             n--;
-            int k = generator.Next(n + 1);
-            (copy[k], copy[n]) = (copy[n], copy[k]);
-        }
+            int k = rng.Next(n + 1);
+            T value = listToShuffle[k];
+            listToShuffle[k]= listToShuffle[n];
+            listToShuffle[n]= value;
 
-        return copy;
+        }
     }
 }

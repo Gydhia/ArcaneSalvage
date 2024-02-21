@@ -53775,6 +53775,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2565923454973025435, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1170192252}
+    - targetCorrespondingSourceObject: {fileID: 2565923454973025435, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1170192253}
   m_SourcePrefab: {fileID: 100100000, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
 --- !u!224 &1170192245 stripped
 RectTransform:
@@ -53808,16 +53811,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc4d5a4bffaec154fb870cbd1f776836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfCard:
-  - {fileID: 8907553038757143827, guid: 8cb957f81880409449a0bad293627be8, type: 3}
-  - {fileID: 8907553038757143827, guid: 15a01d2d426150248b841383dc8af958, type: 3}
-  - {fileID: 8907553038757143827, guid: a2cc414ec14810842a470cbb43b7687a, type: 3}
-  - {fileID: 8907553038757143827, guid: 6584f2a0ff8a938458e401434cb03e60, type: 3}
-  - {fileID: 8907553038757143827, guid: 2fce41c16587cad4b844696fac2b137e, type: 3}
-  - {fileID: 8907553038757143827, guid: 9bacd8082be236749822759bf3ba9868, type: 3}
-  horizontalLayoutObject: {fileID: 1170192250}
+  cardManager: {fileID: 1170192253}
+  listOfCard: []
   nbrOfCardToDisplay: 3
-  pickedCards: []
+  cardUIParent: {fileID: 1170192250}
+--- !u!114 &1170192253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170192251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b38a93b0504ebae4dace0d33c248832c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardUIPrefab: {fileID: 1860281206406074657, guid: 3c62591d76f0ec24c90e7c0c3c095dda, type: 3}
+  cardUIParent: {fileID: 1170192250}
+  cardInfos:
+  - {fileID: 11400000, guid: 6aaa374fafd78574cbe34bf83aa8292d, type: 2}
+  - {fileID: 11400000, guid: 8310ad56bb98040459d58c3cd66c3273, type: 2}
+  - {fileID: 11400000, guid: 64c4f58f77636b8448aaafc3b93ddc0b, type: 2}
+  - {fileID: 11400000, guid: 96acc29e2ec80d940ba8c016b69461b4, type: 2}
+  - {fileID: 11400000, guid: 6cad0f1a28227844a93befecd63dc959, type: 2}
+  - {fileID: 11400000, guid: 2197104323bddd74492dddb66f8228b6, type: 2}
 --- !u!1 &1335815190
 GameObject:
   m_ObjectHideFlags: 0
@@ -60599,7 +60617,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1170192252}
         m_TargetAssemblyTypeName: UpgradeSystem, Assembly-CSharp
-        m_MethodName: Refresh
+        m_MethodName: DisplayCardMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

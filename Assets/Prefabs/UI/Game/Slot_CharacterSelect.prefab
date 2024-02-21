@@ -281,8 +281,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_upradeIcon: {fileID: 4282813721505027941}
-  m_upradeName: {fileID: 3174799940280632194}
-  m_upradeDescription: {fileID: 4382307012049209772}
+  m_upgradeName: {fileID: 3174799940280632194}
+  m_upgradeDescription: {fileID: 4382307012049209772}
+  m_price: 0
   m_upgradeButton: {fileID: 8012020157413836355}
 --- !u!114 &8012020157413836355
 MonoBehaviour:
