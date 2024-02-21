@@ -42,7 +42,13 @@ public partial struct GameManagerSystem : ISystem
 
     private void SpawnGO(ref SystemState state)
     {
-        
+        EntitiesGO.ClearEntities();
+        for (int i = 0; i < gameManagerComponent.nbrEntity; i++)
+        {
+            //GameObject go = GameObject.Instantiate(entitieGO);
+            GameObject go = new GameObject();
+            go.transform.localScale = new Vector3(0.2f, 0.2f, go.transform.localScale.z);
+        }
     }
 
     private float nextPressTime;
