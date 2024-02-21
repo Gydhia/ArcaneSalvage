@@ -33,12 +33,27 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    public void UpgradeWeapon(float extraDamage, float extraFireRate)
+    public void UpgradeWeapon(CardInfo infos)
     {
-        if (currentWeapon != null)
+        switch(infos.upgradeType)
         {
-            currentWeapon.damage += extraDamage;
-            currentWeapon.firingRate += extraFireRate;
+            case UpgradeType.Angle:
+                //
+                break;
+            case UpgradeType.MoreArrow:
+                //
+                break;
+            case UpgradeType.FireRate:
+                //
+                break;
+            case UpgradeType.Piercing:
+                //
+                break;
+            case UpgradeType.Exploding:
+                //
+                break;
+            default:
+                break;
         }
     }
 
