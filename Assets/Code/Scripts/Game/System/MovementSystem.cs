@@ -1,6 +1,10 @@
 using Assets.Code.Scripts.Game.Player;
+using ProjectDawn.Navigation;
+using ProjectDawn.Navigation.Hybrid;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Authoring;
@@ -24,6 +28,13 @@ public partial struct MovementSystem : ISystem
             PlayerPosition = SystemAPI.GetSingleton<InputComponent>().PlayerPosition,
         };
         movingEnemyJob.Schedule();
+        
+        
+        SetDestinationJob setDestinationJob = new SetDestinationJob()
+        {
+            Destination = SystemAPI.GetSingleton<InputComponent>().PlayerPosition,
+        };
+        setDestinationJob.Schedule();
 
         MovingBulletJob movingBulletJob = new MovingBulletJob
         {
@@ -85,6 +96,18 @@ public partial struct MovementSystem : ISystem
             {
                 physicsVelocity.Linear = float3.zero;
             }
+        }
+    }
+    
+    [BurstCompile, WithAll(typeof(AgentBody))]
+    public partial struct SetDestinationJob : IJobEntity
+    {
+        public float3 Destination;
+
+        public void Execute(ref AgentBody body)
+        {
+            body.Destination = Destination;
+            body.IsStopped = false;
         }
     }
 }
