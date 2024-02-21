@@ -128,6 +128,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2376109770005590824, guid: 4357b8d80ed7c1e4ba28f092a11fdf07, type: 3}
   m_PrefabInstance: {fileID: 8858447019020539381}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &519188546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 519188548}
+  - component: {fileID: 519188547}
+  m_Layer: 0
+  m_Name: WeaponManagers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &519188547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519188546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c3673d4a27833a48b69b6a0303df86e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameModePhase: 0
+  currentWeapon: {fileID: 1013761828}
+  projectile: {fileID: 9174625183254990344, guid: dcdf06d4aee24bb48933cf94950d59cd, type: 3}
+  target: {fileID: 0}
+--- !u!4 &519188548
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519188546}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.019813003, y: 1.9020374, z: -0.07125585}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1013761826
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -190,8 +238,32 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3201425272144251357, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 51762450}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5584843580203007787, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1013761828}
   m_SourcePrefab: {fileID: 100100000, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+--- !u!1 &1013761827 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5584843580203007787, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+  m_PrefabInstance: {fileID: 1013761826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1013761828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013761827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9693a928ccbb17b46aa834c91238da92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firingRate: 0.1
+  damage: 1
+  speed: 5
+  bulletLife: 5
 --- !u!1001 &1097406618
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -471,6 +543,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bullet Spawner
       objectReference: {fileID: 0}
+    - target: {fileID: 7713606396333650884, guid: 4357b8d80ed7c1e4ba28f092a11fdf07, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -484,3 +560,4 @@ SceneRoots:
   - {fileID: 1013761826}
   - {fileID: 1097406618}
   - {fileID: 1286244922}
+  - {fileID: 519188548}
