@@ -19,8 +19,6 @@ namespace Assets.Code.Scripts.Game.Player
                 EntityManager.CreateEntity(typeof(InputComponent));
             }
 
-            
-
             _inputActions = new InputActions();
             _inputActions.Enable();
 

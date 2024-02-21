@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Code.Scripts.Game.Player;
 using Unity.Collections;
 using Unity.Burst;
 using Unity.Entities;
@@ -17,7 +18,7 @@ public partial class ShootingStraightSystem : SystemBase
     [BurstCompile]
     protected override void OnUpdate()
     {
-        Vector3 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+        Vector3 playerPosition = SystemAPI.GetSingleton<InputComponent>().PlayerPosition;
 
         EntityCommandBuffer entityCommandBufferStraightJob = new EntityCommandBuffer(Allocator.TempJob);
 
@@ -65,21 +66,27 @@ public partial class ShootingStraightSystem : SystemBase
             EntityCommandBuffer.Instantiate(shootData.ProjectilePrefabEntity, entities);
             for (int i = 1; i <= shootData.NumberOfShoot; i++)
             {
+                Vector3 direction = Quaternion.AngleAxis(
+                                    i % 2 == 0
+                                        ? shootData.AngleDifference * (i / 2)
+                                        : -shootData.AngleDifference * ((i + 1) / 2),
+                                    new Vector3(localTransform.Forward().x, localTransform.Forward().y,
+                                        localTransform.Forward().z)) *
+                                originMovementDirection;
+                
+                direction.Normalize();
+                float angle = Vector2.Angle(Vector2.right, direction);
+                
                 EntityCommandBuffer.SetComponent(entities[i - 1], new LocalTransform
                 {
                     Position = localTransform.Position,
-                    Scale = 0.2f,
-                    Rotation = Quaternion.identity,
+                    Scale = 1f,
+                    Rotation = Quaternion.Euler(new Vector3(0, 0, angle))
                 });
-                Vector3 vectorMovementDirection = originMovementDirection;
                 EntityCommandBuffer.SetComponent(entities[i - 1], new Moving
                 {
                     MoveSpeedValue = shootData.BulletMoveSpeed,
-                    Direction = Quaternion.AngleAxis(i % 2 == 0 ?
-                        shootData.AngleDifference * (i / 2) :
-                        -shootData.AngleDifference * ((i + 1) / 2),
-                        new Vector3(localTransform.Forward().x, localTransform.Forward().y, localTransform.Forward().z)) *
-                        vectorMovementDirection,
+                    Direction = direction
                 });
             }
         }
@@ -90,34 +97,31 @@ public partial class ShootingStraightSystem : SystemBase
             EntityCommandBuffer.Instantiate(shootData.ProjectilePrefabEntity, entities);
             for (int i = 1; i <= shootData.NumberOfShoot; i++)
             {
+                int j = i - 1;
+                Vector3 direction = Quaternion.AngleAxis(
+                                        j % 2 == 0
+                                            ? shootData.AngleDifference * (j / 2)
+                                            : -shootData.AngleDifference * ((j + 1) / 2),
+                                        new Vector3(localTransform.Forward().x, localTransform.Forward().y,
+                                            localTransform.Forward().z)) *
+                                    originMovementDirection;
+
+                direction = (i == 1 ? originMovementDirection : direction );
+                direction.Normalize();
+                
+                float angle = Vector2.Angle(Vector2.right, direction);
+                
                 EntityCommandBuffer.SetComponent(entities[i - 1], new LocalTransform
                 {
                     Position = localTransform.Position,
                     Scale = 1f,
-                    Rotation = Quaternion.identity,
+                    Rotation = Quaternion.Euler(new Vector3(0, 0, angle))
                 });
-                if (i == 1)
+                EntityCommandBuffer.SetComponent(entities[i - 1], new Moving
                 {
-                    EntityCommandBuffer.SetComponent(entities[i - 1], new Moving
-                    {
-                        MoveSpeedValue = shootData.BulletMoveSpeed,
-                        Direction = originMovementDirection
-                    });
-                }
-                else
-                {
-                    Vector3 vectorMovementDirection = originMovementDirection;
-                    int j = i - 1;
-                    EntityCommandBuffer.SetComponent(entities[i - 1], new Moving
-                    {
-                        MoveSpeedValue = shootData.BulletMoveSpeed,
-                        Direction = Quaternion.AngleAxis(j % 2 == 0 ?
-                        shootData.AngleDifference * (j / 2) :
-                        -shootData.AngleDifference * ((j + 1) / 2),
-                        new Vector3(localTransform.Forward().x, localTransform.Forward().y, localTransform.Forward().z)) *
-                        vectorMovementDirection,
-                    });
-                }
+                    MoveSpeedValue = shootData.BulletMoveSpeed,
+                    Direction = direction
+                });
             }
         }
     }
