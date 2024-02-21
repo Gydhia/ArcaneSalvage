@@ -67,15 +67,15 @@ public class BulletSpawner : MonoBehaviour
 
     private void Fire()
     {
-        if (bullet)
-        {
-            spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-            spawnedBullet.GetComponent<Projectile>().speed = speed;
-            spawnedBullet.GetComponent<Projectile>().bulletLife = bulletLife;
-
-            Vector3 direction = target.transform.position - transform.position; // Direction vers la cible
-            Quaternion rotation = Quaternion.LookRotation(direction); // Calcul de la rotation nécessaire
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10); // Applique la rotation avec interpolation
-        }
+        //if (bullet)
+        //{
+        //    spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+        //    spawnedBullet.GetComponent<Projectile>().speed = speed;
+        //    spawnedBullet.GetComponent<Projectile>().bulletLife = bulletLife;
+        //
+        //    Vector3 direction = target.transform.position - transform.position; // Direction vers la cible
+        //    Quaternion rotation = Quaternion.LookRotation(direction); // Calcul de la rotation nécessaire
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10); // Applique la rotation avec interpolation
+        //}
     }
 }

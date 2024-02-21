@@ -100,5 +100,7 @@ MonoBehaviour:
   bullet: {fileID: 9174625183254990344, guid: dcdf06d4aee24bb48933cf94950d59cd, type: 3}
   bulletLife: 5
   speed: 5
+  target: {fileID: 0}
   spawnerType: 1
+  gameModePhase: 0
   firingRate: 0.1
