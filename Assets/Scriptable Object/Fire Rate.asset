@@ -17,3 +17,5 @@ MonoBehaviour:
   nameOfCard: Fire rate
   description: You shoot arrows faster
   price: 0
+  nbrOfTimeHasBeenPucharsed: 0
+  canBePurchasedMultiple: 1
