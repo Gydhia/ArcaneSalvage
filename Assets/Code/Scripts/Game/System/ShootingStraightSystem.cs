@@ -8,8 +8,12 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-public partial class ShootingSystem : SystemBase
+public partial class ShootingStraightSystem : SystemBase
 {
+    protected override void OnCreate()
+    {
+        RequireForUpdate<ShootingStraight>();
+    }
     [BurstCompile]
     protected override void OnUpdate()
     {
@@ -28,20 +32,10 @@ public partial class ShootingSystem : SystemBase
         entityCommandBufferStraightJob.Playback(EntityManager);
         entityCommandBufferStraightJob.Dispose();
 
-        EntityCommandBuffer entityCommandBufferSpinningJob = new EntityCommandBuffer(Allocator.TempJob);
-
-        ShootingSpinningJob shootingSpinningJob = new ShootingSpinningJob
-        {
-            EntityCommandBuffer = entityCommandBufferSpinningJob,
-            Time = (float)SystemAPI.Time.ElapsedTime,
-        };
-        shootingSpinningJob.Schedule();
-        Dependency.Complete();
-        entityCommandBufferSpinningJob.Playback(EntityManager);
-        entityCommandBufferSpinningJob.Dispose();
+        
     }
 
-    [BurstCompile, WithAll(typeof(ShootingStraight))]
+    [BurstCompile]
     public partial struct ShootingStraightJob : IJobEntity
     {
         public Vector3 PlayerPosition;
@@ -124,36 +118,6 @@ public partial class ShootingSystem : SystemBase
                         vectorMovementDirection,
                     });
                 }
-            }
-        }
-    }
-    [BurstCompile, WithAll(typeof(ShootingSpinning))]
-    public partial struct ShootingSpinningJob : IJobEntity
-    {
-        public float Time;
-        public EntityCommandBuffer EntityCommandBuffer;
-
-        public void Execute(in LocalTransform localTransform, ref ShootingSpinning shootData)
-        {
-            if (CooldownManager.IsDone(shootData.CooldownID, Time))
-            {
-                Entity entity = EntityCommandBuffer.Instantiate(shootData.ProjectilePrefabEntity);
-                EntityCommandBuffer.AddComponent(entity, new LocalTransform
-                {
-                    Position = localTransform.Position,
-                    Scale = 1f,
-                    Rotation = Quaternion.identity
-                });
-                EntityCommandBuffer.AddComponent(entity, new Moving
-                {
-                    MoveSpeedValue = shootData.BulletMoveSpeed,
-                    Direction = Quaternion.AngleAxis(
-                        shootData.BaseAngle, new Vector3(
-                            localTransform.Forward().x, localTransform.Forward().y, localTransform.Forward().z))
-                    * new Vector3(localTransform.Right().x, localTransform.Right().y, localTransform.Right().z),
-                });
-                shootData.BaseAngle = (shootData.BaseAngle + shootData.AngleIncrease) % 360;
-                CooldownManager.Start(shootData.CooldownID, shootData.FireRate, Time);
             }
         }
     }
