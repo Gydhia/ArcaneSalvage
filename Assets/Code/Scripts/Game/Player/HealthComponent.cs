@@ -5,17 +5,17 @@ using UnityEngine.Events;
 
 public class HealthComponent : MonoBehaviour
 {
-    [SerializeField] private sbyte MaxHealth = 100;
+    [SerializeField] private float MaxHealth = 100;
 
-    private sbyte m_Health;
+    private float m_Health;
 
     public UnityEvent OnDeath;
 
-    public UnityEvent<int> OnDamaged;
+    public UnityEvent<float> OnDamaged;
 
-    public UnityEvent<int> OnHealed;
+    public UnityEvent<float> OnHealed;
 
-    public sbyte Health
+    public float Health
     {
         get => m_Health;
         set
@@ -30,12 +30,12 @@ public class HealthComponent : MonoBehaviour
         if(OnDeath == null)
             OnDeath = new UnityEvent();
         if(OnDamaged == null)
-            OnDamaged = new UnityEvent<int>();
+            OnDamaged = new UnityEvent<float>();
         if (OnHealed == null)
-            OnHealed = new UnityEvent<int>();
+            OnHealed = new UnityEvent<float>();
     }
 
-    private void _CheckForDeath(sbyte iPrevVal, sbyte iCurVal)
+    private void _CheckForDeath(float iPrevVal, float iCurVal)
     {
         if (iPrevVal > 0 && iCurVal <= 0)
         {
@@ -49,23 +49,23 @@ public class HealthComponent : MonoBehaviour
         m_Health = MaxHealth;
     }
 
-    public void TakeDamage(sbyte iDamage)
+    public void TakeDamage(float iDamage)
     {
         if(iDamage <= 0 || m_Health <= 0)
             return;
 
-        Health -= (sbyte)Mathf.Min(iDamage, m_Health);
+        Health -= (float)Mathf.Min(iDamage, m_Health);
         OnDamaged.Invoke(iDamage);
     }
 
-    public void Heal(sbyte iHeal)
+    public void Heal(float iHeal)
     {
         if (iHeal <= 0 || m_Health >= MaxHealth)
         {
             return;
         }
 
-        Health = (sbyte)Mathf.Min(m_Health + iHeal, MaxHealth);
+        Health = (float)Mathf.Min(m_Health + iHeal, MaxHealth);
         OnHealed.Invoke(iHeal);
     }
 }

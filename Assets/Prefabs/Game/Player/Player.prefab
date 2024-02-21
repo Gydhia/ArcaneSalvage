@@ -51,10 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52469ff876fc14e43afa8e7814a46984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentLevel: 1
-  CurrentXP: 0
-  XpRequiredMultiplier: 1.5
-  XpGainMultiplier: 1
+  currentLevel: 1
+  currentXP: 0
+  xpRequiredMultiplier: 1.5
+  xpGainMultiplier: 1
+  requiredXPForNextLevel: 0
 --- !u!114 &5342132834468184735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  _phaseOne: 1
   spawnProjectile:
     m_PersistentCalls:
       m_Calls: []
@@ -132,7 +134,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1145855737
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -1283734341, guid: 753582aed1aaf1f4caec047350b2593b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -144,7 +146,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &7532195292188516164
 Animator:
   serializedVersion: 5
@@ -225,18 +227,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.04629004, y: 0.4968481}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.92, y: 1.92}
+    pivot: {x: 0.5, y: 0.33}
+    oldSize: {x: 3, y: 3}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.642794, y: 0.80194515}
+  m_Size: {x: 1.1172688, y: 1.228365}
   m_EdgeRadius: 0
 --- !u!1 &5584843580203007787
 GameObject:
@@ -311,8 +313,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1145855737
-  m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingLayer: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: -1581573100, guid: 596e4bc66e7079c4e8a6a9dbc14962bb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
