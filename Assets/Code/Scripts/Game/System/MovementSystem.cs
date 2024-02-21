@@ -7,6 +7,11 @@ using UnityEngine;
 
 public partial struct MovementSystem : ISystem
 {
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<Moving>();
+    }
+
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
