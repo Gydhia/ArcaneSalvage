@@ -21,10 +21,18 @@ public partial class PoolingSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        Entities.ForEach((NativeArray<IPoolingEntityComponent> entityPPooling) =>
+        /*
+        Entities.ForEach((IPoolingComponent entityPooling) =>
         {
-            Debug.Log("TES GROSSE COUILLES " + entityPPooling[0].nbrOfEntity);
+            Debug.Log("TES GROSSE COUILLES " + entityPooling._gameObjects[0].nbrOfEntity);
         }).Schedule();
+        */
+
+        foreach (var entityPooling in SystemAPI.Query<RefRO<IPoolingComponent>>())
+        {
+            Debug.Log("TES GROSSE COUILLES " + entityPooling.ValueRO._gameObjects[0].nbrOfEntity);
+        }
+        
     }
 
     /*public void OnCreate(ref SystemState state)
