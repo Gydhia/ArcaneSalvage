@@ -32,6 +32,11 @@ namespace ArcanaSalvage
             SaveGuidList("PlayerInventory", PlayerItemsInventory);
             SaveGuidList("PlayerEquipped", PlayerItemsEquipped);
             
+            SaveGoldsAndEnemies(pData);
+        }
+
+        public void SaveGoldsAndEnemies(PlayerData pData)
+        {
             PlayerPrefs.SetString("Golds", Golds.ToString());
             PlayerPrefs.Save(); 
             
@@ -122,6 +127,7 @@ namespace ArcanaSalvage
         public Action<Equipment.Equipment, EquipmentPreset> OnItemUnequipped;
         public Action<UIEquipmentItem> OnItemSold;
         public Action<int> OnGoldsChanged;
+        public Action<int> OnEnemyKillsChanged;
         
         public void RefreshOverrides()
         {
@@ -158,13 +164,21 @@ namespace ArcanaSalvage
         public void SellItem(UIEquipmentItem item)
         {
             m_playerItemsInventory.Remove(item.EquipPreset);
-
-            m_golds += item.EquipPreset.SellPrice;
             
+            ModifyGolds(item.EquipPreset.SellPrice);
             m_playerSave.Save(this);
             
-            OnGoldsChanged?.Invoke(m_golds);
             OnItemSold?.Invoke(item);
+        }
+        
+
+        public void ModifyGolds(int amount)
+        {
+            m_golds += amount;
+
+            m_playerSave.SaveGoldsAndEnemies(this);
+            
+            OnGoldsChanged?.Invoke(m_golds);
         }
         
         public List<EquipmentPreset> GetPlayerEquipped() => m_playerItemsEquipped.Values.ToList();
