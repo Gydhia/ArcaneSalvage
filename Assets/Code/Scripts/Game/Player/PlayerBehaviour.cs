@@ -5,13 +5,13 @@ using UnityEngine.Events;
 
 namespace Code.Scripts.Game.Player
 {
-    [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(SpriteRenderer))]
+    //[RequireComponent(typeof(Rigidbody), typeof(BoxCollider), typeof(SpriteRenderer))]
     public class PlayerBehaviour : MonoBehaviour
     {
         [SerializeField] private float moveSpeed;
         [SerializeField] private bool _phaseOne = true;
         
-        private Rigidbody2D _rigidbody2D;
+        private Rigidbody _rigidbody;
         private InputManager _inputManager;
 
         private Animator playerAnimator;
@@ -26,7 +26,7 @@ namespace Code.Scripts.Game.Player
             { 
                 transform.GetChild(0).TryGetComponent(out playerWeaponAnimator);
             }
-            TryGetComponent(out _rigidbody2D);
+            TryGetComponent(out _rigidbody);
 
             
             _inputManager = InputManager.Instance;
@@ -37,7 +37,7 @@ namespace Code.Scripts.Game.Player
             //Debug.Log($"Touch : {_inputManager.IsTouching} | CanMove : {_inputManager.CanMove}'{InputManager.Instance.CanMove} | MoveDirection : {_inputManager.MoveDirection.ToString()}");
             if(_phaseOne)
             {
-                if (_rigidbody2D.velocity.magnitude > 0.01f)
+                if (_rigidbody.velocity.magnitude > 0.01f)
                 {
                     playerAnimator.SetBool("Idle",false);
                 }
@@ -50,7 +50,7 @@ namespace Code.Scripts.Game.Player
             if (InputManager.Instance.CanMove)
             {
                 Vector2 moveDir = _inputManager.MoveDirection;
-                _rigidbody2D.velocity = moveDir * moveSpeed;
+                _rigidbody.velocity = moveDir * moveSpeed;
                 if(_phaseOne)
                 {
                     if (moveDir.x > 0)
@@ -68,7 +68,7 @@ namespace Code.Scripts.Game.Player
             }
             else
             {
-                _rigidbody2D.velocity = Vector2.zero;
+                _rigidbody.velocity = Vector2.zero;
             }
         }
         void OnDestroy()
