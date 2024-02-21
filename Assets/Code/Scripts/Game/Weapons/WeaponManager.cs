@@ -6,6 +6,8 @@ public class WeaponManager : MonoBehaviour
 
     [SerializeField] private GameModePhase gameModePhase;
     public Weapon currentWeapon;
+    public GameObject bow;
+    public GameObject wand;
 
     public Transform target;
 
