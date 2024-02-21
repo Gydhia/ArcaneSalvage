@@ -7,11 +7,11 @@ public class Wand : Weapon
     private GameObject spawnedFireBall;
     public GameObject projectile;
 
-    public override void Fire(Transform target)
+    public override void ChoosingFire(Transform target)
     {
         if (projectile)
         {
-            Vector3 directionDiff = new Vector3(0, 1, 0); // Ajustement pour replacer les objets instantiés au bon endroit, et l'angle de visée en fonction
+            Vector3 directionDiff = new Vector3(0, 1, 0); // Ajustement pour replacer les objets instantiÃ©s au bon endroit, et l'angle de visÃ©e en fonction
 
             Vector3 posSpawn = transform.position + directionDiff;
             spawnedFireBall = Instantiate(projectile, posSpawn, Quaternion.identity);
