@@ -49,6 +49,7 @@ namespace ArcanaSalvage.UI
         {
             WeaponManager.Instance.UpgradeWeapon(m_cardInfo);
 
+            UpgradeSystem.Instance.CloseMenu();
 
             int testSum = m_nbrOfPurchase + 1;
             if (!m_canBePurchasedMultiple && testSum >= 1)
