@@ -13,6 +13,7 @@ namespace ArcanaSalvage.UI
         
         [SerializeField] private TextMeshProUGUI m_upradeName;
         [SerializeField] private TextMeshProUGUI m_upradeDescription;
+        [SerializeField] private int Price;
 
         [SerializeField] private Button m_upgradeButton;
 
