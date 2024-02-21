@@ -71,7 +71,6 @@ namespace Code.Scripts.Game.Player
             _inputActions.MovePointer.Touch.canceled += ctx =>
             {
                 _isTouching = false;
-                Debug.Log("test");
             };
         }
         
