@@ -5,6 +5,7 @@ using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 using UnityEngine.SocialPlatforms;
 using Unity.Transforms;
+using Assets.Code.Scripts.Game.Player;
 
 public partial struct PlayerAnimationSystem : ISystem
 {
