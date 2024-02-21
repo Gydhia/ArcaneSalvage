@@ -10,6 +10,16 @@ namespace Code.Scripts.Game.Player
         public float xpGainMultiplier = 1.0f;
         public float requiredXPForNextLevel;
 
+        public UpgradeSystem upgradeSystem;
+
+
+        private void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                GainXP(10.0f, xpGainMultiplier);
+            }
+        }
 
         public void GainXP(float xpAmount, float xpGainMultiplicator)
         {
@@ -35,7 +45,7 @@ namespace Code.Scripts.Game.Player
         private void LevelUp()
         {
             requiredXPForNextLevel = CalculateRequiredXPForNextLevel();
-
+            upgradeSystem.OpenMenu();
             if (currentXP >= requiredXPForNextLevel)
             {
                 currentLevel++;
