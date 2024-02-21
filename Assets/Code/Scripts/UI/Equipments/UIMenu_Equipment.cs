@@ -55,6 +55,8 @@ namespace ArcanaSalvage.UI
                     m_equipped[equipped[i].Slot].SetItem(equipped[i]);
                 }
             }
+            
+            UpdateStatistics();
         }
 
         private void AttachItemToSlot(UIEquipmentItem item)
