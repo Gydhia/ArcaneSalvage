@@ -17,3 +17,5 @@ MonoBehaviour:
   nameOfCard: Damage
   description: Your arrows deal more damage
   price: 0
+  nbrOfTimeHasBeenPucharsed: 0
+  canBePurchasedMultiple: 1

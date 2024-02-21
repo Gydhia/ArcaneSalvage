@@ -20,4 +20,7 @@ public class CardInfo : ScriptableObject
     public string description;
     public int price;
 
+    public int nbrOfTimeHasBeenPucharsed = 0;
+    public bool canBePurchasedMultiple;
+
 }
