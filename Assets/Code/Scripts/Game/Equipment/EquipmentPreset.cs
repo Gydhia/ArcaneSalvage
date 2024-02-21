@@ -21,7 +21,18 @@ namespace ArcanaSalvage.Equipment
     [CreateAssetMenu(fileName = "EquipmentPreset",menuName = "Equipments/EquipmentPreset")]
     public class EquipmentPreset : ScriptableObject
     {
-        public Guid UID;
+        public string UIDPreview;
+        
+        private Guid _uid;
+        public Guid UID
+        {
+            get { return _uid; }
+            set
+            {
+                _uid = value;
+                UIDPreview = _uid.ToString();
+            }
+        }
 
         private void OnValidate()
         {
@@ -31,7 +42,9 @@ namespace ArcanaSalvage.Equipment
                 this.UID = new Guid(hash);
             }
         }
-
+        
+        public Equipment Slot;
+        
         public string Name;
         public Sprite Icon;
     
@@ -42,5 +55,6 @@ namespace ArcanaSalvage.Equipment
         public int MoveSpeedModifier;
 
         public int SellPrice;
+        public int UpgradePrice;
     }
 }

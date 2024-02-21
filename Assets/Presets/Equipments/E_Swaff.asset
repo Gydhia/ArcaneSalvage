@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e576161e19c6c542899aa53a8ef2994, type: 3}
   m_Name: E_Swaff
   m_EditorClassIdentifier: 
+  UIDPreview: 19044f52-19d4-8fa1-6f15-cefa10f21873
+  Slot: 1
   Name: Swaff
   Icon: {fileID: 21300000, guid: 940c577f292dd4198a4a6a5e49486de7, type: 3}
   Description: 
   AttackModifier: 8
   HealthModifier: 10
+  MoveSpeedModifier: 0
   SellPrice: 300
+  UpgradePrice: 50

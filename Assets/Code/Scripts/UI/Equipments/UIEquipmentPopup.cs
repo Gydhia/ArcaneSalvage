@@ -14,36 +14,85 @@ namespace ArcanaSalvage.UI
         
         [SerializeField] private TextMeshProUGUI m_healthModifier;
         [SerializeField] private TextMeshProUGUI m_attackModifier;
+        [SerializeField] private TextMeshProUGUI m_moveSpeedModifier;
         
         [SerializeField] private TextMeshProUGUI m_sellPrice;
+        [SerializeField] private TextMeshProUGUI m_upgradePrice;
 
-        private EquipmentPreset m_currentPreset;
+        [SerializeField] private Button m_sellButton;
+        [SerializeField] private Button m_equipButton;
+        [SerializeField] private Button m_upgradeButton;
+
+        [SerializeField] private TextMeshProUGUI m_equipButtonText;
+        [SerializeField] private TextMeshProUGUI m_upgradeButtonText;
+
+        
+        private UIEquipmentItem m_currentItem;
         
 
-        public void Open(EquipmentPreset preset)
+        public void Open(UIEquipmentItem item)
         {
             gameObject.SetActive(true);
+
+            m_currentItem = item;
             
-            m_itemIcon.sprite = preset.Icon;
-            m_itemName.text = preset.Name;
+            m_itemIcon.sprite = item.EquipPreset.Icon;
+            m_itemName.text = item.EquipPreset.Name;
 
-            m_healthModifier.text = preset.HealthModifier.ToString();
-            m_attackModifier.text = preset.AttackModifier.ToString();
+            m_healthModifier.text = item.EquipPreset.HealthModifier.ToString();
+            m_attackModifier.text = item.EquipPreset.AttackModifier.ToString();
+            m_moveSpeedModifier.text = item.EquipPreset.MoveSpeedModifier.ToString();
 
-            m_sellPrice.text = preset.SellPrice.ToString();
+            m_sellPrice.text = item.EquipPreset.SellPrice.ToString();
+            m_upgradePrice.text = item.EquipPreset.UpgradePrice.ToString();
+
+            bool affordable = PlayerData.CurrentPlayerData.GetGolds() >= item.EquipPreset.UpgradePrice;
+            
+            m_sellButton.interactable = !item.IsEquiped;
+            m_upgradeButton.interactable = affordable;
+            
+            m_upgradeButtonText.color = affordable
+                ? Color.white
+                : Color.red;
+            m_equipButtonText.text = item.IsEquiped ? "Unequip" : "Equip";
         }
 
+        private void Close()
+        {
+            m_currentItem = null;
+            gameObject.SetActive(false);
+        }
+        
+        public void OnClickExit()
+        {
+            Close();
+        }
+        
         public void OnClickSell()
         {
-            
+            PlayerData.CurrentPlayerData.SellItem(m_currentItem);
+            Close();
         }
+        
         public void OnClickUpgrade()
         {
             
         }
+        
         public void OnClickEquip()
         {
-            gameObject.SetActive(false);
+            if (PlayerData.CurrentPlayerData.IsFreeSlot(m_currentItem.EquipPreset.Slot))
+            {
+                PlayerData.CurrentPlayerData.EquipItem(m_currentItem);
+
+                Close();
+            }
+            else
+            {
+                PlayerData.CurrentPlayerData.UnequipItem(m_currentItem);
+                
+                Close();
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Code.Scripts.Helper;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,7 +22,10 @@ namespace ArcanaSalvage.UI
     public class MainMenuManager : Singleton<MainMenuManager>
     {
         [SerializeField] public List<UIMenu> Menus;
-
+        [SerializeField] private TextMeshProUGUI m_goldsText;
+        [SerializeField] private TextMeshProUGUI m_enemyKillsText;
+        
+        
         private UIMenu m_currentMenu;
 
         protected override void Awake()
@@ -30,6 +35,26 @@ namespace ArcanaSalvage.UI
             {
                 menu.gameObject.SetActive(false);
             }
+            
+            ChangeMenu(MenuSection.Play);
+        }
+
+        private void Start()
+        {
+            PlayerData.CurrentPlayerData.OnGoldsChanged += UpdateGolds;
+            
+            UpdateGolds(PlayerData.CurrentPlayerData.GetGolds());
+            UpdateEnemyKills(PlayerData.CurrentPlayerData.GetEnemyKills());
+        }
+
+        private void UpdateGolds(int nb)
+        {
+            m_goldsText.text = nb.ToString();
+        }
+        
+        private void UpdateEnemyKills(int nb)
+        {
+            m_enemyKillsText.text = nb.ToString();
         }
 
         public void ChangeMenu(MenuSection section)
