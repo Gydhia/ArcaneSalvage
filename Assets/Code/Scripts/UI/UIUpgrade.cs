@@ -37,11 +37,9 @@ namespace ArcanaSalvage.UI
             m_price = cardInfo.price;
             m_cardInfo = cardInfo;
 
-
-            UpgradeButton.onClick.AddListener(SendCard);
         }
 
-        private void SendCard()
+        public void SendCard()
         {
             //WeaponManager.Instance.UpgradeWeapon(cardInfo)
         }
