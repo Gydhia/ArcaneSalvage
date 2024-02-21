@@ -1,7 +1,9 @@
 using System;
+using System.Threading.Tasks;
 using Code.Scripts.Helper;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.Serialization;
 
 namespace Code.Scripts.Game.Player
@@ -46,9 +48,11 @@ namespace Code.Scripts.Game.Player
         
         void Start()
         {
-            _inputActions.MovePointer.Touch.started += context =>
+            TouchSimulation.Enable();
+            _inputActions.MovePointer.Touch.started += async context =>
             {
                 _isTouching = true;
+                await InputWait();
                 _initTouchPos = _inputActions.MovePointer.Position.ReadValue<Vector2>();
                 
                 OnTouchStart?.Invoke(_initTouchPos);
@@ -59,6 +63,11 @@ namespace Code.Scripts.Game.Player
                 _isTouching = false; 
                 
             };
+        }
+        
+        private async Task InputWait()
+        {
+            await Task.Delay(10);
         }
         
         void Update()
