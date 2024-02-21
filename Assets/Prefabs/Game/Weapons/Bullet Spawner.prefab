@@ -101,6 +101,6 @@ MonoBehaviour:
   bulletLife: 5
   speed: 5
   target: {fileID: 0}
-  spawnerType: 1
+  spawnerType: 0
   gameModePhase: 0
   firingRate: 0.1
