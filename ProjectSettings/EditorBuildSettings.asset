@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Alexis-Dev.unity
     guid: 7cafef2a295d5364e8506bce6cbe6110
   - enabled: 1
-    path: Assets/Scenes/Alexis-SubDev.unity
+    path: Assets/Scenes/Alexis-Level2.unity
     guid: eb90f74cdfe56de4c9cdefdd9d2ea667
   - enabled: 1
     path: Assets/Level/Scenes/SampleScene.unity
