@@ -1,3 +1,4 @@
+using Code.Scripts.Game.Player;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
