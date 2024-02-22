@@ -6,6 +6,7 @@ using UnityEngine;
 public class AnimationVisualsPrefabsAuthoring : MonoBehaviour
 {
     [SerializeField] private GameObject Player;
+    [SerializeField] private GameObject TorchGoblin;
 
     private class AnimationVisualsPrefabBaker : Baker<AnimationVisualsPrefabsAuthoring>
     {
@@ -15,7 +16,9 @@ public class AnimationVisualsPrefabsAuthoring : MonoBehaviour
 
             AddComponentObject(playerPrefabEntity, new AnimationVisualsPrefabs
             {
-                Player = authoring.Player
+                Player = authoring.Player,
+                TorchGoblin = authoring.TorchGoblin,
+
             });
         }
     }
