@@ -32,11 +32,9 @@ public partial class ShootingStraightSystem : SystemBase
         Dependency.Complete();
         entityCommandBufferStraightJob.Playback(EntityManager);
         entityCommandBufferStraightJob.Dispose();
-
-        
     }
 
-    //[BurstCompile]
+    [BurstCompile]
     public partial struct ShootingStraightJob : IJobEntity
     {
         public Vector3 PlayerPosition;
@@ -44,6 +42,9 @@ public partial class ShootingStraightSystem : SystemBase
         public EntityCommandBuffer EntityCommandBuffer;
         public void Execute(in LocalTransform localTransform, in ShootingStraight shootData)
         {
+            if (shootData.NumberOfShoot <=0)
+                return;
+            
             float x = PlayerPosition.x - localTransform.Position.x;
             float y = PlayerPosition.y - localTransform.Position.y;
             if (CooldownManager.IsDone(shootData.CooldownID, Time) &&
