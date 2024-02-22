@@ -32,8 +32,6 @@ public partial class ShootingStraightSystem : SystemBase
         Dependency.Complete();
         entityCommandBufferStraightJob.Playback(EntityManager);
         entityCommandBufferStraightJob.Dispose();
-
-        
     }
 
     //[BurstCompile]

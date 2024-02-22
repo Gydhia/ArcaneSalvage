@@ -56,11 +56,13 @@ namespace ArcanaSalvage.UI
         public void OnPauseClicked()
         {
             m_pauseSection.gameObject.SetActive(true);
+            Time.timeScale = 0f;
         }
 
         public void OnResumeClicked()
         {
             m_pauseSection.gameObject.SetActive(false);
+            Time.timeScale = 1f;
         }
 
         public void OnReturnToMainMenuClicked()
