@@ -50,11 +50,13 @@ namespace Assets.Code.Scripts.Game.Player
             {
                 inputVariables = inputVar.ValueRO;
             }
-     
-            SystemAPI.TryGetSingletonEntity<InputVariables>(out var playerEntity);
-            var localToWorld = SystemAPI.GetComponent<LocalToWorld>(playerEntity);
+
+            if (SystemAPI.TryGetSingletonEntity<InputVariables>(out var playerEntity))
+            {
+                var localToWorld = SystemAPI.GetComponent<LocalToWorld>(playerEntity);
             
-            _inputComponent.PlayerPosition = localToWorld.Position;
+                _inputComponent.PlayerPosition = localToWorld.Position;
+            }
             
             if (_inputComponent.Touch)
             {

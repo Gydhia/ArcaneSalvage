@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,9 +18,7 @@ namespace ArcanaSalvage.UI
 
         [SerializeField] private Button m_upgradeButton;
 
-
-
-
+        
         public Button UpgradeButton => m_upgradeButton;
 
 
@@ -27,7 +26,7 @@ namespace ArcanaSalvage.UI
         private bool m_canBePurchasedMultiple;
         private int m_nbrOfPurchase;
 
-        public void Init(CardInfo cardInfo)
+        public void Init(CardInfo cardInfo, Action selectCallback)
         {
             if (cardInfo == null)
             {
@@ -41,14 +40,13 @@ namespace ArcanaSalvage.UI
             m_price = cardInfo.price;
             m_cardInfo = cardInfo;
             m_canBePurchasedMultiple = cardInfo.canBePurchasedMultiple;
+            
+            m_upgradeButton.onClick.AddListener(() => selectCallback?.Invoke());
         }
-
-
-
+        
         public void SendCard()
         {
             WeaponManager.Instance.UpgradeWeapon(m_cardInfo);
-
 
             int testSum = m_nbrOfPurchase + 1;
             if (!m_canBePurchasedMultiple && testSum >= 1)

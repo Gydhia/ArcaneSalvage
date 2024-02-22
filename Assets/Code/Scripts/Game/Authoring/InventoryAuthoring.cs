@@ -24,5 +24,7 @@ namespace Code.Scripts.Game.Authoring
     public struct Inventory : IComponentData
     {
         public int keyNumber;
+        public bool PlayerDead;
+        public int KillsCounter;
     }
 }

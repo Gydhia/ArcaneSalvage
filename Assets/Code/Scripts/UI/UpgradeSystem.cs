@@ -14,21 +14,36 @@ public class UpgradeSystem : MonoBehaviour
 
     public const int REFRESH_COST = 50;
     
-    public CardManager cardManager;
     public List<CardInfo> listOfCard;
     public int nbrOfCardToDisplay = 3;
     public Transform cardUIParent;
 
     public GameObject visual;
+    
+    public GameObject cardUIPrefab; 
+    public List<CardInfo> cardInfos = new List<CardInfo>();
+    
+    private void DisplayCardUIs()
+    {
+        foreach (CardInfo cardInfo in cardInfos)
+        {
+            GameObject cardUI = Instantiate(cardUIPrefab, cardUIParent);
+
+            UIUpgrade uiUpgrade = cardUI.GetComponent<UIUpgrade>();
+
+            uiUpgrade.Init(cardInfo, CloseMenu);
+        }
+    }
 
     private void Awake()
     {
         visual.SetActive(false);
-        listOfCard = cardManager.cardInfos;
+        listOfCard = cardInfos;
     }
 
     private void Start()
     {
+        DisplayCardUIs();
         ActualizeRefreshState();
     }
 
@@ -116,26 +131,16 @@ public class UpgradeSystem : MonoBehaviour
 
     public void OpenMenu()
     {
+        Time.timeScale = 0f;
+        
         visual.SetActive(true);
         DisplayCardMenu();
     }
 
     public void CloseMenu()
     {
+        Time.timeScale = 1f;
+
         visual.SetActive(false);
-    }
-
-
-
-    private void ShuffleCopy<T>(List<T> listToShuffle)
-    {
-        System.Random rng = new System.Random();
-        int n = listToShuffle.Count;
-        while(n > 1)
-        {
-            n--;
-            int k = rng.Next(n + 1);
-            (listToShuffle[k], listToShuffle[n]) = (listToShuffle[n], listToShuffle[k]);
-        }
     }
 }

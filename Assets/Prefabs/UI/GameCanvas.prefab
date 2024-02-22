@@ -1927,7 +1927,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8684356423905476032}
   - component: {fileID: 4547025048824756356}
-  - component: {fileID: 898050430641010153}
   m_Layer: 5
   m_Name: UpgradeSection
   m_TagString: Untagged
@@ -1969,25 +1968,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_refreshCost: {fileID: 6503355640467786951}
   m_refreshButton: {fileID: 3521495405638716302}
-  cardManager: {fileID: 898050430641010153}
   listOfCard: []
   nbrOfCardToDisplay: 3
   cardUIParent: {fileID: 63820871890150819}
   visual: {fileID: 8325971657029455517}
---- !u!114 &898050430641010153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2565923454973025435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b38a93b0504ebae4dace0d33c248832c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   cardUIPrefab: {fileID: 1860281206406074657, guid: 3c62591d76f0ec24c90e7c0c3c095dda, type: 3}
-  cardUIParent: {fileID: 63820871890150819}
   cardInfos:
   - {fileID: 11400000, guid: 6aaa374fafd78574cbe34bf83aa8292d, type: 2}
   - {fileID: 11400000, guid: 8310ad56bb98040459d58c3cd66c3273, type: 2}
@@ -3660,6 +3645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DontDestroyOnLoad: 0
+  LevelSystem: {fileID: 0}
   m_goldText: {fileID: 9076827578869856067}
   m_enemyKillsText: {fileID: 3797139009222109635}
   m_timer: {fileID: 3801086051007578237}

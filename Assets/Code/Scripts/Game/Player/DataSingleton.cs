@@ -11,8 +11,5 @@ namespace Assets.Code.Scripts.Game.Player
         public float3 PlayerPosition;
         public bool Touch;
         public bool CanMove;
-
-        public bool PlayerDead;
-        public int KillsCounter;
     }
 }

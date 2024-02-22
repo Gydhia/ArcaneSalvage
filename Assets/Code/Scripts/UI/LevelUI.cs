@@ -13,7 +13,6 @@ public class LevelUI : MonoBehaviour
     private void Start()
     {
         xpBarImage.value = 0;
-        
     }
 
     void Update()

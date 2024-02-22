@@ -1,15 +1,20 @@
 using System;
 using System.Collections;
 using Assets.Code.Scripts.Game.Player;
+using Code.Scripts.Game.Authoring;
+using Code.Scripts.Game.Player;
 using Code.Scripts.Helper;
 using TMPro;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ArcanaSalvage.UI
 {
     public class GameUIManager : Singleton<GameUIManager>
     {
+        public LevelSystem LevelSystem;
+        
         [SerializeField] private TextMeshProUGUI m_goldText;
         [SerializeField] private TextMeshProUGUI m_enemyKillsText;
 
@@ -23,13 +28,12 @@ namespace ArcanaSalvage.UI
 
         [SerializeField] private TextMeshProUGUI m_resultText;        
         [SerializeField] private UnityEngine.UI.Image m_resultBanner;
-
-
+        
         private float startTime;
         private bool m_playing = true;
         
         private EntityManager m_entityManager;
-        private Entity m_dataEntity;
+        private Entity m_invEntity;
         
         private IEnumerator Start()
         {
@@ -37,7 +41,7 @@ namespace ArcanaSalvage.UI
 
             yield return new WaitForSeconds(0.2f);
 
-            m_dataEntity = m_entityManager.CreateEntityQuery(typeof(DataSingleton)).GetSingletonEntity();
+            m_invEntity = m_entityManager.CreateEntityQuery(typeof(Inventory)).GetSingletonEntity();
             
             PlayerData.CurrentPlayerData.OnGoldsChanged += UpdateGolds;
             PlayerData.CurrentPlayerData.OnEnemyKillsChanged += UpdateEnemyKills;
@@ -56,13 +60,21 @@ namespace ArcanaSalvage.UI
         {
             if (!m_playing) return;
 
-            if (m_entityManager.Exists(m_dataEntity))
+            if (m_entityManager.Exists(m_invEntity))
             {
-                var dataSingleton = m_entityManager.GetComponentData<DataSingleton>(m_dataEntity);
+                var invSingleton = m_entityManager.GetComponentData<Inventory>(m_invEntity);
                 
-                if (dataSingleton.PlayerDead )
+                if (invSingleton.PlayerDead )
                 {
                     OnGameEnded(false);
+                }
+
+                if (LevelSystem.LastKillCounter != invSingleton.KillsCounter)
+                {
+                    int delta = invSingleton.KillsCounter - LevelSystem.LastKillCounter;
+                    LevelSystem.LastKillCounter = invSingleton.KillsCounter;
+                    
+                    LevelSystem.GainXP(delta);
                 }
             }
             
