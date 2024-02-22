@@ -66,19 +66,7 @@ public partial struct TriggerBulletSystem : ISystem
             }
         }
 
-        private (bool,Entity) FindEntityWithComponent<T>(Entity entityA, Entity entityB, ComponentLookup<T> group) where T : unmanaged, IComponentData
-        {
-            if (group.HasComponent(entityA))
-            {
-                return (true, entityA);
-            }
-            if (group.HasComponent(entityB))
-            {
-                return (true, entityB);
-            }
-            return (false, new Entity());
-        }
-
+        
         private void DamageEntity(Entity character, Entity bullet)
         {
             //Reduce Health Of Hit Body
@@ -93,5 +81,17 @@ public partial struct TriggerBulletSystem : ISystem
             bulletHealthComponent.CurrentHealth --;
             HealthGroup[bullet] = bulletHealthComponent;
         }
+    }
+    public static (bool,Entity) FindEntityWithComponent<T>(Entity entityA, Entity entityB, ComponentLookup<T> group) where T : unmanaged, IComponentData
+    {
+        if (group.HasComponent(entityA))
+        {
+            return (true, entityA);
+        }
+        if (group.HasComponent(entityB))
+        {
+            return (true, entityB);
+        }
+        return (false, new Entity());
     }
 }

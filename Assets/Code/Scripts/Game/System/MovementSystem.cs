@@ -15,7 +15,7 @@ public partial struct MovementSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<InputComponent>();
+        state.RequireForUpdate<DataSingleton>();
         state.RequireForUpdate<Moving>();
     }
 
@@ -24,7 +24,7 @@ public partial struct MovementSystem : ISystem
     {
         SetDestinationJob setDestinationJob = new SetDestinationJob
         {
-            inputComponent = SystemAPI.GetSingleton<InputComponent>(),
+            inputComponent = SystemAPI.GetSingleton<DataSingleton>(),
         };
         setDestinationJob.Schedule();
         
@@ -38,7 +38,7 @@ public partial struct MovementSystem : ISystem
         
         MovingPlayerJob movingPlayerJob = new MovingPlayerJob
         {
-            inputComponent = SystemAPI.GetSingleton<InputComponent>()
+            inputComponent = SystemAPI.GetSingleton<DataSingleton>()
         };
         movingPlayerJob.Schedule();
         
@@ -58,7 +58,7 @@ public partial struct MovementSystem : ISystem
     [BurstCompile, WithAll(typeof(Moving), typeof(AgentBody), typeof(InputVariables))]
     public partial struct MovingPlayerJob : IJobEntity
     {
-        public InputComponent inputComponent;
+        public DataSingleton inputComponent;
         public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {
             if (inputComponent.CanMove)
@@ -79,7 +79,7 @@ public partial struct MovementSystem : ISystem
     [BurstCompile, WithAll(typeof(AgentBody), typeof(Moving), typeof(Enemy))]
     public partial struct SetDestinationJob : IJobEntity
     {
-        public InputComponent inputComponent;
+        public DataSingleton inputComponent;
 
         public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {
