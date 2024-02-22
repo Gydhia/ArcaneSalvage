@@ -10,11 +10,12 @@ namespace Assets.Code.Scripts.Game.Player
     public partial class InputSystem : SystemBase
     {
         private InputActions _inputActions;
-        private DataSingleton _dataSingleton;
+
+        private DataSingleton _inputComponent;
         
         protected override void OnCreate()
         {
-            if (!SystemAPI.TryGetSingleton<DataSingleton>(out DataSingleton inputComponentSingleton))
+            if (!SystemAPI.TryGetSingleton<DataSingleton>(out DataSingleton _))
             {
                 EntityManager.CreateEntity(typeof(DataSingleton));
             }
@@ -22,7 +23,7 @@ namespace Assets.Code.Scripts.Game.Player
             _inputActions = new InputActions();
             _inputActions.Enable();
 
-            _dataSingleton = new DataSingleton();
+            _inputComponent = new DataSingleton();
             
             _inputActions.MovePointer.Touch.started += async context =>
             {

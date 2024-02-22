@@ -29,7 +29,6 @@ public partial struct MovementSystem : ISystem
         };
         setDestinationJob.Schedule();
         
-        Debug.Log("Moving enemies sheduled");
         
         MovingBulletJob movingBulletJob = new MovingBulletJob
         {
@@ -39,7 +38,7 @@ public partial struct MovementSystem : ISystem
         
         MovingPlayerJob movingPlayerJob = new MovingPlayerJob
         {
-            dataSingleton = SystemAPI.GetSingleton<DataSingleton>()
+            inputComponent = SystemAPI.GetSingleton<DataSingleton>()
         };
         movingPlayerJob.Schedule();
         
@@ -59,7 +58,8 @@ public partial struct MovementSystem : ISystem
     [BurstCompile, WithAll(typeof(Moving), typeof(AgentBody), typeof(InputVariables))]
     public partial struct MovingPlayerJob : IJobEntity
     {
-        public DataSingleton dataSingleton;
+        public DataSingleton inputComponent;
+
         public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {
             if (dataSingleton.CanMove)

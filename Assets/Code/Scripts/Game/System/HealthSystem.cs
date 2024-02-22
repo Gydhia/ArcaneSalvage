@@ -31,9 +31,7 @@ public partial struct HealthSystem : ISystem
             EntityCommandBuffer = entityCommandBufferLifetimeManager,
         };
         lifetimeManagerJob.Schedule();
-        state.Dependency.Complete();
-        entityCommandBufferLifetimeManager.Playback(state.EntityManager);
-        entityCommandBufferLifetimeManager.Dispose();
+
 
         
         
@@ -49,22 +47,19 @@ public partial struct HealthSystem : ISystem
             DataSingleton = dataSingletonNative
         };
         healthManagerJob.Schedule();
+
+        
+
+        PlayerDeathManager playerDeathManager = new PlayerDeathManager();
+        playerDeathManager.Schedule();
+
         state.Dependency.Complete();
+
+        entityCommandBufferLifetimeManager.Playback(state.EntityManager);
+        entityCommandBufferLifetimeManager.Dispose();
         entityCommandBufferHealthManager.Playback(state.EntityManager);
         entityCommandBufferHealthManager.Dispose();
-        
-        
-        EntityCommandBuffer entityCommandBufferPlayerHealthManager = new EntityCommandBuffer(Allocator.TempJob);
-        
-        PlayerDeathManager playerDeathManager = new PlayerDeathManager
-        {
-            EntityCommandBuffer = entityCommandBufferPlayerHealthManager,
-            DataSingleton = dataSingletonNative,
-        };
-        playerDeathManager.Schedule();
-        state.Dependency.Complete();
-        entityCommandBufferPlayerHealthManager.Playback(state.EntityManager);
-        entityCommandBufferPlayerHealthManager.Dispose();
+
 
         SystemAPI.SetSingleton(dataSingletonNative[0]);
 

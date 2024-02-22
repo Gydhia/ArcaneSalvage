@@ -23,6 +23,7 @@ public class WeaponManager : MonoBehaviour
 
     private EntityManager m_entityManager;
     private Entity m_playerEntity;
+    [SerializeField]private ShootingStraight m_shootingStraight;
 
     public ShootingStraight ShootingStats;
 
@@ -47,6 +48,7 @@ public class WeaponManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         m_playerEntity = m_entityManager.CreateEntityQuery(typeof(InputVariables)).GetSingletonEntity();
+        m_shootingStraight = m_entityManager.GetComponentData<ShootingStraight>(m_playerEntity);
         CalculateOverrides();
     }
 
