@@ -157,6 +157,10 @@ MonoBehaviour:
   _gameObjectItems:
   - _entity: {fileID: 4894161617596571454, guid: 98f10fc97e929b249a705ad532262e1f, type: 3}
     _nbrOfGameObject: 5
+    _poolingType: 0
+  - _entity: {fileID: 4894161617596571454, guid: 92796b86467bf2e44a03c1975c4387de, type: 3}
+    _nbrOfGameObject: 6
+    _poolingType: 2
 --- !u!4 &1361814918
 Transform:
   m_ObjectHideFlags: 0
