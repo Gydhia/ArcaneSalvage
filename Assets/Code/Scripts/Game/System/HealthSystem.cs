@@ -1,8 +1,11 @@
 using System;
+using ArcanaSalvage.UI;
 using Assets.Code.Scripts.Game.Player;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
+using Unity.Physics;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -10,16 +13,18 @@ using Random = UnityEngine.Random;
 
 public partial struct HealthSystem : ISystem
 {
+    
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<Health>();
-        state.RequireForUpdate<DataSingleton>();
     }
 
     public void OnUpdate(ref SystemState state)
     {
+        Debug.Log("BEGAN HEALTH SYSTEM");
+        
         EntityCommandBuffer entityCommandBufferLifetimeManager = new EntityCommandBuffer(Allocator.TempJob);
-
+        
         LifetimeManagerJob lifetimeManagerJob = new LifetimeManagerJob
         {
             DeltaTime = SystemAPI.Time.DeltaTime,
@@ -30,29 +35,41 @@ public partial struct HealthSystem : ISystem
         entityCommandBufferLifetimeManager.Playback(state.EntityManager);
         entityCommandBufferLifetimeManager.Dispose();
 
+        
+        
+        NativeArray<DataSingleton> dataSingletonNative = new NativeArray<DataSingleton>(1, Allocator.TempJob);
+        SystemAPI.TryGetSingleton(out DataSingleton dataSingleton);
+        
+        dataSingletonNative[0] = dataSingleton;
+        
+        
         EntityCommandBuffer entityCommandBufferHealthManager = new EntityCommandBuffer(Allocator.TempJob);
         HealthManagerJob healthManagerJob = new HealthManagerJob
         {
             EntityCommandBuffer = entityCommandBufferHealthManager,
+            DataSingleton = dataSingletonNative
         };
         healthManagerJob.Schedule();
         state.Dependency.Complete();
         entityCommandBufferHealthManager.Playback(state.EntityManager);
         entityCommandBufferHealthManager.Dispose();
-
+        
+        
+        EntityCommandBuffer entityCommandBufferPlayerHealthManager = new EntityCommandBuffer(Allocator.TempJob);
+        
         PlayerDeathManager playerDeathManager = new PlayerDeathManager
         {
-            DataSingleton = SystemAPI.GetSingleton<DataSingleton>()
+            EntityCommandBuffer = entityCommandBufferPlayerHealthManager,
+            DataSingleton = dataSingletonNative,
         };
         playerDeathManager.Schedule();
+        state.Dependency.Complete();
+        entityCommandBufferPlayerHealthManager.Playback(state.EntityManager);
+        entityCommandBufferPlayerHealthManager.Dispose();
 
-        EnemyDeathManager enemyDeathManager = new EnemyDeathManager
-        {
-            DataSingleton = SystemAPI.GetSingleton<DataSingleton>()
-        };
-        enemyDeathManager.Schedule();
+        SystemAPI.SetSingleton(dataSingletonNative[0]);
     }
-
+    
     [BurstCompile]
     public partial struct LifetimeManagerJob : IJobEntity
     {
@@ -76,46 +93,48 @@ public partial struct HealthSystem : ISystem
     public partial struct HealthManagerJob : IJobEntity
     {
         public EntityCommandBuffer EntityCommandBuffer;
+        public NativeArray<DataSingleton> DataSingleton;
+
+        private void Execute(Entity entity ,in Health health) 
+        {
+            if (health.CurrentHealth > 0.0f)
+                return;
+            
+            DataSingleton dataSingleton = DataSingleton[0];
+            
+            if (health.DieOnDeath)
+            {
+                dataSingleton.KillsCounter++;
+                EntityCommandBuffer.DestroyEntity(entity);
+            }
+            //Do something object pooling idk;
+            
+            DataSingleton[0] = dataSingleton;
+        }
+    }
+    
+    [BurstCompile, WithAll(typeof(InputVariables), typeof(Health))]
+    public partial struct PlayerDeathManager : IJobEntity
+    {
+        public EntityCommandBuffer EntityCommandBuffer;
+        public NativeArray<DataSingleton> DataSingleton;
 
         private void Execute(Entity entity ,in Health health) 
         {
             if (health.CurrentHealth > 0.0f)
                 return;
 
+            DataSingleton dataSingleton = DataSingleton[0];
+
+            dataSingleton.PlayerDead = true;
+
             if (health.DieOnDeath)
             {
                 EntityCommandBuffer.DestroyEntity(entity);
-                return;
             }
             //Do something object pooling idk;
-                
-        }
-    }
-    
-    [BurstCompile, WithAll(typeof(Health),typeof(InputVariables))]
-    public partial struct PlayerDeathManager : IJobEntity
-    {
-        public DataSingleton DataSingleton;
-        
-        public void Execute(in Health health)
-        {
-            if (health.CurrentHealth > 0.0f)
-                return;
-            Debug.Log("Player is Dead");
-            DataSingleton.PlayerDead = true;
-        }
-    }
-    [BurstCompile, WithAll(typeof(Health),typeof(Enemy))]
-    public partial struct EnemyDeathManager : IJobEntity
-    {
-        public DataSingleton DataSingleton;
 
-        public void Execute(in Health health)
-        {
-            if (health.CurrentHealth > 0.0f)
-                return;
-            Debug.Log("Enemy is Dead");
-            DataSingleton.KillsCounter++;
+            DataSingleton[0] = dataSingleton;
         }
     }
 }

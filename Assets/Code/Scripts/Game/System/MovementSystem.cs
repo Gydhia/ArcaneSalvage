@@ -80,7 +80,7 @@ public partial struct MovementSystem : ISystem
     [BurstCompile, WithAll(typeof(AgentBody), typeof(Moving), typeof(Enemy))]
     public partial struct SetDestinationJob : IJobEntity
     {
-        public InputComponent inputComponent;
+        public DataSingleton inputComponent;
 
         public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {

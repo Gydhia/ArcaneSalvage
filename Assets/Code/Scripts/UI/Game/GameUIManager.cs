@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Assets.Code.Scripts.Game.Player;
 using Code.Scripts.Helper;
 using TMPro;
 using Unity.Entities;
@@ -19,17 +21,26 @@ namespace ArcanaSalvage.UI
         [SerializeField] private TextMeshProUGUI m_goldsResult;
         [SerializeField] private TextMeshProUGUI m_killsResults;
 
-        [SerializeField] private TextMeshProUGUI m_resultText;
+        [SerializeField] private TextMeshProUGUI m_resultText;        
+        [SerializeField] private UnityEngine.UI.Image m_resultBanner;
+
 
         private float startTime;
-
-        private void Start()
+        private bool m_playing = true;
+        
+        private EntityManager m_entityManager;
+        private Entity m_dataEntity;
+        
+        private IEnumerator Start()
         {
+            m_entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+            yield return new WaitForSeconds(0.2f);
+
+            m_dataEntity = m_entityManager.CreateEntityQuery(typeof(DataSingleton)).GetSingletonEntity();
+            
             PlayerData.CurrentPlayerData.OnGoldsChanged += UpdateGolds;
             PlayerData.CurrentPlayerData.OnEnemyKillsChanged += UpdateEnemyKills;
-
-            // HealthSystem.OnPlayerDeath += OnPlayerDeath;
-            // HealthSystem.OnEnemyDeath += OnEnemyDeath;
             
             UpdateGolds(PlayerData.CurrentPlayerData.GetGolds());
             UpdateEnemyKills(PlayerData.CurrentPlayerData.GetEnemyKills());
@@ -39,22 +50,19 @@ namespace ArcanaSalvage.UI
 
             startTime = Time.time;
         }
-
-        private void OnPlayerDeath(object sender, EventArgs ae)
-        {
-            OnGameEnded(false);
-            Debug.Log("PLAYER IS DIED FROM EVENT");
-        }
-
-        private void OnEnemyDeath(object sender, EventArgs ae)
-        {
-            PlayerData.CurrentPlayerData.ModifyEnemyKills(1);
-            Debug.Log("ENEMY IS DIED FROM EVENT");
-
-        }
+        
         
         public void Update()
         {
+            if (!m_playing) return;
+            
+            var dataSingleton = m_entityManager.GetComponentData<DataSingleton>(m_dataEntity);
+
+            if (dataSingleton.PlayerDead )
+            {
+                OnGameEnded(false);
+            }
+            
             TimeSpan time = TimeSpan.FromSeconds(Time.time - startTime);
 
             m_timer.text = time.ToString(@"mm\:ss");
@@ -89,13 +97,16 @@ namespace ArcanaSalvage.UI
 
         public void OnGameEnded(bool result)
         {
+            m_playing = false;
+            
             Time.timeScale = 0f;
             
             m_gameResultsSection.gameObject.SetActive(true);
             
             m_resultText.text = result ? "VICTORY" : "DEFEAT";
-            m_resultText.color = result ? Color.green : Color.red;
-
+            m_resultBanner.color = m_resultText.color = result ? Color.green : Color.red;
+            
+            
             m_goldsResult.text = PlayerData.CurrentPlayerData.GetGolds().ToString();
             m_killsResults.text = PlayerData.CurrentPlayerData.GetEnemyKills().ToString();
         }

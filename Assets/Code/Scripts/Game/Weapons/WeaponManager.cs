@@ -71,7 +71,6 @@ public class WeaponManager : MonoBehaviour
         shootingStats.NumberOfShoot = currentWeapon.NumberOfShoots + Upgrades.Where(u => u.upgradeType == UpgradeType.MoreArrow).Sum(u => u.modifier);
         bulletStats.Damage = currentWeapon.damage;
         shootingStats.ProjectilePrefabEntity = m_entityManager.GetComponentData<ShootingStraight>(m_playerEntity).ProjectilePrefabEntity;
-        
 
         ShootingStats = shootingStats;
         m_entityManager.SetComponentData<ShootingStraight>(m_playerEntity, ShootingStats);
