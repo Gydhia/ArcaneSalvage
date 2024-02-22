@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
+public enum OwnerType
+{
+    Player,
+    Enemy
+}
+
 public class BulletAuthoring : MonoBehaviour
 {
     public float Damage;
+    public OwnerType OwnerType;
     private void Start()
     {
         Debug.Log("MonoBehaviour Bullet start");
@@ -18,6 +25,7 @@ public class BulletAuthoring : MonoBehaviour
             AddComponent(entity, new Bullet
             {
                 Damage = authoring.Damage,
+                OwnerType = authoring.OwnerType,
             });
         }
     }
@@ -26,4 +34,5 @@ public class BulletAuthoring : MonoBehaviour
 public struct Bullet : IComponentData
 {
     public float Damage;
+    public OwnerType OwnerType;
 }
