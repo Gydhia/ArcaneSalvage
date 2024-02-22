@@ -22,13 +22,12 @@ public partial struct MovementSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        MovingEnemyJob movingEnemyJob = new MovingEnemyJob
-        {
-            DeltaTime = SystemAPI.Time.DeltaTime,
-            PlayerPosition = SystemAPI.GetSingleton<InputComponent>().PlayerPosition,
-        };
-        movingEnemyJob.Schedule();
-        
+        // MovingEnemyJob movingEnemyJob = new MovingEnemyJob
+        // {
+        //     DeltaTime = SystemAPI.Time.DeltaTime,
+        //     PlayerPosition = SystemAPI.GetSingleton<InputComponent>().PlayerPosition,
+        // };
+        // movingEnemyJob.Schedule();
         
         SetDestinationJob setDestinationJob = new SetDestinationJob()
         {
@@ -44,11 +43,8 @@ public partial struct MovementSystem : ISystem
         
         MovingPlayerJob movingPlayerJob = new MovingPlayerJob
         {
-
-            InputComponent = SystemAPI.GetSingleton<InputComponent>()
-            
+            inputComponent = SystemAPI.GetSingleton<InputComponent>()
         };
-
         movingPlayerJob.Schedule();
 
     }
@@ -80,34 +76,40 @@ public partial struct MovementSystem : ISystem
         }
     }
 
-    [WithAll(typeof(Moving), typeof(InputVariables))]
+    [BurstCompile, WithAll(typeof(Moving), typeof(AgentBody), typeof(InputVariables))]
     public partial struct MovingPlayerJob : IJobEntity
     {
-        public InputComponent InputComponent; 
-        public void Execute(ref PhysicsVelocity physicsVelocity, in Moving moveData)
+        public InputComponent inputComponent;
+        public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {
-            if (InputComponent.CanMove)
+            if (inputComponent.CanMove)
             {
-                Vector2 moveDir = InputComponent.MoveDirection;
-                Vector2 direction = moveDir * moveData.MoveSpeedValue;
-                physicsVelocity.Linear = new float3(direction.x, direction.y, 0);
+                Vector2 moveDir = inputComponent.MoveDirection;
+                Vector3 direction = moveDir * moveData.MoveSpeedValue;
+                Vector3 playerDestination= inputComponent.PlayerPosition + (float3)direction;
+                agentBody.SetDestination(playerDestination);
+                moveData.Direction = agentBody.Velocity;
             }
             else
             {
-                physicsVelocity.Linear = float3.zero;
+                agentBody.IsStopped = true;
             }
         }
     }
     
-    [BurstCompile, WithAll(typeof(AgentBody))]
+    [BurstCompile, WithAll(typeof(AgentBody), typeof(Moving))]
     public partial struct SetDestinationJob : IJobEntity
     {
         public float3 Destination;
 
-        public void Execute(ref AgentBody body)
+        public void Execute(ref AgentBody body, ref Moving moving)
         {
             body.Destination = Destination;
             body.IsStopped = false;
+
+            moving.Direction = body.Velocity;
         }
     }
+    
+    
 }

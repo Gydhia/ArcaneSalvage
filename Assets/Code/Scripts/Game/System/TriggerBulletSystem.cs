@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Code.Scripts.Game.Player;
 using Unity.Assertions;
 using Unity.Collections;
 using Unity.Entities;
@@ -22,8 +23,9 @@ public partial struct TriggerBulletSystem : ISystem
         state.Dependency = new BulletTriggerJob
         {
             BulletGroup = SystemAPI.GetComponentLookup<Bullet>(),
-            PhysicsVelocityGroup = SystemAPI.GetComponentLookup<PhysicsVelocity>(),
+            PlayerGroup = SystemAPI.GetComponentLookup<InputVariables>(),
             HealthGroup = SystemAPI.GetComponentLookup<Health>(),
+            EnemyGroup = SystemAPI.GetComponentLookup<Enemy>(),
         }
         .Schedule(SystemAPI.GetSingleton<SimulationSingleton>(), state.Dependency);
     }
@@ -31,7 +33,8 @@ public partial struct TriggerBulletSystem : ISystem
     public partial struct BulletTriggerJob : ITriggerEventsJob
     {
         [ReadOnly] public ComponentLookup<Bullet> BulletGroup;
-        [ReadOnly] public ComponentLookup<PhysicsVelocity> PhysicsVelocityGroup;
+        [ReadOnly] public ComponentLookup<InputVariables> PlayerGroup;
+        [ReadOnly] public ComponentLookup<Enemy> EnemyGroup;
         public ComponentLookup<Health> HealthGroup;
         public void Execute(TriggerEvent triggerEvent)
         {
@@ -47,33 +50,47 @@ public partial struct TriggerBulletSystem : ISystem
                 Debug.Log("Bullet overlapping");
                 return;
             }
-                
 
-            bool isBodyADynamic = PhysicsVelocityGroup.HasComponent(entityA);
-            bool isBodyBDynamic = PhysicsVelocityGroup.HasComponent(entityB);
-
-            //Ignoring overlapping static bodies
-            if ((isBodyATrigger && !isBodyBDynamic) ||
-                (isBodyBTrigger && !isBodyADynamic))
+            (bool, Entity) playerCheck = FindEntityWithComponent(entityA,entityB, PlayerGroup);
+            (bool, Entity) bulletCheck = FindEntityWithComponent(entityA,entityB, BulletGroup);
+            (bool, Entity) enemyCheck = FindEntityWithComponent(entityA,entityB, EnemyGroup);
+            
+            if (playerCheck.Item1 && bulletCheck.Item1 && !enemyCheck.Item1)
             {
-                Debug.Log("Overlapping static bodies");
-                return;
+                DamageEntity(playerCheck.Item2, bulletCheck.Item2);
             }
-                
 
-            var triggerEntity = isBodyADynamic ? entityA : entityB;
-            var dynamicEntity = isBodyADynamic ? entityB : entityA;
+            if (!playerCheck.Item1 && bulletCheck.Item1 && enemyCheck.Item1)
+            {
+                DamageEntity(enemyCheck.Item2, bulletCheck.Item2);
+            }
+        }
 
+        private (bool,Entity) FindEntityWithComponent<T>(Entity entityA, Entity entityB, ComponentLookup<T> group) where T : unmanaged, IComponentData
+        {
+            if (group.HasComponent(entityA))
+            {
+                return (true, entityA);
+            }
+            if (group.HasComponent(entityB))
+            {
+                return (true, entityB);
+            }
+            return (false, new Entity());
+        }
+
+        private void DamageEntity(Entity character, Entity bullet)
+        {
             //Reduce Health Of Hit Body
             Debug.Log("Survived! We are going to lower health");
-            var dynamicHealthComponent = HealthGroup[dynamicEntity];
-            //dynamicHealthComponent.CurrentHealth -= BulletGroup[triggerEntity].Damage;
-            //HealthGroup[dynamicEntity] = dynamicHealthComponent;
+            var playerHealthComponent = HealthGroup[character];
+            playerHealthComponent.CurrentHealth -= BulletGroup[bullet].Damage;
+            HealthGroup[character] = playerHealthComponent;
             
             //Reduce Health Of Bullet
-            var triggerHealthComponent = HealthGroup[triggerEntity];
-            triggerHealthComponent.CurrentHealth -= BulletGroup[dynamicEntity].Damage;
-            HealthGroup[triggerEntity] = triggerHealthComponent;
+            var bulletHealthComponent = HealthGroup[bullet];
+            bulletHealthComponent.CurrentHealth --;
+            HealthGroup[bullet] = bulletHealthComponent;
         }
     }
 }

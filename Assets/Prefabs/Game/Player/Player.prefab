@@ -14,6 +14,10 @@ GameObject:
   - component: {fileID: 7970614922474693829}
   - component: {fileID: 9111055199520846991}
   - component: {fileID: 1550775740150403944}
+  - component: {fileID: 7677911977405858509}
+  - component: {fileID: 8527744863504984933}
+  - component: {fileID: 9011421235821224600}
+  - component: {fileID: 2446849357667932318}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -258,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f48b74bef9b6b44fad9c6a5529c2edb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeedValue: 1
+  MoveSpeedValue: 2
 --- !u!114 &1550775740150403944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,6 +278,71 @@ MonoBehaviour:
   IsPhaseTwo: 0
   JoyStickDeadZone: 0.1
   MaxMagnitude: 1
+--- !u!114 &7677911977405858509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526853835284727599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 825ee44755f2e4846a6229365ed8d44c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MotionType: 3
+  Speed: 3.5
+  Acceleration: 8
+  AngularSpeed: 120
+  StoppingDistance: 0.1
+  AutoBreaking: 1
+  m_Layers: 1
+--- !u!114 &8527744863504984933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526853835284727599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d100d0744d5954b4cb6bc1932de8472c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Radius: 0.5
+--- !u!114 &9011421235821224600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526853835284727599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d72058503702eb42aca97d680e69de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Layers: -1
+--- !u!114 &2446849357667932318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526853835284727599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00fe6fc1ebf8ff240ad5b12ad70ce1c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AgentTypeId: -1372625422
+  AreaMask: -1
+  AutoRepath: 1
+  m_Grounded: 1
+  MappingExtent:
+    x: 10
+    y: 10
+    z: 10
 --- !u!1 &5584843580203007787
 GameObject:
   m_ObjectHideFlags: 0
