@@ -38,7 +38,7 @@ public partial struct MovementSystem : ISystem
         
         MovingPlayerJob movingPlayerJob = new MovingPlayerJob
         {
-            inputComponent = SystemAPI.GetSingleton<DataSingleton>()
+            dataSingleton = SystemAPI.GetSingleton<DataSingleton>()
         };
         movingPlayerJob.Schedule();
         
@@ -58,8 +58,7 @@ public partial struct MovementSystem : ISystem
     [BurstCompile, WithAll(typeof(Moving), typeof(AgentBody), typeof(InputVariables))]
     public partial struct MovingPlayerJob : IJobEntity
     {
-        public DataSingleton inputComponent;
-
+        public DataSingleton dataSingleton;
         public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {
             if (dataSingleton.CanMove)

@@ -27,14 +27,14 @@ namespace Assets.Code.Scripts.Game.Player
             
             _inputActions.MovePointer.Touch.started += async context =>
             {
-                _dataSingleton.Touch = true;
+                _inputComponent.Touch = true;
                 await InputWait();
-                _dataSingleton.InitTouchPos = _inputActions.MovePointer.Position.ReadValue<Vector2>();
+                _inputComponent.InitTouchPos = _inputActions.MovePointer.Position.ReadValue<Vector2>();
             };
 
             _inputActions.MovePointer.Touch.canceled += ctx =>
             {
-                _dataSingleton.Touch = false;
+                _inputComponent.Touch = false;
             };
             
         }
@@ -55,32 +55,32 @@ namespace Assets.Code.Scripts.Game.Player
             SystemAPI.TryGetSingletonEntity<InputVariables>(out var playerEntity);
             var localToWorld = SystemAPI.GetComponent<LocalToWorld>(playerEntity);
             
-            _dataSingleton.PlayerPosition = localToWorld.Position;
+            _inputComponent.PlayerPosition = localToWorld.Position;
             
-            if (_dataSingleton.Touch)
+            if (_inputComponent.Touch)
             {
-                _dataSingleton.CanMove = (GetTouchPos() - Convert(_dataSingleton.InitTouchPos)).magnitude > inputVariables.JoyStickDeadZone;
-                if (_dataSingleton.CanMove)
+                _inputComponent.CanMove = (GetTouchPos() - Convert(_inputComponent.InitTouchPos)).magnitude > inputVariables.JoyStickDeadZone;
+                if (_inputComponent.CanMove)
                 {
                     if (inputVariables.IsPhaseTwo)
                     {
-                        Vector2 phaseTwoVector = Vector2.ClampMagnitude(GetTouchPos() - Convert(_dataSingleton.InitTouchPos), inputVariables.MaxMagnitude);
+                        Vector2 phaseTwoVector = Vector2.ClampMagnitude(GetTouchPos() - Convert(_inputComponent.InitTouchPos), inputVariables.MaxMagnitude);
                         phaseTwoVector.y = 0;
-                        _dataSingleton.MoveDirection = phaseTwoVector.normalized;
+                        _inputComponent.MoveDirection = phaseTwoVector.normalized;
                     }
                     else
                     {
-                        _dataSingleton.MoveDirection = Vector2.ClampMagnitude(GetTouchPos() - Convert(_dataSingleton.InitTouchPos), inputVariables.MaxMagnitude);
+                        _inputComponent.MoveDirection = Vector2.ClampMagnitude(GetTouchPos() - Convert(_inputComponent.InitTouchPos), inputVariables.MaxMagnitude);
                     }
                     
                 }
             }
             else
             {
-                _dataSingleton.CanMove = false;
+                _inputComponent.CanMove = false;
             }
             
-            SystemAPI.SetSingleton(_dataSingleton);
+            SystemAPI.SetSingleton(_inputComponent);
         }
         
         private Vector2 GetTouchPos()
