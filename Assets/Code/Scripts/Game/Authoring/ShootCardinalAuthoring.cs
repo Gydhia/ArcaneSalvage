@@ -15,7 +15,6 @@ public class ShootCardinalAuthoring : MonoBehaviour
     public GameObject ProjectilePrefab;
     public float BulletMoveSpeed;
     public ShootingDirection Direction;
-    private int _cooldownID = CooldownManager.NewId;
 
     private class Baker : Baker<ShootCardinalAuthoring> 
     {
@@ -25,10 +24,10 @@ public class ShootCardinalAuthoring : MonoBehaviour
             AddComponent(entity, new ShootingCardinal
             {
                 FireRate = authoring.FireRate,
+                OriginalFireRate = authoring.FireRate,
                 ProjectilePrefabEntity = GetEntity(authoring.ProjectilePrefab, TransformUsageFlags.None),
                 BulletMoveSpeed = authoring.BulletMoveSpeed,
                 ShootingDirection = authoring.Direction,
-                CooldownID = authoring._cooldownID
             });
         }
     }
@@ -37,9 +36,8 @@ public class ShootCardinalAuthoring : MonoBehaviour
 public struct ShootingCardinal : IComponentData
 {
     public float FireRate;
+    public float OriginalFireRate;
     public Entity ProjectilePrefabEntity;
     public float BulletMoveSpeed;
     public ShootingDirection ShootingDirection;
-    public int CooldownID;
-
 }
