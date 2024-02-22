@@ -25,7 +25,7 @@ public partial struct PlayerTargetSystem : ISystem
 
         TargetJob targetJob = new TargetJob
         {
-            inputComponent = SystemAPI.GetSingleton<InputComponent>(),
+            inputComponent = SystemAPI.GetSingleton<DataSingleton>(),
             target = nativeArray,
         };
         state.Dependency = targetJob.Schedule(state.Dependency);
@@ -38,7 +38,7 @@ public partial struct PlayerTargetSystem : ISystem
     [BurstCompile, WithNone(typeof(Player)), WithAll(typeof(Enemy))]
     public partial struct TargetJob : IJobEntity
     {
-        public InputComponent inputComponent;
+        public DataSingleton inputComponent;
         public NativeArray<PlayerTarget> target;
         public void Execute(Entity entity, in LocalTransform localTransform)
         { 

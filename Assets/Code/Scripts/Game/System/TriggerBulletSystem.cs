@@ -50,6 +50,7 @@ public partial struct TriggerBulletSystem : ISystem
             if (playerCheck.Item1 && bulletCheck.Item1 && BulletGroup[bulletCheck.Item2].OwnerType != OwnerType.Player && !enemyCheck.Item1)
             {
                 DamageEntity(playerCheck.Item2, bulletCheck.Item2);
+                return;
             }
 
             if (!playerCheck.Item1 && bulletCheck.Item1 && BulletGroup[bulletCheck.Item2].OwnerType != OwnerType.Enemy && enemyCheck.Item1)
@@ -64,9 +65,9 @@ public partial struct TriggerBulletSystem : ISystem
             //Reduce Health Of Hit Body
             Debug.Log("Survived! We are going to lower health");
 
-            var playerHealthComponent = HealthGroup[character];
-            playerHealthComponent.CurrentHealth -= BulletGroup[bullet].Damage;
-            HealthGroup[character] = playerHealthComponent;
+            var characterHealthComponent = HealthGroup[character];
+            characterHealthComponent.CurrentHealth -= BulletGroup[bullet].Damage;
+            HealthGroup[character] = characterHealthComponent;
 
             //Reduce Health Of Bullet
             var bulletHealthComponent = HealthGroup[bullet];

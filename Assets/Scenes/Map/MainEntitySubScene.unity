@@ -241,23 +241,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61cefcec3ecb1584fb8aa4e35af28690, type: 3}
---- !u!1 &592143548 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4526853835284727599, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
-  m_PrefabInstance: {fileID: 2079401239}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &592143559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 592143548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff3970a3572e4530bfb08f8e255634c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &834028192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -574,22 +557,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3711064330295277658, guid: 5e1dfe97960217949a0d0c5dcd86a22a, type: 3}
-      propertyPath: Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4563701111519861855, guid: 5e1dfe97960217949a0d0c5dcd86a22a, type: 3}
-      propertyPath: Radius
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4563701111519861855, guid: 5e1dfe97960217949a0d0c5dcd86a22a, type: 3}
-      propertyPath: Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4563701111519861855, guid: 5e1dfe97960217949a0d0c5dcd86a22a, type: 3}
-      propertyPath: EveryFrame
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5541757147580900570, guid: 5e1dfe97960217949a0d0c5dcd86a22a, type: 3}
       propertyPath: m_Name
       value: Enemy_Navigator
@@ -607,6 +574,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 118725655540542690, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+      propertyPath: FireRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 118725655540542690, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+      propertyPath: FireRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 118725655540542690, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+      propertyPath: NumberOfShoot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 118725655540542690, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+      propertyPath: AngleDifference
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3201425272144251357, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.99
@@ -654,10 +637,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4526853835284727599, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 592143559}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
 --- !u!1001 &1617439001632386521
 PrefabInstance:

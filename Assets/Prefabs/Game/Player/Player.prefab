@@ -18,6 +18,10 @@ GameObject:
   - component: {fileID: 8527744863504984933}
   - component: {fileID: 9011421235821224600}
   - component: {fileID: 2446849357667932318}
+  - component: {fileID: 8749366049482915437}
+  - component: {fileID: 1282188754111774892}
+  - component: {fileID: 4749249460617993918}
+  - component: {fileID: 118725655540542690}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -343,6 +347,60 @@ MonoBehaviour:
     x: 10
     y: 10
     z: 10
+--- !u!114 &8749366049482915437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526853835284727599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3970a3572e4530bfb08f8e255634c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1282188754111774892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526853835284727599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d42ab0a951e503646807fd3d7d9c322d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4749249460617993918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526853835284727599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a9c19ef22706b4b85b42eb3085ce3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &118725655540542690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526853835284727599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d3f709871f1fc4b9b67277740f1ed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FireRange: 5
+  FireRate: 2
+  ProjectilePrefab: {fileID: 7750744387637035585, guid: c60c9fe5ed362894683a11132e823bee, type: 3}
+  BulletMoveSpeed: 2
+  NumberOfShoot: 1
+  AngleDifference: 0
 --- !u!1 &5584843580203007787
 GameObject:
   m_ObjectHideFlags: 0
