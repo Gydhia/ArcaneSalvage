@@ -23,6 +23,7 @@ public partial struct EnemyAnimationSystem : ISystem
 
         foreach (var (transform, goblinTorch, moving, entity) in SystemAPI.Query<LocalTransform, EnemyGoblinTorchData, Moving>().WithEntityAccess())
         {
+            Debug.Log("monstre trouvé");
             if (!entityManager.HasComponent<VisualsReferenceComponent>(entity))
             {
                 GameObject animationVisuals  = Object.Instantiate(animationVisualPrefabs.TorchGoblin);
