@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 
 public class ZombieAuthoring : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public class BakerScript : Baker<PoolingAuthoring>
     {
-        
-    }
+        public override void Bake(PoolingAuthoring poolingManager)
+        {
+            Entity entity = GetEntity(TransformUsageFlags.Dynamic);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            AddComponent(entity, new IZombieComponent()
+            {
+                key = 2
+            });
+        }
     }
 }

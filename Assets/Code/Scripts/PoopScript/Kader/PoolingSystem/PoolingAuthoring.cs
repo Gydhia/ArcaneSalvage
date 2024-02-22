@@ -10,63 +10,78 @@ public class PoolingAuthoring : Singleton<PoolingAuthoring>
 {
 
     [SerializeField]
-    private List<DictionnaryItems> _gameObjectItems = new List<DictionnaryItems>();
+    public List<DictionnaryItems> _gameObjectItems = new List<DictionnaryItems>();
+
+    public Dictionary<PoolingType, NativeArray<Entity>> pool;
+
+    public EntityManager entityManager;
 
     public class BakerScript : Baker<PoolingAuthoring>
     {
-        private static GameObject entityGO;
-
         public override void Bake(PoolingAuthoring poolingManager)
         {
+            poolingManager.entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-            EntityManager entitymanager = World.DefaultGameObjectInjectionWorld.EntityManager;
-            Entity entityTest = entitymanager.CreateEntity();
+            poolingManager.pool = new Dictionary<PoolingType, NativeArray<Entity>>();
 
-
-            NativeArray<IPoolingEntityComponent> tamere = new NativeArray<IPoolingEntityComponent>(1, Allocator.Persistent);
-
-            IPoolingEntityComponent cacaProut = new IPoolingEntityComponent()
+            for (int i = 0; i < poolingManager._gameObjectItems.Count; i++)
             {
-                nbrOfEntity = 98,
-                entity = GetEntity(poolingManager._gameObjectItems[0]._entity, TransformUsageFlags.Dynamic)
-            };
-            
-
-            //entitymanager.AddBuffer<IPoolingEntityComponent>(entityTest);
-            //DynamicBuffer<IPoolingEntityComponent> entityBuffer = entitymanager.GetBuffer<IPoolingEntityComponent>(entityTest);
-
-            tamere[0] = cacaProut;
-            //entityBuffer.Add(cacaProut);
-            
-            //DynamicBuffer<IPoolingEntityComponent> intDynamicBuffer = entityBuffer.Reinterpret<IPoolingEntityComponent>();
-            
-
-            /*for (int i = 0; i < entityComponents.Length; i++)
-            {
-                IPoolingEntityComponent newPoolingEntity = new IPoolingEntityComponent()
+                Entity entity = poolingManager.entityManager.CreateEntity(typeof(PoolableComponent));
+                poolingManager.entityManager.SetComponentData(entity, new PoolableComponent
                 {
-                    entity = GetEntity(poolingManager._gameObjectItems[i]._entity, TransformUsageFlags.Dynamic),
-                    nbrOfEntity = poolingManager._gameObjectItems[i]._nbrOfGameObject
-                };
-                entityComponents[i] = newPoolingEntity;
-            }*/
+                    isActive = false
+                });
+                poolingManager.entityManager.AddComponentObject(entity, poolingManager._gameObjectItems[i]._entity);
+         
+                NativeArray<Entity> entities = new NativeArray<Entity>(poolingManager._gameObjectItems[i]._nbrOfGameObject, Allocator.Persistent);
+                poolingManager.entityManager.Instantiate(entity,entities);
+                poolingManager.pool.Add(poolingManager._gameObjectItems[i]._poolingType, entities);
+            }
 
+            /*Entity entity = GetEntity(TransformUsageFlags.Dynamic);
 
-
-            Debug.Log("GROS FILS E PUTUUUUUUTTTTEEE !!!!!!!!!" + tamere[0].nbrOfEntity);
-
-            Entity entity = GetEntity(TransformUsageFlags.None);
-            AddComponent<IPoolingComponent>(entity, new IPoolingComponent()
+            for (int i = 0; i < poolingManager._gameObjectItems.Count; i++)
             {
-                _gameObjects = tamere
-            });
-
-
-
-            
-
-
+                Entity newEntity = entity;
+                
+                AddComponent(entity, new IPoolingEntityComponent()
+                {
+                    nbrOfEntity = poolingManager._gameObjectItems[i]._nbrOfGameObject,
+                    entity = GetEntity(poolingManager._gameObjectItems[i]._entity, TransformUsageFlags.Dynamic)
+                });
+                
+            }*/
         }
+    }
+    
+    public Entity GetObject(PoolingType prefabType)
+    {
+        
+        
+        for (int i = 0; i < pool[prefabType].Length; i++)
+        {
+            Entity entity = pool[prefabType][i];
+            
+            PoolableComponent poolable = entityManager.GetComponentData<PoolableComponent>(entity);
+            if (!poolable.isActive)
+            {
+                entityManager.SetComponentData(entity, new PoolableComponent
+                {
+                    isActive = true
+                });
+                return entity;
+            }
+        }
+
+        return Entity.Null;
+    }
+
+    public void ReturnObject(Entity entity)
+    {
+        entityManager.SetComponentData(entity, new PoolableComponent
+        {
+            isActive = false
+        });
     }
 
     public List<DictionnaryItems> GetGameObjects()
@@ -75,11 +90,24 @@ public class PoolingAuthoring : Singleton<PoolingAuthoring>
     }
 }
 
+public struct PoolableComponent : IComponentData
+{
+    public bool isActive;
+}
+
 
 [Serializable]
 public struct DictionnaryItems
 {
     public GameObject _entity;
     public int _nbrOfGameObject;
+    public PoolingType _poolingType;
 
+}
+
+public enum PoolingType
+{
+    BulletEnnemy,
+    BulletPlayer,
+    Ennemy
 }
