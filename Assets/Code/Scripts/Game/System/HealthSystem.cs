@@ -59,6 +59,7 @@ public partial struct HealthSystem : ISystem
 
             if (health.Lifetime > 0.0f)
                 return;
+            
             EntityCommandBuffer.DestroyEntity(entity);
         }
     }
