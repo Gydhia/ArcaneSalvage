@@ -33,14 +33,17 @@ public partial struct PlayerAnimationSystem : ISystem
             }
             else
             {
-                VisualsReferenceComponent playerVisualsReference = entityManager.GetComponentData<VisualsReferenceComponent>(entity);
+                VisualsReferenceComponent playerVisualsReference =
+                    entityManager.GetComponentData<VisualsReferenceComponent>(entity);
 
                 playerVisualsReference.gameObject.transform.position = transform.Position;
 
-                PlayerAnimationBehavior animation = playerVisualsReference.gameObject.GetComponent<PlayerAnimationBehavior>();
-                
-                animation.ToggleIdle(!SystemAPI.GetSingleton<InputComponent>().CanMove);
+                PlayerAnimationBehavior animation =
+                    playerVisualsReference.gameObject.GetComponent<PlayerAnimationBehavior>();
+
+                animation.ToggleIdle(!SystemAPI.GetSingleton<DataSingleton>().CanMove);
                 animation.UpdateVelocity(velocity.Direction, playerComponent.ValueRO.IsPhaseTwo);
+            }
         }
 
         ECB.Playback(entityManager);
