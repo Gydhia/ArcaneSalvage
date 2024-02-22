@@ -75,7 +75,7 @@ public partial class ShootingStraightSystem : SystemBase
                                 originMovementDirection;
                 
                 direction.Normalize();
-                float angle = Vector2.Angle(Vector2.right, direction);
+                float angle = Vector2.SignedAngle(Vector2.right, direction);
                 
                 EntityCommandBuffer.SetComponent(entities[i - 1], new LocalTransform
                 {
@@ -109,7 +109,7 @@ public partial class ShootingStraightSystem : SystemBase
                 direction = (i == 1 ? originMovementDirection : direction );
                 direction.Normalize();
                 
-                float angle = Vector2.Angle(Vector2.right, direction);
+                float angle = Vector2.SignedAngle(Vector2.right, direction);
                 
                 EntityCommandBuffer.SetComponent(entities[i - 1], new LocalTransform
                 {
