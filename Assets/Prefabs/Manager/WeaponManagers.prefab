@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameModePhase: 0
-  currentWeapon: {fileID: 0}
-  bow: {fileID: 4617807090649789775, guid: 8147381aeb6d2f246ab0481aacc679b0, type: 3}
-  wand: {fileID: 3839066434284317996, guid: 16c12da395978844bb1a20df2391d977, type: 3}
-  target: {fileID: 0}
+  Weapons:
+  - {fileID: 11400000, guid: 4939b63043790df409ad8fe34c7598af, type: 2}
+  - {fileID: 11400000, guid: d8071dde6e292914bbea6189055e5a52, type: 2}
+  Upgrades: []

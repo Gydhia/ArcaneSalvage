@@ -67,8 +67,8 @@ public partial struct TriggerBulletSystem : ISystem
             //Reduce Health Of Hit Body
             Debug.Log("Survived! We are going to lower health");
             var dynamicHealthComponent = HealthGroup[dynamicEntity];
-            dynamicHealthComponent.CurrentHealth -= BulletGroup[triggerEntity].Damage;
-            HealthGroup[dynamicEntity] = dynamicHealthComponent;
+            //dynamicHealthComponent.CurrentHealth -= BulletGroup[triggerEntity].Damage;
+            //HealthGroup[dynamicEntity] = dynamicHealthComponent;
             
             //Reduce Health Of Bullet
             var triggerHealthComponent = HealthGroup[triggerEntity];

@@ -9,12 +9,15 @@ public enum UpgradeType
     FireRate,
     MoreArrow,
     Piercing,
+    MoreRange
 }
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card Info")]
 public class CardInfo : ScriptableObject
 {
     public UpgradeType upgradeType;
+    public int modifier;
+
     public Sprite icon;
     public string nameOfCard;
     public string description;
