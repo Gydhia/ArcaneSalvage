@@ -29,5 +29,6 @@ public partial class TestSystem : SystemBase
     {
         //Debug.Log("caca");
         Debug.Log(PoolingAuthoring.Instance.GetObject(PoolingType.Ennemy));
+        //SystemAPI.GetComponentLookup<>();
     }
 }
