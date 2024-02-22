@@ -47,6 +47,8 @@ public partial struct PlayerTargetSystem : ISystem
             {
                 playerTargetCpy.enemyPosition = localTransform.Position;
                 playerTargetCpy.DistanceToClosestEnemy = Vector3.Distance((Vector3)inputComponent.PlayerPosition, (Vector3)localTransform.Position);
+                target[0] = playerTargetCpy;
+                return;
             }
             float newDistance = Vector3.Distance((Vector3)inputComponent.PlayerPosition, (Vector3)localTransform.Position);
             if (newDistance <= target[0].DistanceToClosestEnemy)

@@ -11,9 +11,6 @@ public class ShootingStraightAuthority : MonoBehaviour
     public float BulletMoveSpeed;
     public int NumberOfShoot;
     public float AngleDifference;
-
-    private int _cooldownID = CooldownManager.NewId;
-
     private class Baker: Baker<ShootingStraightAuthority> 
     {
         public override void Bake(ShootingStraightAuthority authoring)
@@ -23,11 +20,11 @@ public class ShootingStraightAuthority : MonoBehaviour
             {
                 FireRange = authoring.FireRange,
                 FireRate = authoring.FireRate,
+                OriginalFireRate = authoring.FireRate,
                 ProjectilePrefabEntity = GetEntity(authoring.ProjectilePrefab, TransformUsageFlags.Dynamic),
                 BulletMoveSpeed = authoring.BulletMoveSpeed,
                 AngleDifference = authoring.AngleDifference,
                 NumberOfShoot = authoring.NumberOfShoot,
-                CooldownID = authoring._cooldownID
             });
         }
     }
@@ -37,9 +34,9 @@ public struct ShootingStraight : IComponentData
 {
     public float FireRange;
     public float FireRate;
+    public float OriginalFireRate;
     public Entity ProjectilePrefabEntity;
     public float BulletMoveSpeed;
     public int NumberOfShoot;
     public float AngleDifference;
-    public int CooldownID;
 }

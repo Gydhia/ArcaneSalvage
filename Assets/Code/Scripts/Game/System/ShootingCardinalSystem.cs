@@ -19,7 +19,7 @@ public partial struct ShootingCardinalSystem : ISystem
 
         ShootingCardinalJob shootingCardinalJob = new ShootingCardinalJob
         {
-            Time = (float)SystemAPI.Time.ElapsedTime,
+            DeltaTime = (float)SystemAPI.Time.DeltaTime,
             EntityCommandBuffer = entityCommandBufferCardinalJob,
         };
         shootingCardinalJob.Schedule();
@@ -32,52 +32,54 @@ public partial struct ShootingCardinalSystem : ISystem
 
     public partial struct ShootingCardinalJob : IJobEntity
     {
-        public float Time;
+        public float DeltaTime;
         public EntityCommandBuffer EntityCommandBuffer;
 
-        public void Execute(in LocalTransform localTransform, in ShootingCardinal shootData)
+        public void Execute(in LocalTransform localTransform, ref ShootingCardinal shootData)
         {
-            if (CooldownManager.IsDone(shootData.CooldownID, Time))
+            shootData.FireRate -= DeltaTime;
+            if (shootData.FireRate > 0.0f)
+                return;
+
+            int numberOfBullet = shootData.ShootingDirection == ShootingDirection.BOTH ? 8 : 4;
+            NativeArray<Entity> entities = 
+                new NativeArray<Entity>(numberOfBullet, Allocator.Temp);
+            EntityCommandBuffer.Instantiate(shootData.ProjectilePrefabEntity, entities);
+            for (int i = 0; i < numberOfBullet; i++)
             {
-                int numberOfBullet = shootData.ShootingDirection == ShootingDirection.BOTH ? 8 : 4;
-                NativeArray<Entity> entities = 
-                    new NativeArray<Entity>(numberOfBullet, Allocator.Temp);
-                EntityCommandBuffer.Instantiate(shootData.ProjectilePrefabEntity, entities);
-                for (int i = 0; i < numberOfBullet; i++)
+                EntityCommandBuffer.AddComponent(entities[i], new LocalTransform
                 {
-                    EntityCommandBuffer.AddComponent(entities[i], new LocalTransform
-                    {
-                        Position = localTransform.Position,
-                        Scale = 1f,
-                        Rotation = Quaternion.identity
-                    });
-                    switch (shootData.ShootingDirection)
-                    {
-                        case ShootingDirection.CARDINAL:
-                        case ShootingDirection.BOTH:
-                            EntityCommandBuffer.AddComponent(entities[i], new Moving
-                            {
-                                MoveSpeedValue = shootData.BulletMoveSpeed,
-                                Direction = Quaternion.AngleAxis((360.0f / numberOfBullet) * i,
-                                (Vector3)localTransform.Forward()) *
-                                (Vector3)localTransform.Right()
-                            });
-                            break;
-                        case ShootingDirection.INTERCARDINAL:
-                            EntityCommandBuffer.AddComponent(entities[i], new Moving
-                            {
-                                MoveSpeedValue = shootData.BulletMoveSpeed,
-                                Direction = Quaternion.AngleAxis(45.0f + ((360.0f / numberOfBullet) * i),
-                                (Vector3)localTransform.Forward()) *
-                                (Vector3)localTransform.Right()
-                            });
-                            break;
-                        default:
-                            break;
-                    }
+                    Position = localTransform.Position,
+                    Scale = 1f,
+                    Rotation = Quaternion.identity
+                });
+                switch (shootData.ShootingDirection)
+                {
+                    case ShootingDirection.CARDINAL:
+                    case ShootingDirection.BOTH:
+                        EntityCommandBuffer.AddComponent(entities[i], new Moving
+                        {
+                            MoveSpeedValue = shootData.BulletMoveSpeed,
+                            Direction = Quaternion.AngleAxis((360.0f / numberOfBullet) * i,
+                            (Vector3)localTransform.Forward()) *
+                            (Vector3)localTransform.Right()
+                        });
+                        break;
+                    case ShootingDirection.INTERCARDINAL:
+                        EntityCommandBuffer.AddComponent(entities[i], new Moving
+                        {
+                            MoveSpeedValue = shootData.BulletMoveSpeed,
+                            Direction = Quaternion.AngleAxis(45.0f + ((360.0f / numberOfBullet) * i),
+                            (Vector3)localTransform.Forward()) *
+                            (Vector3)localTransform.Right()
+                        });
+                        break;
+                    default:
+                        break;
                 }
-                CooldownManager.Start(shootData.CooldownID, shootData.FireRate, Time);
             }
+            shootData.FireRate = shootData.OriginalFireRate;
+
         }
     }
 }

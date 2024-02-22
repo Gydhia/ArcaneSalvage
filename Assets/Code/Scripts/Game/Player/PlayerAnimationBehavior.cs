@@ -24,7 +24,6 @@ public class PlayerAnimationBehavior : MonoBehaviour
 
     public void UpdateVelocity(Vector3 velocity, bool isPhaseTwo)
     {
-        Debug.Log(velocity  + " "+ isPhaseTwo);
         if (!isPhaseTwo)
         {
             if (velocity.x > 0)

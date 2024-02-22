@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public partial class InputSystem : SystemBase
+public partial class InputKaderSystem : SystemBase
 {
     private Playermove controls;
     
