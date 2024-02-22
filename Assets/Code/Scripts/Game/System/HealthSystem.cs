@@ -27,9 +27,7 @@ public partial struct HealthSystem : ISystem
             EntityCommandBuffer = entityCommandBufferLifetimeManager,
         };
         lifetimeManagerJob.Schedule();
-        state.Dependency.Complete();
-        entityCommandBufferLifetimeManager.Playback(state.EntityManager);
-        entityCommandBufferLifetimeManager.Dispose();
+
 
         EntityCommandBuffer entityCommandBufferHealthManager = new EntityCommandBuffer(Allocator.TempJob);
         HealthManagerJob healthManagerJob = new HealthManagerJob
@@ -37,12 +35,17 @@ public partial struct HealthSystem : ISystem
             EntityCommandBuffer = entityCommandBufferHealthManager,
         };
         healthManagerJob.Schedule();
-        state.Dependency.Complete();
-        entityCommandBufferHealthManager.Playback(state.EntityManager);
-        entityCommandBufferHealthManager.Dispose();
+        
 
         PlayerDeathManager playerDeathManager = new PlayerDeathManager();
         playerDeathManager.Schedule();
+
+        state.Dependency.Complete();
+
+        entityCommandBufferLifetimeManager.Playback(state.EntityManager);
+        entityCommandBufferLifetimeManager.Dispose();
+        entityCommandBufferHealthManager.Playback(state.EntityManager);
+        entityCommandBufferHealthManager.Dispose();
     }
 
     [BurstCompile]

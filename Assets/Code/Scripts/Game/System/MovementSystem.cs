@@ -28,7 +28,6 @@ public partial struct MovementSystem : ISystem
         };
         setDestinationJob.Schedule();
         
-        Debug.Log("Moving enemies sheduled");
         
         MovingBulletJob movingBulletJob = new MovingBulletJob
         {
