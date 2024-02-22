@@ -31,7 +31,7 @@ public partial class ShootingSpinningSystem : SystemBase
         entityCommandBufferSpinningJob.Dispose();
     }
 
-    [BurstCompile]
+    //[BurstCompile]
     public partial struct ShootingSpinningJob : IJobEntity
     {
         public float Time;

@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthAuthoring : MonoBehaviour
 {
     public float MaxHealth;
     public bool DieOnDeath;
-    [Tooltip("If Lifetime is negative, this entity won't get destroyed by time")]public float Lifetime = -1.0f;
 
+    [Tooltip("If Lifetime is negative, this entity won't get destroyed by time")]public float Lifetime = -1.0f;
+    
     public class Baker : Baker<HealthAuthoring>
     {
         public override void Bake(HealthAuthoring authoring)
