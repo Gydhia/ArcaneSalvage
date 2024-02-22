@@ -28,12 +28,9 @@ public partial struct GameManagerSystem : ISystem
         
         inputEntity = SystemAPI.GetSingletonEntity<InputComponent_Old>();
         gameManagerEntity = SystemAPI.GetSingletonEntity<GameManagerComponent>();
-
-        
         
         _inputComponentOld = entityManager.GetComponentData<InputComponent_Old>(inputEntity);
         gameManagerComponent = entityManager.GetComponentData<GameManagerComponent>(gameManagerEntity);
-        //inputTextEntity = entityManager.GetComponentObject<TMP_InputField>(gameManagerEntity);
         
         SpawnGO(ref state);
         SpawnECS(ref state);

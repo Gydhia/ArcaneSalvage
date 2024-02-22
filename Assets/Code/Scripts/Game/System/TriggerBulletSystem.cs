@@ -29,6 +29,8 @@ public partial struct TriggerBulletSystem : ISystem
             EnemyGroup = SystemAPI.GetComponentLookup<Enemy>(),
         }
         .Schedule(SystemAPI.GetSingleton<SimulationSingleton>(), state.Dependency);
+
+
     }
 
     [BurstCompile]
@@ -47,13 +49,13 @@ public partial struct TriggerBulletSystem : ISystem
             (bool, Entity) bulletCheck = FindEntityWithComponent(entityA,entityB, BulletGroup);
             (bool, Entity) enemyCheck = FindEntityWithComponent(entityA,entityB, EnemyGroup);
             
-            if (playerCheck.Item1 && bulletCheck.Item1 && BulletGroup[bulletCheck.Item2].OwnerType != OwnerType.Player && !enemyCheck.Item1)
+            if (playerCheck.Item1 && bulletCheck.Item1 && !enemyCheck.Item1)
             {
                 DamageEntity(playerCheck.Item2, bulletCheck.Item2);
                 return;
             }
 
-            if (!playerCheck.Item1 && bulletCheck.Item1 && BulletGroup[bulletCheck.Item2].OwnerType != OwnerType.Enemy && enemyCheck.Item1)
+            if (!playerCheck.Item1 && bulletCheck.Item1 && enemyCheck.Item1)
             {
                 DamageEntity(enemyCheck.Item2, bulletCheck.Item2);
             }

@@ -10,63 +10,102 @@ public class PoolingAuthoring : Singleton<PoolingAuthoring>
 {
 
     [SerializeField]
-    private List<DictionnaryItems> _gameObjectItems = new List<DictionnaryItems>();
+    public List<DictionnaryItems> _gameObjectItems;
+
+    public Dictionary<PoolingType, NativeArray<Entity>> pool;
+
+    public EntityManager entityManager;
+    
+    
+
+    /*private void Start()
+    {
+        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+        pool = new Dictionary<PoolingType, NativeArray<Entity>>();
+            
+        for (int i = 0; i < _gameObjectItems.Count; i++)
+        {
+            Entity entity = entityManager.CreateEntity();
+            entityManager.AddComponent(entity, typeof(PoolableComponent));
+            
+            PoolableComponent poolComp = new PoolableComponent()
+            {
+                isActive = false
+            };
+            entityManager.SetComponentData(entity, poolComp);
+            
+            //Debug.Log(entity);
+            PoolableComponent poolableTest = entityManager.GetComponentData<PoolableComponent>(entity);
+            
+            entityManager.AddComponentObject(entity, _gameObjectItems[i]._entity);
+         
+            NativeArray<Entity> entities = new NativeArray<Entity>(_gameObjectItems[i]._nbrOfGameObject, Allocator.Persistent);
+            entityManager.Instantiate(entity,entities);
+            pool.Add(_gameObjectItems[i]._poolingType, entities);
+        }
+    }*/
 
     public class BakerScript : Baker<PoolingAuthoring>
     {
-        private static GameObject entityGO;
-
         public override void Bake(PoolingAuthoring poolingManager)
         {
+            PoolingAuthoring.Instance = poolingManager;
+            PoolingAuthoring.Instance.entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-            EntityManager entitymanager = World.DefaultGameObjectInjectionWorld.EntityManager;
-            Entity entityTest = entitymanager.CreateEntity();
+            PoolingAuthoring.Instance.pool = new Dictionary<PoolingType, NativeArray<Entity>>();
 
+            Debug.Log("gros hdhdhkdfhjdfh" + PoolingAuthoring.Instance._gameObjectItems.Count);
 
-            NativeArray<IPoolingEntityComponent> tamere = new NativeArray<IPoolingEntityComponent>(1, Allocator.Persistent);
-
-            IPoolingEntityComponent cacaProut = new IPoolingEntityComponent()
+            for (int i = 0; i < PoolingAuthoring.Instance._gameObjectItems.Count; i++)
             {
-                nbrOfEntity = 98,
-                entity = GetEntity(poolingManager._gameObjectItems[0]._entity, TransformUsageFlags.Dynamic)
-            };
-            
-
-            //entitymanager.AddBuffer<IPoolingEntityComponent>(entityTest);
-            //DynamicBuffer<IPoolingEntityComponent> entityBuffer = entitymanager.GetBuffer<IPoolingEntityComponent>(entityTest);
-
-            tamere[0] = cacaProut;
-            //entityBuffer.Add(cacaProut);
-            
-            //DynamicBuffer<IPoolingEntityComponent> intDynamicBuffer = entityBuffer.Reinterpret<IPoolingEntityComponent>();
-            
-
-            /*for (int i = 0; i < entityComponents.Length; i++)
-            {
-                IPoolingEntityComponent newPoolingEntity = new IPoolingEntityComponent()
+                Entity entity = GetEntity(PoolingAuthoring.Instance._gameObjectItems[i]._entity, TransformUsageFlags.Dynamic);
+                PoolableComponent poolNew = new PoolableComponent()
                 {
-                    entity = GetEntity(poolingManager._gameObjectItems[i]._entity, TransformUsageFlags.Dynamic),
-                    nbrOfEntity = poolingManager._gameObjectItems[i]._nbrOfGameObject
+                    isActive = false
                 };
-                entityComponents[i] = newPoolingEntity;
-            }*/
+                PoolingAuthoring.Instance.entityManager.AddComponent(entity, typeof(PoolableComponent));
+                PoolingAuthoring.Instance.entityManager.SetComponentData(entity, poolNew);
+                
 
+                NativeArray<Entity> entities = new NativeArray<Entity>(PoolingAuthoring.Instance._gameObjectItems[i]._nbrOfGameObject, Allocator.Persistent);
+                PoolingAuthoring.Instance.entityManager.Instantiate(entity, entities);
+                PoolingAuthoring.Instance.pool.Add(PoolingAuthoring.Instance._gameObjectItems[i]._poolingType, entities);
+                Debug.Log(PoolingAuthoring.Instance.pool.Count);
 
-
-            Debug.Log("GROS FILS E PUTUUUUUUTTTTEEE !!!!!!!!!" + tamere[0].nbrOfEntity);
-
-            Entity entity = GetEntity(TransformUsageFlags.None);
-            AddComponent<IPoolingComponent>(entity, new IPoolingComponent()
-            {
-                _gameObjects = tamere
-            });
-
-
-
-            
-
-
+            }
         }
+    }
+
+    public Entity GetObject(PoolingType prefabType)
+    {
+        
+        Debug.Log(pool);
+        
+        for (int i = 0; i < pool[prefabType].Length; i++)
+        {
+            Entity entity = pool[prefabType][i];
+            
+            PoolableComponent poolable = entityManager.GetComponentData<PoolableComponent>(entity);
+            if (!poolable.isActive)
+            {
+                entityManager.SetComponentData(entity, new PoolableComponent
+                {
+                    isActive = true
+                });
+                return entity;
+            }
+        }
+
+        return Entity.Null;
+    }
+
+    public void ReturnObject(Entity entity)
+    {
+        entityManager.SetComponentData(entity, new PoolableComponent
+        {
+            isActive = false
+        });
     }
 
     public List<DictionnaryItems> GetGameObjects()
@@ -75,11 +114,23 @@ public class PoolingAuthoring : Singleton<PoolingAuthoring>
     }
 }
 
+public struct PoolableComponent : IComponentData
+{
+    public bool isActive;
+}
+
 
 [Serializable]
 public struct DictionnaryItems
 {
     public GameObject _entity;
     public int _nbrOfGameObject;
+    public PoolingType _poolingType;
+}
 
+public enum PoolingType
+{
+    BulletEnnemy,
+    BulletPlayer,
+    Ennemy
 }

@@ -29,7 +29,7 @@ using UnityEngine;
 
                 return _instance;
             }
-            private set => _instance = value;
+            set => _instance = value;
         }
         private static T _instance;
 
