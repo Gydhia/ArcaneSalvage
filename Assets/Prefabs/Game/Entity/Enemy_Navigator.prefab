@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FireRate: 1000
-  ProjectilePrefab: {fileID: 7750744387637035585, guid: c60c9fe5ed362894683a11132e823bee, type: 3}
+  ProjectilePrefab: {fileID: 8363001878409199312, guid: c28f136ec9071c94b9d8f04ee67c12c8, type: 3}
   BulletMoveSpeed: 2
   AngleIncrease: 10
 --- !u!114 &7578731173265049489
@@ -208,7 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FireRange: 2
   FireRate: 2
-  ProjectilePrefab: {fileID: 7750744387637035585, guid: c60c9fe5ed362894683a11132e823bee, type: 3}
+  ProjectilePrefab: {fileID: 8363001878409199312, guid: c28f136ec9071c94b9d8f04ee67c12c8, type: 3}
   BulletMoveSpeed: 2
   NumberOfShoot: 5
   AngleDifference: 5
