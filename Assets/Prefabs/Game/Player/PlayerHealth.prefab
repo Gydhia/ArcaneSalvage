@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8137302826385101285}
   - component: {fileID: 7714758070555055748}
+  - component: {fileID: 3640531430534090743}
   m_Layer: 0
   m_Name: PlayerHealth
   m_TagString: Untagged
@@ -60,6 +61,19 @@ Canvas:
   m_SortingLayerID: 1145855737
   m_SortingOrder: 5
   m_TargetDisplay: 0
+--- !u!114 &3640531430534090743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214546159097615346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd7fc6a2ed0b0ab4682063b7d15f8da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_healthSlider: {fileID: 3769181619852948929}
 --- !u!1 &3421612888762255032
 GameObject:
   m_ObjectHideFlags: 0
