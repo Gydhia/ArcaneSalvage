@@ -27,7 +27,7 @@ public partial class ShootingStraightSystem : SystemBase
         {
             PlayerPosition = playerPosition,
             EntityCommandBuffer = entityCommandBufferEnemyJob,
-            Time = (float)SystemAPI.Time.ElapsedTime,
+            DeltaTime = (float)SystemAPI.Time.DeltaTime,
         };
         shootingEnemyJob.Schedule();
 
@@ -36,7 +36,8 @@ public partial class ShootingStraightSystem : SystemBase
         ShootingStraightPlayerJob shootingPlayerJob = new ShootingStraightPlayerJob
         {
             EntityCommandBuffer = entityCommandBufferStraightPlayerJob,
-            Time = (float)SystemAPI.Time.ElapsedTime,
+            DeltaTime = (float)SystemAPI.Time.DeltaTime,
+            entityExist = EntityManager.Exists(SystemAPI.GetSingleton<PlayerTarget>().enemy),
         };
         shootingPlayerJob.Schedule();
         Dependency.Complete();
@@ -50,11 +51,12 @@ public partial class ShootingStraightSystem : SystemBase
     public partial struct ShootingStraightEnemyJob : IJobEntity
     {
         public Vector3 PlayerPosition;
-        public float Time;
+        public float DeltaTime;
         public EntityCommandBuffer EntityCommandBuffer;
-        public void Execute(in LocalTransform localTransform, in ShootingStraight shootData)
+        public void Execute(in LocalTransform localTransform, ref ShootingStraight shootData)
         {
-            if (shootData.NumberOfShoot <= 0 || !CooldownManager.IsDone(shootData.CooldownID, Time))
+            shootData.FireRate -= DeltaTime;
+            if (shootData.NumberOfShoot <= 0 || shootData.FireRate >= 0.0f)
                 return;
             
             float x = PlayerPosition.x - localTransform.Position.x;
@@ -67,7 +69,7 @@ public partial class ShootingStraightSystem : SystemBase
                 else
                     ShootOdd(localTransform, shootData, movementDirection);
 
-                CooldownManager.Start(shootData.CooldownID, shootData.FireRate, Time);
+                shootData.FireRate = shootData.OriginalFireRate;
             }
         }
         private void ShootEven(in LocalTransform localTransform, in ShootingStraight shootData, in float3 originMovementDirection)
@@ -139,15 +141,15 @@ public partial class ShootingStraightSystem : SystemBase
     [BurstCompile, WithNone(typeof(Enemy))]
     public partial struct ShootingStraightPlayerJob : IJobEntity
     {
-        public float Time;
+        public float DeltaTime;
         public EntityCommandBuffer EntityCommandBuffer;
+        public bool entityExist;
 
-        public void Execute(in LocalTransform localTransform, in ShootingStraight shootData, in PlayerTarget playerTarget) 
+        public void Execute(in LocalTransform localTransform, ref ShootingStraight shootData, in PlayerTarget playerTarget) 
         {
-            Debug.Log("Executing players shoot");
-            if (shootData.NumberOfShoot <= 0 || !CooldownManager.IsDone(shootData.CooldownID, Time))
+            shootData.FireRate -= DeltaTime;
+            if (shootData.NumberOfShoot <= 0 || shootData.FireRate > 0.0f || !entityExist)
                 return;
-            Debug.Log("Executing players shoot after");
             float x = playerTarget.enemyPosition.x - localTransform.Position.x;
             float y = playerTarget.enemyPosition.y - localTransform.Position.y;
             if (Math.Sqrt(x * x + y * y) <= shootData.FireRange)
@@ -158,7 +160,7 @@ public partial class ShootingStraightSystem : SystemBase
                 else
                     ShootOdd(localTransform, shootData, movementDirection);
 
-                CooldownManager.Start(shootData.CooldownID, shootData.FireRate, Time);
+                shootData.FireRate = shootData.OriginalFireRate;
             }
         }
         private void ShootEven(in LocalTransform localTransform, in ShootingStraight shootData, in float3 originMovementDirection)
@@ -189,7 +191,6 @@ public partial class ShootingStraightSystem : SystemBase
                 });
             }
         }
-
         private void ShootOdd(in LocalTransform localTransform, in ShootingStraight shootData, in float3 originMovementDirection)
         {
             NativeArray<Entity> entities = new NativeArray<Entity>(shootData.NumberOfShoot, Allocator.Temp);
