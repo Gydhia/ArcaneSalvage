@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Code.Scripts.Game.Player;
 using Unity.Assertions;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Physics;
@@ -30,6 +31,7 @@ public partial struct TriggerBulletSystem : ISystem
         .Schedule(SystemAPI.GetSingleton<SimulationSingleton>(), state.Dependency);
     }
 
+    [BurstCompile]
     public partial struct BulletTriggerJob : ITriggerEventsJob
     {
         [ReadOnly] public ComponentLookup<Bullet> BulletGroup;
@@ -40,16 +42,6 @@ public partial struct TriggerBulletSystem : ISystem
         {
             Entity entityA = triggerEvent.EntityA;
             Entity entityB = triggerEvent.EntityB;
-
-            bool isBodyATrigger = BulletGroup.HasComponent(entityA);
-            bool isBodyBTrigger = BulletGroup.HasComponent(entityB);
-
-            //Ignoring Bullet overlapping other Bullets
-            if (isBodyATrigger && isBodyBTrigger)
-            {
-                Debug.Log("Bullet overlapping");
-                return;
-            }
 
             (bool, Entity) playerCheck = FindEntityWithComponent(entityA,entityB, PlayerGroup);
             (bool, Entity) bulletCheck = FindEntityWithComponent(entityA,entityB, BulletGroup);

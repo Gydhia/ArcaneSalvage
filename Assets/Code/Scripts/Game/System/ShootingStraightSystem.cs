@@ -9,6 +9,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
+[UpdateAfter(typeof(PlayerTargetSystem))]
 public partial class ShootingStraightSystem : SystemBase
 {
     protected override void OnCreate()
@@ -20,39 +21,47 @@ public partial class ShootingStraightSystem : SystemBase
     {
         Vector3 playerPosition = SystemAPI.GetSingleton<InputComponent>().PlayerPosition;
 
-        EntityCommandBuffer entityCommandBufferStraightJob = new EntityCommandBuffer(Allocator.TempJob);
+        EntityCommandBuffer entityCommandBufferEnemyJob = new EntityCommandBuffer(Allocator.TempJob);
 
-        ShootingStraightJob shootingObjectJob = new ShootingStraightJob
+        ShootingStraightEnemyJob shootingEnemyJob = new ShootingStraightEnemyJob
         {
             PlayerPosition = playerPosition,
-            EntityCommandBuffer = entityCommandBufferStraightJob,
+            EntityCommandBuffer = entityCommandBufferEnemyJob,
             Time = (float)SystemAPI.Time.ElapsedTime,
         };
-        shootingObjectJob.Schedule();
+        shootingEnemyJob.Schedule();
+
+        EntityCommandBuffer entityCommandBufferStraightPlayerJob = new EntityCommandBuffer(Allocator.TempJob);
+
+        ShootingStraightPlayerJob shootingPlayerJob = new ShootingStraightPlayerJob
+        {
+            EntityCommandBuffer = entityCommandBufferStraightPlayerJob,
+            Time = (float)SystemAPI.Time.ElapsedTime,
+        };
+        shootingPlayerJob.Schedule();
         Dependency.Complete();
-        entityCommandBufferStraightJob.Playback(EntityManager);
-        entityCommandBufferStraightJob.Dispose();
+        entityCommandBufferStraightPlayerJob.Playback(EntityManager);
+        entityCommandBufferStraightPlayerJob.Dispose();
+        entityCommandBufferEnemyJob.Playback(EntityManager);
+        entityCommandBufferEnemyJob.Dispose();
     }
 
-    [BurstCompile]
-    public partial struct ShootingStraightJob : IJobEntity
+    [BurstCompile, WithAll(typeof(Enemy))]
+    public partial struct ShootingStraightEnemyJob : IJobEntity
     {
         public Vector3 PlayerPosition;
         public float Time;
         public EntityCommandBuffer EntityCommandBuffer;
         public void Execute(in LocalTransform localTransform, in ShootingStraight shootData)
         {
-            if (shootData.NumberOfShoot <=0)
+            if (shootData.NumberOfShoot <= 0 || !CooldownManager.IsDone(shootData.CooldownID, Time))
                 return;
             
             float x = PlayerPosition.x - localTransform.Position.x;
             float y = PlayerPosition.y - localTransform.Position.y;
-            if (CooldownManager.IsDone(shootData.CooldownID, Time) &&
-                Math.Sqrt(x * x + y * y) <= shootData.FireRange)
+            if (Math.Sqrt(x * x + y * y) <= shootData.FireRange)
             {
-                float3 movementDirection = math.normalizesafe(
-                    new float3(PlayerPosition.x - localTransform.Position.x,
-                    PlayerPosition.y - localTransform.Position.y, 0.0f));
+                float3 movementDirection = math.normalizesafe(new float3(x, y, 0.0f));
                 if (shootData.NumberOfShoot % 2 == 0)
                     ShootEven(localTransform, shootData, movementDirection);
                 else
@@ -126,4 +135,92 @@ public partial class ShootingStraightSystem : SystemBase
             }
         }
     }
+
+    [BurstCompile, WithNone(typeof(Enemy))]
+    public partial struct ShootingStraightPlayerJob : IJobEntity
+    {
+        public float Time;
+        public EntityCommandBuffer EntityCommandBuffer;
+
+        public void Execute(in LocalTransform localTransform, in ShootingStraight shootData, in PlayerTarget playerTarget) 
+        {
+            Debug.Log("Executing players shoot");
+            if (shootData.NumberOfShoot <= 0 || !CooldownManager.IsDone(shootData.CooldownID, Time))
+                return;
+            Debug.Log("Executing players shoot after");
+            float x = playerTarget.enemyPosition.x - localTransform.Position.x;
+            float y = playerTarget.enemyPosition.y - localTransform.Position.y;
+            if (Math.Sqrt(x * x + y * y) <= shootData.FireRange)
+            {
+                float3 movementDirection = math.normalizesafe(new float3(x, y, 0.0f));
+                if (shootData.NumberOfShoot % 2 == 0)
+                    ShootEven(localTransform, shootData, movementDirection);
+                else
+                    ShootOdd(localTransform, shootData, movementDirection);
+
+                CooldownManager.Start(shootData.CooldownID, shootData.FireRate, Time);
+            }
+        }
+        private void ShootEven(in LocalTransform localTransform, in ShootingStraight shootData, in float3 originMovementDirection)
+        {
+            NativeArray<Entity> entities = new NativeArray<Entity>(shootData.NumberOfShoot, Allocator.Temp);
+            EntityCommandBuffer.Instantiate(shootData.ProjectilePrefabEntity, entities);
+            for (int i = 1; i <= shootData.NumberOfShoot; i++)
+            {
+                Vector3 direction = Quaternion.AngleAxis(i % 2 == 0
+                                        ? shootData.AngleDifference * (i / 2)
+                                        : -shootData.AngleDifference * ((i + 1) / 2),
+                                        (Vector3)localTransform.Forward())
+                                * originMovementDirection;
+
+                direction.Normalize();
+                float angle = Vector2.SignedAngle(Vector2.right, direction);
+
+                EntityCommandBuffer.SetComponent(entities[i - 1], new LocalTransform
+                {
+                    Position = localTransform.Position,
+                    Scale = 1f,
+                    Rotation = Quaternion.Euler(new Vector3(0, 0, angle))
+                });
+                EntityCommandBuffer.SetComponent(entities[i - 1], new Moving
+                {
+                    MoveSpeedValue = shootData.BulletMoveSpeed,
+                    Direction = direction
+                });
+            }
+        }
+
+        private void ShootOdd(in LocalTransform localTransform, in ShootingStraight shootData, in float3 originMovementDirection)
+        {
+            NativeArray<Entity> entities = new NativeArray<Entity>(shootData.NumberOfShoot, Allocator.Temp);
+            EntityCommandBuffer.Instantiate(shootData.ProjectilePrefabEntity, entities);
+            for (int i = 1; i <= shootData.NumberOfShoot; i++)
+            {
+                int j = i - 1;
+                Vector3 direction = Quaternion.AngleAxis(j % 2 == 0
+                                            ? shootData.AngleDifference * (j / 2)
+                                            : -shootData.AngleDifference * ((j + 1) / 2),
+                                            (Vector3)localTransform.Forward())
+                                    * originMovementDirection;
+
+                direction = (i == 1 ? originMovementDirection : direction);
+                direction.Normalize();
+
+                float angle = Vector2.SignedAngle(Vector2.right, direction);
+
+                EntityCommandBuffer.SetComponent(entities[i - 1], new LocalTransform
+                {
+                    Position = localTransform.Position,
+                    Scale = 1f,
+                    Rotation = Quaternion.Euler(new Vector3(0, 0, angle))
+                });
+                EntityCommandBuffer.SetComponent(entities[i - 1], new Moving
+                {
+                    MoveSpeedValue = shootData.BulletMoveSpeed,
+                    Direction = direction
+                });
+            }
+        }
+    }
+    
 }
