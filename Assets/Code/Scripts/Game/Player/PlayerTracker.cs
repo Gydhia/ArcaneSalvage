@@ -1,6 +1,7 @@
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Code.Scripts.Game.Player
 {
@@ -22,9 +23,9 @@ namespace Assets.Code.Scripts.Game.Player
         {
             if (!SystemAPI.TryGetSingletonEntity<InputVariables>(out var playerEntity))
                 return;
-     
+            
             var localToWorld = SystemAPI.GetComponent<LocalToWorld>(playerEntity);
-     
+
             Entities.ForEach((PlayerTracker tracker) =>
             {
                 tracker.transform.SetPositionAndRotation(localToWorld.Position, localToWorld.Rotation);

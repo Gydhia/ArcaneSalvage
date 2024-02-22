@@ -36,7 +36,7 @@ public partial class ShootingStraightSystem : SystemBase
         
     }
 
-    [BurstCompile]
+    //[BurstCompile]
     public partial struct ShootingStraightJob : IJobEntity
     {
         public Vector3 PlayerPosition;
