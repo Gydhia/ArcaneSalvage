@@ -55,12 +55,15 @@ namespace ArcanaSalvage.UI
         public void Update()
         {
             if (!m_playing) return;
-            
-            var dataSingleton = m_entityManager.GetComponentData<DataSingleton>(m_dataEntity);
 
-            if (dataSingleton.PlayerDead )
+            if (m_entityManager.Exists(m_dataEntity))
             {
-                OnGameEnded(false);
+                var dataSingleton = m_entityManager.GetComponentData<DataSingleton>(m_dataEntity);
+                
+                if (dataSingleton.PlayerDead )
+                {
+                    OnGameEnded(false);
+                }
             }
             
             TimeSpan time = TimeSpan.FromSeconds(Time.time - startTime);

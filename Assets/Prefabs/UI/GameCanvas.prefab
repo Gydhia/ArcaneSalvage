@@ -3668,6 +3668,7 @@ MonoBehaviour:
   m_goldsResult: {fileID: 1278224499497536173}
   m_killsResults: {fileID: 7404045081728176023}
   m_resultText: {fileID: 7943395631847187292}
+  m_resultBanner: {fileID: 3315898841728048583}
 --- !u!1 &7036621570488275053
 GameObject:
   m_ObjectHideFlags: 0

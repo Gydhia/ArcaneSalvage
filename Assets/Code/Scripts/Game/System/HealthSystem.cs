@@ -32,8 +32,6 @@ public partial struct HealthSystem : ISystem
         };
         lifetimeManagerJob.Schedule();
 
-
-        
         
         NativeArray<DataSingleton> dataSingletonNative = new NativeArray<DataSingleton>(1, Allocator.TempJob);
 

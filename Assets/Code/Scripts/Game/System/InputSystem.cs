@@ -36,7 +36,6 @@ namespace Assets.Code.Scripts.Game.Player
             {
                 _inputComponent.Touch = false;
             };
-            
         }
 
         private async Task InputWait()
