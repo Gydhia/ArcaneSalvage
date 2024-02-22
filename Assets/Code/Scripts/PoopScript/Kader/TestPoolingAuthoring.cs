@@ -28,7 +28,7 @@ public partial class TestSystem : SystemBase
     protected override void OnUpdate()
     {
         //Debug.Log("caca");
-        Debug.Log(PoolingAuthoring.Instance.GetObject(PoolingType.Ennemy));
+       // Debug.Log(PoolingAuthoring.Instance.GetObject(PoolingType.Ennemy));
         //SystemAPI.GetComponentLookup<>();
     }
 }
