@@ -8,6 +8,4 @@ public struct EnemySpawnerComponent : IComponentData
     public float SpawnCooldown;
     public float MinDistanceFromPlayer;
     public float SpawnRadius;
-
-    
 }
