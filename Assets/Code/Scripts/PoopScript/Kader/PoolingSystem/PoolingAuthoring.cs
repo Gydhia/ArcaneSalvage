@@ -10,53 +10,77 @@ public class PoolingAuthoring : Singleton<PoolingAuthoring>
 {
 
     [SerializeField]
-    public List<DictionnaryItems> _gameObjectItems = new List<DictionnaryItems>();
+    public List<DictionnaryItems> _gameObjectItems;
 
     public Dictionary<PoolingType, NativeArray<Entity>> pool;
 
     public EntityManager entityManager;
+    
+    
+
+    /*private void Start()
+    {
+        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+        pool = new Dictionary<PoolingType, NativeArray<Entity>>();
+            
+        for (int i = 0; i < _gameObjectItems.Count; i++)
+        {
+            Entity entity = entityManager.CreateEntity();
+            entityManager.AddComponent(entity, typeof(PoolableComponent));
+            
+            PoolableComponent poolComp = new PoolableComponent()
+            {
+                isActive = false
+            };
+            entityManager.SetComponentData(entity, poolComp);
+            
+            //Debug.Log(entity);
+            PoolableComponent poolableTest = entityManager.GetComponentData<PoolableComponent>(entity);
+            
+            entityManager.AddComponentObject(entity, _gameObjectItems[i]._entity);
+         
+            NativeArray<Entity> entities = new NativeArray<Entity>(_gameObjectItems[i]._nbrOfGameObject, Allocator.Persistent);
+            entityManager.Instantiate(entity,entities);
+            pool.Add(_gameObjectItems[i]._poolingType, entities);
+        }
+    }*/
 
     public class BakerScript : Baker<PoolingAuthoring>
     {
         public override void Bake(PoolingAuthoring poolingManager)
         {
-            poolingManager.entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            PoolingAuthoring.Instance = poolingManager;
+            PoolingAuthoring.Instance.entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-            poolingManager.pool = new Dictionary<PoolingType, NativeArray<Entity>>();
+            PoolingAuthoring.Instance.pool = new Dictionary<PoolingType, NativeArray<Entity>>();
 
-            for (int i = 0; i < poolingManager._gameObjectItems.Count; i++)
+            Debug.Log("gros hdhdhkdfhjdfh" + PoolingAuthoring.Instance._gameObjectItems.Count);
+
+            for (int i = 0; i < PoolingAuthoring.Instance._gameObjectItems.Count; i++)
             {
-                Entity entity = poolingManager.entityManager.CreateEntity(typeof(PoolableComponent));
-                poolingManager.entityManager.SetComponentData(entity, new PoolableComponent
+                Entity entity = GetEntity(PoolingAuthoring.Instance._gameObjectItems[i]._entity, TransformUsageFlags.Dynamic);
+                PoolableComponent poolNew = new PoolableComponent()
                 {
                     isActive = false
-                });
-                poolingManager.entityManager.AddComponentObject(entity, poolingManager._gameObjectItems[i]._entity);
-         
-                NativeArray<Entity> entities = new NativeArray<Entity>(poolingManager._gameObjectItems[i]._nbrOfGameObject, Allocator.Persistent);
-                poolingManager.entityManager.Instantiate(entity,entities);
-                poolingManager.pool.Add(poolingManager._gameObjectItems[i]._poolingType, entities);
+                };
+                PoolingAuthoring.Instance.entityManager.AddComponent(entity, typeof(PoolableComponent));
+                PoolingAuthoring.Instance.entityManager.SetComponentData(entity, poolNew);
+                
+
+                NativeArray<Entity> entities = new NativeArray<Entity>(PoolingAuthoring.Instance._gameObjectItems[i]._nbrOfGameObject, Allocator.Persistent);
+                PoolingAuthoring.Instance.entityManager.Instantiate(entity, entities);
+                PoolingAuthoring.Instance.pool.Add(PoolingAuthoring.Instance._gameObjectItems[i]._poolingType, entities);
+                Debug.Log(PoolingAuthoring.Instance.pool.Count);
+
             }
-
-            /*Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-
-            for (int i = 0; i < poolingManager._gameObjectItems.Count; i++)
-            {
-                Entity newEntity = entity;
-                
-                AddComponent(entity, new IPoolingEntityComponent()
-                {
-                    nbrOfEntity = poolingManager._gameObjectItems[i]._nbrOfGameObject,
-                    entity = GetEntity(poolingManager._gameObjectItems[i]._entity, TransformUsageFlags.Dynamic)
-                });
-                
-            }*/
         }
     }
-    
+
     public Entity GetObject(PoolingType prefabType)
     {
         
+        Debug.Log(pool);
         
         for (int i = 0; i < pool[prefabType].Length; i++)
         {
@@ -102,7 +126,6 @@ public struct DictionnaryItems
     public GameObject _entity;
     public int _nbrOfGameObject;
     public PoolingType _poolingType;
-
 }
 
 public enum PoolingType
