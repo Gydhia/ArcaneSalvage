@@ -1,6 +1,7 @@
 using System;
 using Code.Scripts.Helper;
 using TMPro;
+using Unity.Entities;
 using UnityEngine;
 
 namespace ArcanaSalvage.UI
@@ -27,6 +28,9 @@ namespace ArcanaSalvage.UI
             PlayerData.CurrentPlayerData.OnGoldsChanged += UpdateGolds;
             PlayerData.CurrentPlayerData.OnEnemyKillsChanged += UpdateEnemyKills;
 
+            // HealthSystem.OnPlayerDeath += OnPlayerDeath;
+            // HealthSystem.OnEnemyDeath += OnEnemyDeath;
+            
             UpdateGolds(PlayerData.CurrentPlayerData.GetGolds());
             UpdateEnemyKills(PlayerData.CurrentPlayerData.GetEnemyKills());
 
@@ -36,6 +40,19 @@ namespace ArcanaSalvage.UI
             startTime = Time.time;
         }
 
+        private void OnPlayerDeath(object sender, EventArgs ae)
+        {
+            OnGameEnded(false);
+            Debug.Log("PLAYER IS DIED FROM EVENT");
+        }
+
+        private void OnEnemyDeath(object sender, EventArgs ae)
+        {
+            PlayerData.CurrentPlayerData.ModifyEnemyKills(1);
+            Debug.Log("ENEMY IS DIED FROM EVENT");
+
+        }
+        
         public void Update()
         {
             TimeSpan time = TimeSpan.FromSeconds(Time.time - startTime);
@@ -72,6 +89,8 @@ namespace ArcanaSalvage.UI
 
         public void OnGameEnded(bool result)
         {
+            Time.timeScale = 0f;
+            
             m_gameResultsSection.gameObject.SetActive(true);
             
             m_resultText.text = result ? "VICTORY" : "DEFEAT";

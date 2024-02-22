@@ -1,20 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System;
 using Assets.Code.Scripts.Game.Player;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using Random = UnityEngine.Random;
 
 public partial struct HealthSystem : ISystem
 {
-    public static UnityEvent PlayerDeathEvent = new UnityEvent();
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<Health>();
+        state.RequireForUpdate<DataSingleton>();
     }
 
     public void OnUpdate(ref SystemState state)
@@ -41,8 +40,17 @@ public partial struct HealthSystem : ISystem
         entityCommandBufferHealthManager.Playback(state.EntityManager);
         entityCommandBufferHealthManager.Dispose();
 
-        PlayerDeathManager playerDeathManager = new PlayerDeathManager();
+        PlayerDeathManager playerDeathManager = new PlayerDeathManager
+        {
+            DataSingleton = SystemAPI.GetSingleton<DataSingleton>()
+        };
         playerDeathManager.Schedule();
+
+        EnemyDeathManager enemyDeathManager = new EnemyDeathManager
+        {
+            DataSingleton = SystemAPI.GetSingleton<DataSingleton>()
+        };
+        enemyDeathManager.Schedule();
     }
 
     [BurstCompile]
@@ -87,13 +95,27 @@ public partial struct HealthSystem : ISystem
     [BurstCompile, WithAll(typeof(Health),typeof(InputVariables))]
     public partial struct PlayerDeathManager : IJobEntity
     {
+        public DataSingleton DataSingleton;
+        
         public void Execute(in Health health)
         {
             if (health.CurrentHealth > 0.0f)
                 return;
-            Debug.Log("Dead");
-            PlayerDeathEvent.Invoke();
+            Debug.Log("Player is Dead");
+            DataSingleton.PlayerDead = true;
         }
     }
-    
+    [BurstCompile, WithAll(typeof(Health),typeof(Enemy))]
+    public partial struct EnemyDeathManager : IJobEntity
+    {
+        public DataSingleton DataSingleton;
+
+        public void Execute(in Health health)
+        {
+            if (health.CurrentHealth > 0.0f)
+                return;
+            Debug.Log("Enemy is Dead");
+            DataSingleton.KillsCounter++;
+        }
+    }
 }

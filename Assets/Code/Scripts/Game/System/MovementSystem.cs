@@ -10,12 +10,13 @@ using Unity.Physics;
 using Unity.Physics.Authoring;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public partial struct MovementSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<InputComponent>();
+        state.RequireForUpdate<DataSingleton>();
         state.RequireForUpdate<Moving>();
     }
 
@@ -31,7 +32,7 @@ public partial struct MovementSystem : ISystem
         
         SetDestinationJob setDestinationJob = new SetDestinationJob()
         {
-            Destination = SystemAPI.GetSingleton<InputComponent>().PlayerPosition,
+            Destination = SystemAPI.GetSingleton<DataSingleton>().PlayerPosition,
         };
         setDestinationJob.Schedule();
 
@@ -43,7 +44,7 @@ public partial struct MovementSystem : ISystem
         
         MovingPlayerJob movingPlayerJob = new MovingPlayerJob
         {
-            inputComponent = SystemAPI.GetSingleton<InputComponent>()
+            dataSingleton = SystemAPI.GetSingleton<DataSingleton>()
         };
         movingPlayerJob.Schedule();
 
@@ -79,14 +80,14 @@ public partial struct MovementSystem : ISystem
     [BurstCompile, WithAll(typeof(Moving), typeof(AgentBody), typeof(InputVariables))]
     public partial struct MovingPlayerJob : IJobEntity
     {
-        public InputComponent inputComponent;
+        public DataSingleton dataSingleton;
         public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {
-            if (inputComponent.CanMove)
+            if (dataSingleton.CanMove)
             {
-                Vector2 moveDir = inputComponent.MoveDirection;
+                Vector2 moveDir = dataSingleton.MoveDirection;
                 Vector3 direction = moveDir * moveData.MoveSpeedValue;
-                Vector3 playerDestination= inputComponent.PlayerPosition + (float3)direction;
+                Vector3 playerDestination= dataSingleton.PlayerPosition + (float3)direction;
                 agentBody.SetDestination(playerDestination);
                 moveData.Direction = agentBody.Velocity;
             }

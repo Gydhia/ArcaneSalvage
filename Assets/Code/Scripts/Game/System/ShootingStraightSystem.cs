@@ -18,7 +18,7 @@ public partial class ShootingStraightSystem : SystemBase
     [BurstCompile]
     protected override void OnUpdate()
     {
-        Vector3 playerPosition = SystemAPI.GetSingleton<InputComponent>().PlayerPosition;
+        Vector3 playerPosition = SystemAPI.GetSingleton<DataSingleton>().PlayerPosition;
 
         EntityCommandBuffer entityCommandBufferStraightJob = new EntityCommandBuffer(Allocator.TempJob);
 

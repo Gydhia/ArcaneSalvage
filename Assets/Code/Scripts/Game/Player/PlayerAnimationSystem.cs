@@ -38,7 +38,7 @@ public partial struct PlayerAnimationSystem : ISystem
 
                 //playerVisualsReference.gameObject.GetComponent<Animator>().SetBool("Idle", !SystemAPI.GetSingleton<InputComponent>().CanMove);
                 PlayerAnimationBehavior animation = playerVisualsReference.gameObject.GetComponent<PlayerAnimationBehavior>();
-                animation.ToggleIdle(!SystemAPI.GetSingleton<InputComponent>().CanMove);
+                animation.ToggleIdle(!SystemAPI.GetSingleton<DataSingleton>().CanMove);
                 animation.UpdateVelocity(velocity.Linear, playerComponent.ValueRO.IsPhaseTwo);
                 
                 
