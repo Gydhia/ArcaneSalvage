@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Code.Scripts.Helper;
 using TMPro;
 using UnityEngine;
@@ -16,8 +14,14 @@ namespace ArcanaSalvage.UI
 
         [SerializeField] private RectTransform m_pauseSection;
 
-        
+        [SerializeField] private RectTransform m_gameResultsSection;
+        [SerializeField] private TextMeshProUGUI m_goldsResult;
+        [SerializeField] private TextMeshProUGUI m_killsResults;
+
+        [SerializeField] private TextMeshProUGUI m_resultText;
+
         private float startTime;
+
         private void Start()
         {
             PlayerData.CurrentPlayerData.OnGoldsChanged += UpdateGolds;
@@ -25,9 +29,10 @@ namespace ArcanaSalvage.UI
 
             UpdateGolds(PlayerData.CurrentPlayerData.GetGolds());
             UpdateEnemyKills(PlayerData.CurrentPlayerData.GetEnemyKills());
-                
+
+            m_gameResultsSection.gameObject.SetActive(false);
             m_pauseSection.gameObject.SetActive(false);
-            
+
             startTime = Time.time;
         }
 
@@ -37,12 +42,12 @@ namespace ArcanaSalvage.UI
 
             m_timer.text = time.ToString(@"mm\:ss");
         }
-        
+
         private void UpdateGolds(int nb)
         {
             m_goldText.text = nb.ToString();
         }
-        
+
         private void UpdateEnemyKills(int nb)
         {
             m_enemyKillsText.text = nb.ToString();
@@ -52,7 +57,7 @@ namespace ArcanaSalvage.UI
         {
             m_pauseSection.gameObject.SetActive(true);
         }
-        
+
         public void OnResumeClicked()
         {
             m_pauseSection.gameObject.SetActive(false);
@@ -61,6 +66,17 @@ namespace ArcanaSalvage.UI
         public void OnReturnToMainMenuClicked()
         {
             SceneController.Instance.LoadScene("MainMenu");
+        }
+
+        public void OnGameEnded(bool result)
+        {
+            m_gameResultsSection.gameObject.SetActive(true);
+            
+            m_resultText.text = result ? "VICTORY" : "DEFEAT";
+            m_resultText.color = result ? Color.green : Color.red;
+
+            m_goldsResult.text = PlayerData.CurrentPlayerData.GetGolds().ToString();
+            m_killsResults.text = PlayerData.CurrentPlayerData.GetEnemyKills().ToString();
         }
     }
 }
