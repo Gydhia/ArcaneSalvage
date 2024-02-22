@@ -6,13 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Alexis-Dev.unity
-    guid: 7cafef2a295d5364e8506bce6cbe6110
+    path: Assets/Level/Scenes/MainMenu.unity
+    guid: 309b573466b45b74ebc631eb152cf206
   - enabled: 1
-    path: Assets/Scenes/Alexis-SubDev.unity
-    guid: eb90f74cdfe56de4c9cdefdd9d2ea667
-  - enabled: 1
-    path: Assets/Level/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  m_configObjects:
-    com.unity.addressableassets: {fileID: 11400000, guid: 99dfad2a793195f42bea3dc35fea58a4, type: 2}
+    path: Assets/Scenes/Game.unity
+    guid: 98f8edb3ea79fa741ba1281ca0e25410
+  m_configObjects: {}

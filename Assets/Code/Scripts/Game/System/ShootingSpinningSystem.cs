@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 using static ShootingStraightSystem;
@@ -29,7 +31,7 @@ public partial class ShootingSpinningSystem : SystemBase
         entityCommandBufferSpinningJob.Dispose();
     }
 
-    [BurstCompile]
+    //[BurstCompile]
     public partial struct ShootingSpinningJob : IJobEntity
     {
         public float Time;
@@ -44,15 +46,14 @@ public partial class ShootingSpinningSystem : SystemBase
                 {
                     Position = localTransform.Position,
                     Scale = 1f,
-                    Rotation = Quaternion.identity
+                    Rotation = Quaternion.AngleAxis((shootData.BaseAngle + shootData.AngleIncrease) % 360, Vector3.forward)
                 });
                 EntityCommandBuffer.AddComponent(entity, new Moving
                 {
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = Quaternion.AngleAxis(
-                        shootData.BaseAngle, new Vector3(
-                            localTransform.Forward().x, localTransform.Forward().y, localTransform.Forward().z))
-                    * new Vector3(localTransform.Right().x, localTransform.Right().y, localTransform.Right().z),
+                        shootData.BaseAngle, (Vector3) localTransform.Forward())
+                    * (Vector3) localTransform.Right()
                 });
                 shootData.BaseAngle = (shootData.BaseAngle + shootData.AngleIncrease) % 360;
                 CooldownManager.Start(shootData.CooldownID, shootData.FireRate, Time);

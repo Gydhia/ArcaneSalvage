@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 
 namespace Assets.Code.Scripts.Game.Player
@@ -49,8 +50,11 @@ namespace Assets.Code.Scripts.Game.Player
             {
                 inputVariables = inputVar.ValueRO;
             }
-
-            _inputComponent.PlayerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+     
+            SystemAPI.TryGetSingletonEntity<InputVariables>(out var playerEntity);
+            var localToWorld = SystemAPI.GetComponent<LocalToWorld>(playerEntity);
+            
+            _inputComponent.PlayerPosition = localToWorld.Position;
             
             if (_inputComponent.Touch)
             {

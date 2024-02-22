@@ -123,7 +123,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Torch_Yellow_Frame_0
     originalName: 
-    pivot: {x: 0.5633803, y: -0.6082474}
+    pivot: {x: 0.54293907, y: 0.050080605}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:

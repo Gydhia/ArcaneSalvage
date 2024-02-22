@@ -1,6 +1,10 @@
 using Assets.Code.Scripts.Game.Player;
+using ProjectDawn.Navigation;
+using ProjectDawn.Navigation.Hybrid;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Authoring;
@@ -18,13 +22,14 @@ public partial struct MovementSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        MovingEnemyJob movingEnemyJob = new MovingEnemyJob
+        SetDestinationJob setDestinationJob = new SetDestinationJob
         {
-            DeltaTime = SystemAPI.Time.DeltaTime,
-            PlayerPosition = SystemAPI.GetSingleton<InputComponent>().PlayerPosition,
+            inputComponent = SystemAPI.GetSingleton<InputComponent>(),
         };
-        movingEnemyJob.Schedule();
-
+        setDestinationJob.Schedule();
+        
+        Debug.Log("Moving enemies sheduled");
+        
         MovingBulletJob movingBulletJob = new MovingBulletJob
         {
             DeltaTime = SystemAPI.Time.DeltaTime,
@@ -33,29 +38,10 @@ public partial struct MovementSystem : ISystem
         
         MovingPlayerJob movingPlayerJob = new MovingPlayerJob
         {
-
-            InputComponent = SystemAPI.GetSingleton<InputComponent>()
-            
+            inputComponent = SystemAPI.GetSingleton<InputComponent>()
         };
-
         movingPlayerJob.Schedule();
-
-    }
-
-    [BurstCompile, WithAll(typeof(Moving), typeof(Enemy))]
-    public partial struct MovingEnemyJob : IJobEntity
-    {
-        public float DeltaTime;
-        public Vector3 PlayerPosition;
-        public void Execute(ref LocalTransform localTransform, in Moving movementData)
-        {
-            float x = PlayerPosition.x - localTransform.Position.x;
-            float y = PlayerPosition.y - localTransform.Position.y;
-            float3 Direction = math.normalizesafe(
-                new float3(PlayerPosition.x - localTransform.Position.x,
-                PlayerPosition.y - localTransform.Position.y, 0.0f));
-            localTransform.Position += (Direction * movementData.MoveSpeedValue * DeltaTime);
-        }
+        
     }
 
     [BurstCompile, WithAll(typeof(Moving), typeof(Bullet))]
@@ -69,22 +55,36 @@ public partial struct MovementSystem : ISystem
         }
     }
 
-    [WithAll(typeof(Moving), typeof(InputVariables))]
+    [BurstCompile, WithAll(typeof(Moving), typeof(AgentBody), typeof(InputVariables))]
     public partial struct MovingPlayerJob : IJobEntity
     {
-        public InputComponent InputComponent; 
-        public void Execute(ref PhysicsVelocity physicsVelocity, in Moving moveData)
+        public InputComponent inputComponent;
+        public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {
-            if (InputComponent.CanMove)
+            if (inputComponent.CanMove)
             {
-                Vector2 moveDir = InputComponent.MoveDirection;
-                Vector2 direction = moveDir * moveData.MoveSpeedValue;
-                physicsVelocity.Linear = new float3(direction.x, direction.y, 0);
+                Vector2 moveDir = inputComponent.MoveDirection;
+                Vector3 direction = moveDir * moveData.MoveSpeedValue;
+                Vector3 playerDestination= inputComponent.PlayerPosition + (float3)direction;
+                agentBody.SetDestination(playerDestination);
+                moveData.Direction = agentBody.Velocity;
             }
             else
             {
-                physicsVelocity.Linear = float3.zero;
+                agentBody.IsStopped = true;
             }
+        }
+    }
+    
+    [BurstCompile, WithAll(typeof(AgentBody), typeof(Moving), typeof(Enemy))]
+    public partial struct SetDestinationJob : IJobEntity
+    {
+        public InputComponent inputComponent;
+
+        public void Execute(ref AgentBody agentBody, ref Moving moveData)
+        {
+            agentBody.SetDestination(inputComponent.PlayerPosition);
+            moveData.Direction = agentBody.Velocity;
         }
     }
 }
