@@ -23,7 +23,6 @@ public class WeaponManager : MonoBehaviour
 
     private EntityManager m_entityManager;
     private Entity m_playerEntity;
-    [SerializeField]private ShootingStraight m_shootingStraight;
 
     public ShootingStraight ShootingStats;
 
@@ -48,7 +47,6 @@ public class WeaponManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         m_playerEntity = m_entityManager.CreateEntityQuery(typeof(InputVariables)).GetSingletonEntity();
-        m_shootingStraight = m_entityManager.GetComponentData<ShootingStraight>(m_playerEntity);
         CalculateOverrides();
     }
 
@@ -68,6 +66,7 @@ public class WeaponManager : MonoBehaviour
         var shootingStats = new ShootingStraight();
         var bulletStats = new Bullet();
 
+        shootingStats.BulletMoveSpeed = currentWeapon.speed + Upgrades.Where(u => u.upgradeType == UpgradeType.MoreSpeed).Sum(u => u.modifier);
         shootingStats.FireRate = currentWeapon.firingRate + Upgrades.Where(u => u.upgradeType == UpgradeType.FireRate).Sum(u => u.modifier);
         shootingStats.FireRange = currentWeapon.FireRange + Upgrades.Where(u => u.upgradeType == UpgradeType.MoreRange).Sum(u => u.modifier);
         shootingStats.NumberOfShoot = currentWeapon.NumberOfShoots + Upgrades.Where(u => u.upgradeType == UpgradeType.MoreArrow).Sum(u => u.modifier);

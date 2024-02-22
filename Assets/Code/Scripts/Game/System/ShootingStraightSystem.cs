@@ -37,6 +37,7 @@ public partial class ShootingStraightSystem : SystemBase
         {
             EntityCommandBuffer = entityCommandBufferStraightPlayerJob,
             Time = (float)SystemAPI.Time.ElapsedTime,
+            entityExist = EntityManager.Exists(SystemAPI.GetSingleton<PlayerTarget>().enemy),
         };
         shootingPlayerJob.Schedule();
         Dependency.Complete();
@@ -141,13 +142,12 @@ public partial class ShootingStraightSystem : SystemBase
     {
         public float Time;
         public EntityCommandBuffer EntityCommandBuffer;
+        public bool entityExist;
 
         public void Execute(in LocalTransform localTransform, in ShootingStraight shootData, in PlayerTarget playerTarget) 
         {
-            Debug.Log("Executing players shoot");
-            if (shootData.NumberOfShoot <= 0 || !CooldownManager.IsDone(shootData.CooldownID, Time))
+            if (shootData.NumberOfShoot <= 0 || !CooldownManager.IsDone(shootData.CooldownID, Time) || !entityExist)
                 return;
-            Debug.Log("Executing players shoot after");
             float x = playerTarget.enemyPosition.x - localTransform.Position.x;
             float y = playerTarget.enemyPosition.y - localTransform.Position.y;
             if (Math.Sqrt(x * x + y * y) <= shootData.FireRange)
