@@ -83,10 +83,11 @@ public partial struct TriggerBulletSystem : ISystem
         {
             //Reduce Health Of Hit Body
             Debug.Log("Survived! We are going to lower health");
+
             var playerHealthComponent = HealthGroup[character];
             playerHealthComponent.CurrentHealth -= BulletGroup[bullet].Damage;
             HealthGroup[character] = playerHealthComponent;
-            
+
             //Reduce Health Of Bullet
             var bulletHealthComponent = HealthGroup[bullet];
             bulletHealthComponent.CurrentHealth --;

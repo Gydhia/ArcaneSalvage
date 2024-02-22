@@ -486,8 +486,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4526853835284727599, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2079401241}
   m_SourcePrefab: {fileID: 100100000, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+--- !u!1 &2079401240 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4526853835284727599, guid: d4862b4afd4825644acbde1493a43ae3, type: 3}
+  m_PrefabInstance: {fileID: 2079401239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2079401241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079401240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d3f709871f1fc4b9b67277740f1ed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FireRange: 0
+  FireRate: 0
+  ProjectilePrefab: {fileID: 0}
+  BulletMoveSpeed: 0
+  NumberOfShoot: 0
+  AngleDifference: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
