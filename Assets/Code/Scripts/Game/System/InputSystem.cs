@@ -10,6 +10,7 @@ namespace Assets.Code.Scripts.Game.Player
     public partial class InputSystem : SystemBase
     {
         private InputActions _inputActions;
+
         private DataSingleton _inputComponent;
         
         protected override void OnCreate()
@@ -35,7 +36,6 @@ namespace Assets.Code.Scripts.Game.Player
             {
                 _inputComponent.Touch = false;
             };
-            
         }
 
         private async Task InputWait()

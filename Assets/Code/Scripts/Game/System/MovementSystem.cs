@@ -10,6 +10,7 @@ using Unity.Physics;
 using Unity.Physics.Authoring;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public partial struct MovementSystem : ISystem
 {
@@ -37,7 +38,7 @@ public partial struct MovementSystem : ISystem
         
         MovingPlayerJob movingPlayerJob = new MovingPlayerJob
         {
-            inputComponent = SystemAPI.GetSingleton<DataSingleton>()
+            dataSingleton = SystemAPI.GetSingleton<DataSingleton>()
         };
         movingPlayerJob.Schedule();
         
@@ -57,14 +58,14 @@ public partial struct MovementSystem : ISystem
     [BurstCompile, WithAll(typeof(Moving), typeof(AgentBody), typeof(InputVariables))]
     public partial struct MovingPlayerJob : IJobEntity
     {
-        public DataSingleton inputComponent;
+        public DataSingleton dataSingleton;
         public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {
-            if (inputComponent.CanMove)
+            if (dataSingleton.CanMove)
             {
-                Vector2 moveDir = inputComponent.MoveDirection;
+                Vector2 moveDir = dataSingleton.MoveDirection;
                 Vector3 direction = moveDir * moveData.MoveSpeedValue;
-                Vector3 playerDestination= inputComponent.PlayerPosition + (float3)direction;
+                Vector3 playerDestination= dataSingleton.PlayerPosition + (float3)direction;
                 agentBody.SetDestination(playerDestination);
                 moveData.Direction = agentBody.Velocity;
             }

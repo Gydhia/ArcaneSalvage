@@ -48,8 +48,6 @@ namespace Code.Scripts.Game.System
             
             SystemAPI.SetSingleton(nativeArrayData[0]);
             nativeArrayData.Dispose();
-            
-            Debug.Log(SystemAPI.GetSingleton<DataSingleton>().KeyNumber);
         }
 
         public partial struct TriggerJob : ITriggerEventsJob

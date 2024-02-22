@@ -180,6 +180,15 @@ namespace ArcanaSalvage
             
             OnGoldsChanged?.Invoke(m_golds);
         }
+
+        public void ModifyEnemyKills(int amount)
+        {
+            m_enemyKills += amount;
+            
+            m_playerSave.SaveGoldsAndEnemies(this);
+
+            OnEnemyKillsChanged?.Invoke(m_enemyKills);
+        }
         
         public List<EquipmentPreset> GetPlayerEquipped() => m_playerItemsEquipped.Values.ToList();
         public List<EquipmentPreset> GetPlayerInventory() => m_playerItemsInventory;
