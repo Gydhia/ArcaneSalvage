@@ -55,12 +55,12 @@ public partial struct TriggerBulletSystem : ISystem
             (bool, Entity) bulletCheck = FindEntityWithComponent(entityA,entityB, BulletGroup);
             (bool, Entity) enemyCheck = FindEntityWithComponent(entityA,entityB, EnemyGroup);
             
-            if (playerCheck.Item1 && bulletCheck.Item1 && !enemyCheck.Item1)
+            if (playerCheck.Item1 && bulletCheck.Item1 && BulletGroup[bulletCheck.Item2].OwnerType != OwnerType.Player && !enemyCheck.Item1)
             {
                 DamageEntity(playerCheck.Item2, bulletCheck.Item2);
             }
 
-            if (!playerCheck.Item1 && bulletCheck.Item1 && enemyCheck.Item1)
+            if (!playerCheck.Item1 && bulletCheck.Item1 && BulletGroup[bulletCheck.Item2].OwnerType != OwnerType.Enemy && enemyCheck.Item1)
             {
                 DamageEntity(enemyCheck.Item2, bulletCheck.Item2);
             }

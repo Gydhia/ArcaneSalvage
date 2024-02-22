@@ -23,19 +23,14 @@ public partial struct MovementSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        // MovingEnemyJob movingEnemyJob = new MovingEnemyJob
-        // {
-        //     DeltaTime = SystemAPI.Time.DeltaTime,
-        //     PlayerPosition = SystemAPI.GetSingleton<InputComponent>().PlayerPosition,
-        // };
-        // movingEnemyJob.Schedule();
-        
-        SetDestinationJob setDestinationJob = new SetDestinationJob()
+        SetDestinationJob setDestinationJob = new SetDestinationJob
         {
-            Destination = SystemAPI.GetSingleton<DataSingleton>().PlayerPosition,
+            inputComponent = SystemAPI.GetSingleton<DataSingleton>(),
         };
         setDestinationJob.Schedule();
-
+        
+        Debug.Log("Moving enemies sheduled");
+        
         MovingBulletJob movingBulletJob = new MovingBulletJob
         {
             DeltaTime = SystemAPI.Time.DeltaTime,
@@ -47,23 +42,7 @@ public partial struct MovementSystem : ISystem
             dataSingleton = SystemAPI.GetSingleton<DataSingleton>()
         };
         movingPlayerJob.Schedule();
-
-    }
-
-    [BurstCompile, WithAll(typeof(Moving), typeof(Enemy))]
-    public partial struct MovingEnemyJob : IJobEntity
-    {
-        public float DeltaTime;
-        public Vector3 PlayerPosition;
-        public void Execute(ref LocalTransform localTransform, in Moving movementData)
-        {
-            float x = PlayerPosition.x - localTransform.Position.x;
-            float y = PlayerPosition.y - localTransform.Position.y;
-            float3 Direction = math.normalizesafe(
-                new float3(PlayerPosition.x - localTransform.Position.x,
-                PlayerPosition.y - localTransform.Position.y, 0.0f));
-            localTransform.Position += (Direction * movementData.MoveSpeedValue * DeltaTime);
-        }
+        
     }
 
     [BurstCompile, WithAll(typeof(Moving), typeof(Bullet))]
@@ -98,19 +77,15 @@ public partial struct MovementSystem : ISystem
         }
     }
     
-    [BurstCompile, WithAll(typeof(AgentBody), typeof(Moving))]
+    [BurstCompile, WithAll(typeof(AgentBody), typeof(Moving), typeof(Enemy))]
     public partial struct SetDestinationJob : IJobEntity
     {
-        public float3 Destination;
+        public InputComponent inputComponent;
 
-        public void Execute(ref AgentBody body, ref Moving moving)
+        public void Execute(ref AgentBody agentBody, ref Moving moveData)
         {
-            body.Destination = Destination;
-            body.IsStopped = false;
-
-            moving.Direction = body.Velocity;
+            agentBody.SetDestination(inputComponent.PlayerPosition);
+            moveData.Direction = agentBody.Velocity;
         }
     }
-    
-    
 }

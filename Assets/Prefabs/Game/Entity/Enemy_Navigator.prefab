@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 1053505801538786658}
   - component: {fileID: 7463043653298143901}
   - component: {fileID: 7578731173265049489}
+  - component: {fileID: 8729261033500785880}
+  - component: {fileID: 4292538214088850483}
   m_Layer: 0
   m_Name: Enemy_Navigator
   m_TagString: Enemy
@@ -188,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FireRate: 1000
-  ProjectilePrefab: {fileID: 7750744387637035585, guid: c60c9fe5ed362894683a11132e823bee, type: 3}
+  ProjectilePrefab: {fileID: 8363001878409199312, guid: c28f136ec9071c94b9d8f04ee67c12c8, type: 3}
   BulletMoveSpeed: 2
   AngleIncrease: 10
 --- !u!114 &7578731173265049489
@@ -205,7 +207,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FireRange: 2
   FireRate: 2
-  ProjectilePrefab: {fileID: 7750744387637035585, guid: c60c9fe5ed362894683a11132e823bee, type: 3}
+  ProjectilePrefab: {fileID: 8363001878409199312, guid: c28f136ec9071c94b9d8f04ee67c12c8, type: 3}
   BulletMoveSpeed: 2
   NumberOfShoot: 5
   AngleDifference: 5
+--- !u!114 &8729261033500785880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5541757147580900570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca526bf3d85adb498ff398cbed98f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4292538214088850483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5541757147580900570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f48b74bef9b6b44fad9c6a5529c2edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeedValue: 0
