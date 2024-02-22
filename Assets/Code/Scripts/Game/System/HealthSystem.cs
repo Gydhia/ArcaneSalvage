@@ -38,10 +38,9 @@ public partial struct HealthSystem : ISystem
         
         
         NativeArray<DataSingleton> dataSingletonNative = new NativeArray<DataSingleton>(1, Allocator.TempJob);
+
         SystemAPI.TryGetSingleton(out DataSingleton dataSingleton);
-        
         dataSingletonNative[0] = dataSingleton;
-        
         
         EntityCommandBuffer entityCommandBufferHealthManager = new EntityCommandBuffer(Allocator.TempJob);
         HealthManagerJob healthManagerJob = new HealthManagerJob
@@ -68,6 +67,8 @@ public partial struct HealthSystem : ISystem
         entityCommandBufferPlayerHealthManager.Dispose();
 
         SystemAPI.SetSingleton(dataSingletonNative[0]);
+
+        dataSingletonNative.Dispose();
     }
     
     [BurstCompile]
