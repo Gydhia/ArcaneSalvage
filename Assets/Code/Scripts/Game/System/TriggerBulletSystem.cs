@@ -14,7 +14,7 @@ public partial struct TriggerBulletSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<Bullet>();
+        state.RequireForUpdate<SimulationSingleton>();
     }
 
     public void OnUpdate(ref SystemState state)

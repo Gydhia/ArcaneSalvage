@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 using static ShootingStraightSystem;
@@ -44,7 +46,7 @@ public partial class ShootingSpinningSystem : SystemBase
                 {
                     Position = localTransform.Position,
                     Scale = 1f,
-                    Rotation = Quaternion.identity
+                    Rotation = Quaternion.AngleAxis((shootData.BaseAngle + shootData.AngleIncrease) % 360, Vector3.forward)
                 });
                 EntityCommandBuffer.AddComponent(entity, new Moving
                 {
