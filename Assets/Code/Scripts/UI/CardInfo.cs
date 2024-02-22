@@ -9,7 +9,8 @@ public enum UpgradeType
     FireRate,
     MoreArrow,
     Piercing,
-    MoreRange
+    MoreRange,
+    MoreSpeed
 }
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card Info")]

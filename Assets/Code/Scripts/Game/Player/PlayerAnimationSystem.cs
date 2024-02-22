@@ -38,10 +38,9 @@ public partial struct PlayerAnimationSystem : ISystem
                 playerVisualsReference.gameObject.transform.position = transform.Position;
 
                 PlayerAnimationBehavior animation = playerVisualsReference.gameObject.GetComponent<PlayerAnimationBehavior>();
+                
                 animation.ToggleIdle(!SystemAPI.GetSingleton<InputComponent>().CanMove);
                 animation.UpdateVelocity(velocity.Direction, playerComponent.ValueRO.IsPhaseTwo);
-
-            }
         }
 
         ECB.Playback(entityManager);

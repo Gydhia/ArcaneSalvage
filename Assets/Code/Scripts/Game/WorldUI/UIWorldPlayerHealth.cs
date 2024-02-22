@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Assets.Code.Scripts.Game.Player;
 using Unity.Entities;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +14,7 @@ public class UIWorldPlayerHealth : MonoBehaviour
     private IEnumerator Start()
     {
         m_entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-
+        
         yield return new WaitForSeconds(0.2f);
 
         m_playerEntity = m_entityManager.CreateEntityQuery(typeof(InputVariables)).GetSingletonEntity();
@@ -31,7 +30,10 @@ public class UIWorldPlayerHealth : MonoBehaviour
 
     private void Update()
     {
-        float currentPlayerHealth = m_entityManager.GetComponentData<Health>(m_playerEntity).CurrentHealth;
-        m_healthSlider.value = currentPlayerHealth;
+        if (m_entityManager.Exists(m_playerEntity))
+        {
+            float currentPlayerHealth = m_entityManager.GetComponentData<Health>(m_playerEntity).CurrentHealth;
+            m_healthSlider.value = currentPlayerHealth;
+        }
     }
 }

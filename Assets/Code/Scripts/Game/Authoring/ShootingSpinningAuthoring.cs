@@ -9,7 +9,7 @@ public class ShootingSpinningAuthoring : MonoBehaviour
     public GameObject ProjectilePrefab;
     public float BulletMoveSpeed;
     public float AngleIncrease;
-    private int _cooldownID = CooldownManager.NewId;
+
     private class Baker : Baker<ShootingSpinningAuthoring>
     {
         public override void Bake(ShootingSpinningAuthoring authoring)
@@ -18,11 +18,11 @@ public class ShootingSpinningAuthoring : MonoBehaviour
             AddComponent(entity, new ShootingSpinning
             {
                 FireRate = authoring.FireRate,
+                OriginalFireRate = authoring.FireRate,
                 ProjectilePrefabEntity = GetEntity(authoring.ProjectilePrefab, TransformUsageFlags.None),
                 BulletMoveSpeed = authoring.BulletMoveSpeed,
                 AngleIncrease = authoring.AngleIncrease,
                 BaseAngle = 0.0f,
-                CooldownID = authoring._cooldownID
             });
         }
     }
@@ -31,9 +31,9 @@ public class ShootingSpinningAuthoring : MonoBehaviour
 public struct ShootingSpinning : IComponentData
 {
     public float FireRate;
+    public float OriginalFireRate;
     public Entity ProjectilePrefabEntity;
     public float BulletMoveSpeed;
     public float AngleIncrease;
     public float BaseAngle;
-    public int CooldownID;
 }
