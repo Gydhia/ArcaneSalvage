@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 1
+  OwnerType: 0
 --- !u!114 &-4494197492307258610
 MonoBehaviour:
   m_ObjectHideFlags: 0

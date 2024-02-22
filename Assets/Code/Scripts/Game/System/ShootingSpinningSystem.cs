@@ -52,9 +52,8 @@ public partial class ShootingSpinningSystem : SystemBase
                 {
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = Quaternion.AngleAxis(
-                        shootData.BaseAngle, new Vector3(
-                            localTransform.Forward().x, localTransform.Forward().y, localTransform.Forward().z))
-                    * new Vector3(localTransform.Right().x, localTransform.Right().y, localTransform.Right().z),
+                        shootData.BaseAngle, (Vector3) localTransform.Forward())
+                    * (Vector3) localTransform.Right()
                 });
                 shootData.BaseAngle = (shootData.BaseAngle + shootData.AngleIncrease) % 360;
                 CooldownManager.Start(shootData.CooldownID, shootData.FireRate, Time);
