@@ -26,8 +26,8 @@ namespace ArcanaSalvage.UI
         private Dictionary<CornerDirection, Image> m_focusImages;
         private Image m_currentFocus;
         private RectTransform m_selfTransform;
-
-        private void OnValidate()
+        
+        private void Start()
         {
             m_selfTransform = GetComponent<RectTransform>();
             
@@ -39,10 +39,7 @@ namespace ArcanaSalvage.UI
             m_focusImages.Add(CornerDirection.TopLeft, m_focusDatas[1]);
             m_focusImages.Add(CornerDirection.TopRight, m_focusDatas[2]);
             m_focusImages.Add(CornerDirection.BotRight, m_focusDatas[3]);
-        }
-
-        private void Start()
-        {
+            
             m_visuals.SetActive(false);
 
             InputManager.Instance.OnTouchStart += OnTouchStart;

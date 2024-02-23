@@ -12,6 +12,7 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+[BurstCompile]
 public partial struct MovementSystem : ISystem
 {
     public void OnCreate(ref SystemState state)

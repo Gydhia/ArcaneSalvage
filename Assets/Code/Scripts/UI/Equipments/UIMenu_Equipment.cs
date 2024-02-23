@@ -25,17 +25,14 @@ namespace ArcanaSalvage.UI
         private Dictionary<Equipment.Equipment, UIEquipmentSlot> m_equipped = new Dictionary<Equipment.Equipment, UIEquipmentSlot>();
         private List<UIEquipmentItem> m_inventory = new List<UIEquipmentItem>();
 
-        private void OnValidate()
+        private void Start()
         {
             m_equipped = new Dictionary<Equipment.Equipment, UIEquipmentSlot>();
             foreach (var slot in EquipmentSlots)
             {
                 m_equipped.Add(slot.EquipmentType, slot);
             }
-        }
-
-        private void Start()
-        {
+            
             PlayerData.CurrentPlayerData.OnItemEquipped += AttachItemToSlot;
             PlayerData.CurrentPlayerData.OnItemUnequipped += UnequipItem;
             PlayerData.CurrentPlayerData.OnItemSold += OnItemSold;
