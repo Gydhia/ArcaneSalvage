@@ -12,7 +12,7 @@ public class PlayerTargetAuthoring : MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.None);
             AddComponent(entity, new PlayerTarget
             {
-                DistanceToClosestEnemy = 10000000.0f
+                DistanceToClosestEnemy = float.MaxValue
             });
         }
     }
@@ -23,5 +23,4 @@ public struct PlayerTarget : IComponentData
     public float DistanceToClosestEnemy;
     public Vector3 enemyPosition;
     public Entity enemy;
-
 }

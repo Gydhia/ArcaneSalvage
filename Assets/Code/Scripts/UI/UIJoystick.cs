@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -45,6 +46,11 @@ namespace ArcanaSalvage.UI
             m_visuals.SetActive(false);
 
             InputManager.Instance.OnTouchStart += OnTouchStart;
+        }
+
+        private void OnDestroy()
+        {
+            InputManager.Instance.OnTouchStart -= OnTouchStart;
         }
 
         private void OnTouchStart(Vector2 pointer)

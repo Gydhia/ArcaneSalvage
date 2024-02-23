@@ -74,6 +74,7 @@ namespace ArcanaSalvage.UI
                     int delta = invSingleton.KillsCounter - LevelSystem.LastKillCounter;
                     LevelSystem.LastKillCounter = invSingleton.KillsCounter;
                     
+                    PlayerData.CurrentPlayerData.ModifyEnemyKills(delta);
                     LevelSystem.GainXP(delta);
                 }
             }

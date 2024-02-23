@@ -31,8 +31,9 @@ public partial struct PlayerTargetSystem : ISystem
         state.Dependency = targetJob.Schedule(state.Dependency);
         state.Dependency.Complete();
         SystemAPI.SetSingleton(nativeArray[0]);
-        nativeArray.Dispose();
+        Debug.Log("Target : " + nativeArray[0].enemy + " | Pos = " + nativeArray[0].DistanceToClosestEnemy);
 
+        nativeArray.Dispose();
     }
 
     [BurstCompile, WithNone(typeof(Player)), WithAll(typeof(Enemy))]
@@ -43,21 +44,38 @@ public partial struct PlayerTargetSystem : ISystem
         public void Execute(Entity entity, in LocalTransform localTransform)
         { 
             PlayerTarget playerTargetCpy = target[0];
-            if (entity == target[0].enemy)
+            
+            float currentTargetPos = Vector3.Distance((Vector3)inputComponent.PlayerPosition, (Vector3)target[0].enemyPosition);
+            float newTargetPos = Vector3.Distance((Vector3)inputComponent.PlayerPosition, (Vector3)localTransform.Position);
+
+            if (newTargetPos < currentTargetPos)
             {
-                playerTargetCpy.enemyPosition = localTransform.Position;
-                playerTargetCpy.DistanceToClosestEnemy = Vector3.Distance((Vector3)inputComponent.PlayerPosition, (Vector3)localTransform.Position);
-                target[0] = playerTargetCpy;
-                return;
-            }
-            float newDistance = Vector3.Distance((Vector3)inputComponent.PlayerPosition, (Vector3)localTransform.Position);
-            if (newDistance <= target[0].DistanceToClosestEnemy)
-            {
-                playerTargetCpy.DistanceToClosestEnemy = newDistance;
+                playerTargetCpy.DistanceToClosestEnemy = newTargetPos;
                 playerTargetCpy.enemyPosition = localTransform.Position;
                 playerTargetCpy.enemy = entity;
             }
+            else
+            {
+                playerTargetCpy.DistanceToClosestEnemy = currentTargetPos;
+            }
+
             target[0] = playerTargetCpy;
         }
+        
+        // PlayerTarget playerTargetCpy = target[0];
+        // if (entity == target[0].enemy)
+        // {
+        //     playerTargetCpy.enemyPosition = localTransform.Position;
+        //     playerTargetCpy.DistanceToClosestEnemy = Vector3.Distance((Vector3)inputComponent.PlayerPosition, (Vector3)localTransform.Position);
+        //     target[0] = playerTargetCpy;
+        // }
+        // float newDistance = Vector3.Distance((Vector3)inputComponent.PlayerPosition, (Vector3)localTransform.Position);
+        //     if (newDistance <= target[0].DistanceToClosestEnemy)
+        // {
+        //     playerTargetCpy.DistanceToClosestEnemy = newDistance;
+        //     playerTargetCpy.enemyPosition = localTransform.Position;
+        //     playerTargetCpy.enemy = entity;
+        // }
+        // target[0] = playerTargetCpy;
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Damage
   m_EditorClassIdentifier: 
   upgradeType: 1
+  modifier: 2
   icon: {fileID: 21300000, guid: bfa9342055be84620a135d4e80743a53, type: 3}
   nameOfCard: Damage
   description: Your arrows deal more damage

@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1055527434565886478, guid: 32af04c3fd7f0454e8de022316a06b69, type: 3}
+  TorchGoblin: {fileID: 2844584934160281738, guid: 895e9d8ac5c2f8e478313af39bae7189, type: 3}
