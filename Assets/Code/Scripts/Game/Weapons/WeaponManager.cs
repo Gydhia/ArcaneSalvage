@@ -80,6 +80,7 @@ public class WeaponManager : MonoBehaviour
 
         shootingStats.BulletMoveSpeed = currentWeapon.speed + Upgrades.Where(u => u.upgradeType == UpgradeType.MoreSpeed).Sum(u => u.modifier);
         shootingStats.OriginalFireRate = currentWeapon.firingRate + Upgrades.Where(u => u.upgradeType == UpgradeType.FireRate).Sum(u => u.modifier);
+        shootingStats.FireRate = shootingStats.OriginalFireRate;
         shootingStats.FireRange = currentWeapon.FireRange + Upgrades.Where(u => u.upgradeType == UpgradeType.MoreRange).Sum(u => u.modifier);
         shootingStats.NumberOfShoot = currentWeapon.NumberOfShoots + Upgrades.Where(u => u.upgradeType == UpgradeType.MoreArrow).Sum(u => u.modifier);
         shootingStats.BulletDamage = currentWeapon.damage + Upgrades.Where(u => u.upgradeType == UpgradeType.Damage).Sum(u => u.modifier);

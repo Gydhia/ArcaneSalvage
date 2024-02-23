@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   Name: Bow
-  firingRate: 0.1
+  firingRate: 0.5
   FireRange: 5
   NumberOfShoots: 1
   damage: 1

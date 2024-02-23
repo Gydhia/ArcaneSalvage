@@ -31,7 +31,7 @@ namespace Assets.Code.Scripts.Game.Player
             m_random = Random.CreateFromIndex((uint)m_enemySpawnerComponent.GetHashCode());
             m_nbEnemiesToSpawn = 10;
         }
-
+        
         protected override void OnUpdate()
         {
             if (!SystemAPI.TryGetSingletonEntity<EnemySpawnerComponent>(out m_enemySpawnerEntity))
