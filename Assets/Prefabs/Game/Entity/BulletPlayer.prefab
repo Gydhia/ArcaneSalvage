@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8232585532134513718}
   - component: {fileID: -4494197492307258610}
   - component: {fileID: 3850325432906981362}
-  - component: {fileID: -6297927394048137385}
   - component: {fileID: -2850432742760478269}
   - component: {fileID: 5020742942266968184}
   m_Layer: 0
@@ -79,27 +78,6 @@ MonoBehaviour:
   MaxHealth: 1
   DieOnDeath: 1
   Lifetime: 15
---- !u!114 &-6297927394048137385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7750744387637035585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb54ea4f67dc17342bcd49954c53502d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DrawColliders: 1
-  DrawColliderEdges: 0
-  DrawColliderAabbs: 0
-  DrawBroadphase: 0
-  DrawMassProperties: 0
-  DrawContacts: 0
-  DrawCollisionEvents: 1
-  DrawTriggerEvents: 1
-  DrawJoints: 0
 --- !u!114 &-2850432742760478269
 MonoBehaviour:
   m_ObjectHideFlags: 0

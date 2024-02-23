@@ -42,7 +42,13 @@ public partial struct MovementSystem : ISystem
             dataSingleton = SystemAPI.GetSingleton<DataSingleton>()
         };
         movingPlayerJob.Schedule();
-        
+
+        MovingPlayerVelocityJob movingPlayerVelocityJob = new MovingPlayerVelocityJob
+        {
+            dataSingleton = SystemAPI.GetSingleton<DataSingleton>()
+        };
+        movingPlayerVelocityJob.Schedule();
+
     }
 
     [BurstCompile, WithAll(typeof(Moving), typeof(Bullet))]
@@ -73,6 +79,26 @@ public partial struct MovementSystem : ISystem
             else
             {
                 agentBody.IsStopped = true;
+            }
+        }
+    }
+    
+    [BurstCompile,WithNone(typeof(AgentBody)), WithAll(typeof(Moving), typeof(PhysicsVelocity), typeof(InputVariables))]
+    public partial struct MovingPlayerVelocityJob : IJobEntity
+    {
+        public DataSingleton dataSingleton;
+        public void Execute(ref PhysicsVelocity physicsVelocity, ref Moving moveData)
+        {
+            if (dataSingleton.CanMove)
+            { 
+                Vector2 moveDir = dataSingleton.MoveDirection;
+                Vector3 direction = moveDir * moveData.MoveSpeedValue;
+                physicsVelocity.Linear = direction;
+                moveData.Direction = direction;
+            }
+            else
+            {
+                physicsVelocity.Linear = Vector3.zero;
             }
         }
     }
