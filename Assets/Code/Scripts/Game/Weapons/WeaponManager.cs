@@ -94,6 +94,7 @@ public class WeaponManager : MonoBehaviour
     {
         var shootingStats = new ShootingStraight();
 
+        shootingStats.AngleDifference = 5.0f;
         shootingStats.BulletMoveSpeed = currentWeapon.speed + Upgrades.Where(u => u.upgradeType == UpgradeType.MoreSpeed).Sum(u => u.modifier);
         shootingStats.OriginalFireRate = currentWeapon.firingRate - Upgrades.Where(u => u.upgradeType == UpgradeType.FireRate).Sum(u => u.modifier);
         shootingStats.FireRate = shootingStats.OriginalFireRate;
