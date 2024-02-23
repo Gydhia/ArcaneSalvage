@@ -13,6 +13,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
+[BurstCompile]
 public partial struct HealthSystem : ISystem
 {
     

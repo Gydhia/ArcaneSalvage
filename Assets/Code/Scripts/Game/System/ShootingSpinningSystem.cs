@@ -9,6 +9,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
+[BurstCompile]
 public partial class ShootingSpinningSystem : SystemBase
 {
     protected override void OnCreate()
@@ -33,7 +34,7 @@ public partial class ShootingSpinningSystem : SystemBase
         entityCommandBufferSpinningJob.Dispose();
     }
 
-    //[BurstCompile]
+    [BurstCompile, WithAll(typeof(ShootingSpinning))]
     public partial struct ShootingSpinningJob : IJobEntity
     {
         public float DeltaTime;
