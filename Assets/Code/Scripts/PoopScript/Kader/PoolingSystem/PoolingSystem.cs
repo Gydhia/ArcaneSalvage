@@ -86,7 +86,7 @@ public partial class PoolingSystem : SystemBase
         return aEntity;
     }
     
-    [BurstCompile, WithAll(typeof(IPoolingComponent))]
+    //[BurstCompile, WithAll(typeof(IPoolingComponent))]
     public partial struct PoolingComponentJob : IJobEntity
     {
         public Entity entity;
