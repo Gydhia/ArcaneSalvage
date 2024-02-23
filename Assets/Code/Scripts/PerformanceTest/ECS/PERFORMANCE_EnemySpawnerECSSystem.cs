@@ -3,11 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
 using Unity.Mathematics;
-using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static TriggerBulletSystem;
 
 public partial struct PERFORMANCE_EnemySpawnerECSSystem : ISystem
 {
@@ -36,7 +33,7 @@ public partial struct PERFORMANCE_EnemySpawnerECSSystem : ISystem
             }
             spawner.Spawn = false;
         }
-
+        ECB.Dispose();
 
     }
 }

@@ -95,6 +95,7 @@ namespace Assets.Code.Scripts.Game.Player
             
             entityCommandBufferStraightJob.Playback(EntityManager);
             entityCommandBufferStraightJob.Dispose();
+            m_enemyPositions.Dispose();
         }
         
         [BurstCompile, WithAll(typeof(EnemySpawnerComponent))]
