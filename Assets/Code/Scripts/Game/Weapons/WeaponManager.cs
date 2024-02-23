@@ -138,7 +138,7 @@ public class WeaponManager : MonoBehaviour
                 m_firstTime = false;
             }
 
-            m_entityManager.AddComponentObject(m_playerEntity, m_shootingCardinal);
+            m_entityManager.SetComponentData<ShootingCardinal>(m_playerEntity, m_shootingCardinal);
         }
 
         
