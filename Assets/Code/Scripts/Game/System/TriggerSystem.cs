@@ -79,7 +79,6 @@ namespace Code.Scripts.Game.System
                     destroyBuffer.DestroyEntity(KeyCheck.Item2);
                     
                     dataSingleton[0] = dataSingletonCopy;
-                    Debug.Log(dataSingleton[0].keyNumber.ToString());
                 }
                 
                 if (PlayerCheck.Item1 && PortalCheck.Item1)
