@@ -16,7 +16,7 @@ MonoBehaviour:
   firingRate: 0.5
   FireRange: 5
   NumberOfShoots: 1
-  damage: 1
+  damage: 4
   speed: 5
   bulletLife: 5
   ProjectilePrefab: {fileID: 7750744387637035585, guid: c60c9fe5ed362894683a11132e823bee, type: 3}
