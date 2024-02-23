@@ -1,5 +1,6 @@
 
 
+using ArcanaSalvage.UI;
 using Assets.Code.Scripts.Game.Player;
 using Code.Scripts.Game.Authoring;
 using Unity.Burst;
@@ -38,7 +39,7 @@ namespace Code.Scripts.Game.System
                 KeyGroup = SystemAPI.GetComponentLookup<Key>(),
                 PortalGroup = SystemAPI.GetComponentLookup<Portal>(),
                 PlayerGroup = SystemAPI.GetComponentLookup<InputVariables>(),
-                dataSingleton = nativeArrayData,
+                inventory = nativeArrayData,
                 destroyBuffer = entityCommandBufferKeyDestroy
             
             };
@@ -57,7 +58,7 @@ namespace Code.Scripts.Game.System
             [ReadOnly] public ComponentLookup<Key> KeyGroup;
             [ReadOnly] public ComponentLookup<Portal> PortalGroup;
             [ReadOnly] public ComponentLookup<InputVariables> PlayerGroup;
-            public NativeArray<Inventory> dataSingleton;
+            public NativeArray<Inventory> inventory;
             public EntityCommandBuffer destroyBuffer;
             
             
@@ -70,26 +71,28 @@ namespace Code.Scripts.Game.System
                 (bool, Entity) PortalCheck = TriggerBulletSystem.FindEntityWithComponent(entityA, entityB, PortalGroup);
                 (bool, Entity) PlayerCheck = TriggerBulletSystem.FindEntityWithComponent(entityA, entityB, PlayerGroup);
 
-                Inventory dataSingletonCopy = dataSingleton[0];
+                Inventory inventoryCopy = inventory[0];
 
                 
                 if (PlayerCheck.Item1 && KeyCheck.Item1)
                 {
-                    dataSingletonCopy.keyNumber++;
+                    inventoryCopy.keyNumber++;
                     destroyBuffer.DestroyEntity(KeyCheck.Item2);
                     
-                    dataSingleton[0] = dataSingletonCopy;
+                    inventory[0] = inventoryCopy;
+                    return;
                 }
                 
                 if (PlayerCheck.Item1 && PortalCheck.Item1)
                 {
-                    if (dataSingletonCopy.keyNumber == 4)
-                    {
-                        //DO SHIT LIKE CHANGE SCENE OR END GAME
-                    }
-                    Debug.Log("Portal " + (dataSingletonCopy.keyNumber == 4));
+                    inventoryCopy.isInPortal = true;
+                    inventory[0] = inventoryCopy;
                 }
-                
+                else
+                {
+                    inventoryCopy.isInPortal = false;
+                    inventory[0] = inventoryCopy;
+                }
             }
         }
     }
