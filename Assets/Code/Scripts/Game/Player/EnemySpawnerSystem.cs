@@ -29,7 +29,7 @@ namespace Assets.Code.Scripts.Game.Player
         protected override void OnCreate()
         {
             m_random = Random.CreateFromIndex((uint)m_enemySpawnerComponent.GetHashCode());
-            m_nbEnemiesToSpawn = 10;
+            m_nbEnemiesToSpawn = 22;
         }
         
         protected override void OnUpdate()

@@ -82,7 +82,7 @@ namespace ArcanaSalvage.UI
                     OnGameEnded(false);
                 }
 
-                if (LevelSystem.LastKillCounter != invSingleton.KillsCounter)
+                if (LevelSystem != null && LevelSystem.LastKillCounter != invSingleton.KillsCounter)
                 {
                     int delta = invSingleton.KillsCounter - LevelSystem.LastKillCounter;
                     LevelSystem.LastKillCounter = invSingleton.KillsCounter;
