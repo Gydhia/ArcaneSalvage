@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Entities.UniversalDelegates;
 using Unity.Transforms;
 using UnityEngine;
 
+[BurstCompile]
 public partial struct ShootingCardinalSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
@@ -30,6 +32,7 @@ public partial struct ShootingCardinalSystem : ISystem
 
     }
 
+    [BurstCompile, WithAll(typeof(ShootingCardinalSystem))]
     public partial struct ShootingCardinalJob : IJobEntity
     {
         public float DeltaTime;
@@ -76,8 +79,15 @@ public partial struct ShootingCardinalSystem : ISystem
                         break;
                     default:
                         break;
+                   
                 }
+                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                {
+                    Damage = shootData.BulletDamage,
+                    OwnerType = shootData.OwnerType,
+                });
             }
+            
             shootData.FireRate = shootData.OriginalFireRate;
 
         }

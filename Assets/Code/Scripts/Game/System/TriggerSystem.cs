@@ -2,6 +2,7 @@
 
 using Assets.Code.Scripts.Game.Player;
 using Code.Scripts.Game.Authoring;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
@@ -12,6 +13,7 @@ using UnityEngine;
 
 namespace Code.Scripts.Game.System
 {
+    [BurstCompile]
     [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
     [UpdateAfter(typeof(PhysicsSystemGroup))]
     
@@ -49,7 +51,7 @@ namespace Code.Scripts.Game.System
             SystemAPI.SetSingleton(nativeArrayData[0]);
             nativeArrayData.Dispose();
         }
-
+        [BurstCompile]
         public partial struct TriggerJob : ITriggerEventsJob
         {
             [ReadOnly] public ComponentLookup<Key> KeyGroup;

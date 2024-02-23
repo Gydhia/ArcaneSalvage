@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ShootingStraightAuthority : MonoBehaviour
 {
+    public float BulletDamage;
+    public OwnerType OwnerType;
     public float FireRange;
     public float FireRate;
     public GameObject ProjectilePrefab;
@@ -18,6 +20,8 @@ public class ShootingStraightAuthority : MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.None);
             AddComponent(entity, new ShootingStraight
             {
+                BulletDamage = authoring.BulletDamage,
+                OwnerType = authoring.OwnerType,
                 FireRange = authoring.FireRange,
                 FireRate = authoring.FireRate,
                 OriginalFireRate = authoring.FireRate,
@@ -32,6 +36,8 @@ public class ShootingStraightAuthority : MonoBehaviour
 
 public struct ShootingStraight : IComponentData
 {
+    public float BulletDamage;
+    public OwnerType OwnerType;
     public float FireRange;
     public float FireRate;
     public float OriginalFireRate;
