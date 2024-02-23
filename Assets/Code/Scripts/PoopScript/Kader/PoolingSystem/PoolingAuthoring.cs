@@ -57,7 +57,6 @@ public class PoolingAuthoring : Singleton<PoolingAuthoring>
     public Entity GetObject(PoolingType prefabType)
     {
         
-        
         for (int i = 0; i < pool[prefabType].Length; i++)
         {
             Entity entity = pool[prefabType][i];
