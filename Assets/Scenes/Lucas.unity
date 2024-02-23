@@ -638,6 +638,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &791747845 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8300128442855012429, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
+  m_PrefabInstance: {fileID: 1170192244}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &825903257
 GameObject:
   m_ObjectHideFlags: 0
@@ -53301,6 +53306,34 @@ PrefabInstance:
     - target: {fileID: 6683488489580308165, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
       propertyPath: m_Name
       value: GameCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939968711879321703, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939968711879321703, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939968711879321703, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 791747845}
+    - target: {fileID: 6939968711879321703, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939968711879321703, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939968711879321703, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.AudioSource, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6939968711879321703, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7107777173688331802, guid: 93bbad3de93e58c479463ad3a289c709, type: 3}
       propertyPath: m_SizeDelta.y
