@@ -76,8 +76,15 @@ public partial struct ShootingCardinalSystem : ISystem
                         break;
                     default:
                         break;
+                   
                 }
+                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                {
+                    Damage = shootData.BulletDamage,
+                    OwnerType = shootData.OwnerType,
+                });
             }
+            
             shootData.FireRate = shootData.OriginalFireRate;
 
         }

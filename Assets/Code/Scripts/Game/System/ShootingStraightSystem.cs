@@ -100,6 +100,11 @@ public partial class ShootingStraightSystem : SystemBase
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = direction
                 });
+                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                {
+                    Damage = shootData.BulletDamage,
+                    OwnerType = shootData.OwnerType,
+                });
             }
         }
 
@@ -133,6 +138,11 @@ public partial class ShootingStraightSystem : SystemBase
                 {
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = direction
+                });
+                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                {
+                    Damage = shootData.BulletDamage,
+                    OwnerType = shootData.OwnerType,
                 });
             }
         }
@@ -189,6 +199,11 @@ public partial class ShootingStraightSystem : SystemBase
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = direction
                 });
+                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                {
+                    Damage = shootData.BulletDamage,
+                    OwnerType = shootData.OwnerType,
+                });
             }
         }
         private void ShootOdd(in LocalTransform localTransform, in ShootingStraight shootData, in float3 originMovementDirection)
@@ -219,6 +234,11 @@ public partial class ShootingStraightSystem : SystemBase
                 {
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = direction
+                });
+                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                {
+                    Damage = shootData.BulletDamage,
+                    OwnerType = shootData.OwnerType,
                 });
             }
         }

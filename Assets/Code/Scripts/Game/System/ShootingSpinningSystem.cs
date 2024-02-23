@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -19,12 +20,14 @@ public partial class ShootingSpinningSystem : SystemBase
     {
         EntityCommandBuffer entityCommandBufferSpinningJob = new EntityCommandBuffer(Allocator.TempJob);
 
+        EntityQuery query = new EntityQueryBuilder(Allocator.Temp).WithAll<LocalTransform>().WithAll<ShootingSpinning>().Build(this);
+
         ShootingSpinningJob shootingSpinningJob = new ShootingSpinningJob
         {
             EntityCommandBuffer = entityCommandBufferSpinningJob,
             DeltaTime = (float)SystemAPI.Time.DeltaTime,
         };
-        shootingSpinningJob.Schedule();
+        shootingSpinningJob.Schedule(query);
         Dependency.Complete();
         entityCommandBufferSpinningJob.Playback(EntityManager);
         entityCommandBufferSpinningJob.Dispose();
@@ -57,6 +60,12 @@ public partial class ShootingSpinningSystem : SystemBase
             });
             shootData.BaseAngle = (shootData.BaseAngle + shootData.AngleIncrease) % 360;
             shootData.FireRate = shootData.OriginalFireRate;
+
+            EntityCommandBuffer.AddComponent(entity, new Bullet
+            {
+                Damage = shootData.BulletDamage,
+                OwnerType = shootData.OwnerType,
+            });
         }
     }
 }
