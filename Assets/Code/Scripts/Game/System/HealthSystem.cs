@@ -24,8 +24,6 @@ public partial struct HealthSystem : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-        Debug.Log("BEGAN HEALTH SYSTEM");
-        
         EntityCommandBuffer entityCommandBufferLifetimeManager = new EntityCommandBuffer(Allocator.TempJob);
         
         LifetimeManagerJob lifetimeManagerJob = new LifetimeManagerJob

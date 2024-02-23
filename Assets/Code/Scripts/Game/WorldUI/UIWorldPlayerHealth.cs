@@ -18,7 +18,6 @@ public class UIWorldPlayerHealth : MonoBehaviour
         StartCoroutine(GetPlayerEntity((() =>
         {
             m_playerEntity = m_entityManager.CreateEntityQuery(typeof(InputVariables)).GetSingletonEntity();
-            Debug.Log("Player : " + m_playerEntity.ToString());
 
             var healthData = m_entityManager.GetComponentData<Health>(m_playerEntity);
 
