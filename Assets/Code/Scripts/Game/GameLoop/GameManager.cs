@@ -1,10 +1,8 @@
 using Code.Scripts.Game.Player;
 using Code.Scripts.Helper;
-using System.Collections;
 using System.Collections.Generic;
 using ArcanaSalvage;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -22,19 +20,18 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
         PlayerData.CurrentPlayerData = new PlayerData();
     }
-
+    
     // Gameloop
     private void Start()
     {
-        // Get Player Ref;
-
         SetupGameLoop();
         PlayerRef = FindObjectOfType<PlayerBehaviour>();
         SceneControllerRef = FindObjectOfType<SceneController>();
         CameraControllerRef = FindObjectOfType<CameraController>();
         UISceneTransitionManagerRef = FindObjectOfType<UISceneTransitionManager>();
         InputManagerRef = FindObjectOfType<InputManager>();
-
+        
+        PlayerData.CurrentPlayerData.GetHealthOverride();
     }
 
     #region GameLoop

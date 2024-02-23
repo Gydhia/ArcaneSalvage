@@ -32,7 +32,6 @@ public partial struct PlayerTargetSystem : ISystem
         state.Dependency = targetJob.Schedule(state.Dependency);
         state.Dependency.Complete();
         SystemAPI.SetSingleton(nativeArray[0]);
-        Debug.Log("Target : " + nativeArray[0].enemy + " | Pos = " + nativeArray[0].DistanceToClosestEnemy);
 
         nativeArray.Dispose();
     }

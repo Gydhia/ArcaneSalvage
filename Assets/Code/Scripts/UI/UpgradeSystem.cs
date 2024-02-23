@@ -12,6 +12,8 @@ public class UpgradeSystem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_refreshCost;
     [SerializeField] private Button m_refreshButton;
 
+    public static UpgradeSystem Instance { get; private set; }
+
     public const int REFRESH_COST = 50;
     
     public List<CardInfo> listOfCard;

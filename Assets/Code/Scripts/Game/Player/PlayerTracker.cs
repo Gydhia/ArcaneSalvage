@@ -1,3 +1,5 @@
+using System;
+using Code.Scripts.Helper;
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
@@ -5,8 +7,14 @@ using UnityEngine.UI;
 
 namespace Assets.Code.Scripts.Game.Player
 {
-    public class PlayerTracker : MonoBehaviour
+    public class PlayerTracker : Singleton<PlayerTracker>
     {
+        protected override void Awake()
+        {
+            DontDestroyOnLoad = false;
+            base.Awake();
+        }
+
         private void Start()
         {
             var em = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -26,10 +34,21 @@ namespace Assets.Code.Scripts.Game.Player
             
             var localToWorld = SystemAPI.GetComponent<LocalToWorld>(playerEntity);
 
-            Entities.ForEach((PlayerTracker tracker) =>
-            {
-                tracker.transform.SetPositionAndRotation(localToWorld.Position, localToWorld.Rotation);
-            }).WithoutBurst().Run();
+            PlayerTracker.Instance.transform.SetPositionAndRotation(localToWorld.Position, localToWorld.Rotation);
+            
+            // Entities.ForEach((PlayerTracker tracker) =>
+            // {
+            //     if (tracker != null)
+            //     {
+            //         tracker.transform.SetPositionAndRotation(localToWorld.Position, localToWorld.Rotation);
+            //     }
+            // }).WithoutBurst().Run();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            
         }
     }
 }
