@@ -32,7 +32,6 @@ public partial class ShootingSpinningSystem : SystemBase
         Dependency.Complete();
         entityCommandBufferSpinningJob.Playback(EntityManager);
         entityCommandBufferSpinningJob.Dispose();
-        query.Dispose();
     }
 
     [BurstCompile, WithAll(typeof(ShootingSpinning))]

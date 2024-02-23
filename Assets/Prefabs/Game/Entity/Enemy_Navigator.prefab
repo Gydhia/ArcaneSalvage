@@ -193,8 +193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2233347d5b28c3e46baa42dbda8d709f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletDamage: 0
-  OwnerType: 0
+  BulletDamage: 1
+  OwnerType: 1
   FireRate: 1000
   ProjectilePrefab: {fileID: 8363001878409199312, guid: c28f136ec9071c94b9d8f04ee67c12c8, type: 3}
   BulletMoveSpeed: 2
@@ -211,8 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d3f709871f1fc4b9b67277740f1ed5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletDamage: 0
-  OwnerType: 0
+  BulletDamage: 1
+  OwnerType: 1
   FireRange: 2
   FireRate: 2
   ProjectilePrefab: {fileID: 8363001878409199312, guid: c28f136ec9071c94b9d8f04ee67c12c8, type: 3}

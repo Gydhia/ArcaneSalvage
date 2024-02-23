@@ -101,7 +101,7 @@ public partial class ShootingStraightSystem : SystemBase
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = direction
                 });
-                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                EntityCommandBuffer.AddComponent(entities[i - 1], new Bullet
                 {
                     Damage = shootData.BulletDamage,
                     OwnerType = shootData.OwnerType,
@@ -140,7 +140,7 @@ public partial class ShootingStraightSystem : SystemBase
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = direction
                 });
-                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                EntityCommandBuffer.AddComponent(entities[i - 1], new Bullet
                 {
                     Damage = shootData.BulletDamage,
                     OwnerType = shootData.OwnerType,
@@ -149,7 +149,7 @@ public partial class ShootingStraightSystem : SystemBase
         }
     }
 
-    [BurstCompile, WithNone(typeof(Enemy))]
+    [BurstCompile, WithNone(typeof(Enemy)), WithAll(typeof(ShootingStraight))]
     public partial struct ShootingStraightPlayerJob : IJobEntity
     {
         public float DeltaTime;
@@ -200,7 +200,7 @@ public partial class ShootingStraightSystem : SystemBase
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = direction
                 });
-                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                EntityCommandBuffer.AddComponent(entities[i - 1], new Bullet
                 {
                     Damage = shootData.BulletDamage,
                     OwnerType = shootData.OwnerType,
@@ -225,18 +225,18 @@ public partial class ShootingStraightSystem : SystemBase
 
                 float angle = Vector2.SignedAngle(Vector2.right, direction);
 
-                EntityCommandBuffer.SetComponent(entities[i - 1], new LocalTransform
+                EntityCommandBuffer.SetComponent(entities[j], new LocalTransform
                 {
                     Position = localTransform.Position,
                     Scale = 1f,
                     Rotation = Quaternion.Euler(new Vector3(0, 0, angle))
                 });
-                EntityCommandBuffer.SetComponent(entities[i - 1], new Moving
+                EntityCommandBuffer.SetComponent(entities[j], new Moving
                 {
                     MoveSpeedValue = shootData.BulletMoveSpeed,
                     Direction = direction
                 });
-                EntityCommandBuffer.AddComponent(entities[i], new Bullet
+                EntityCommandBuffer.AddComponent(entities[j], new Bullet
                 {
                     Damage = shootData.BulletDamage,
                     OwnerType = shootData.OwnerType,
