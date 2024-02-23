@@ -374,8 +374,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BulletDamage: 0
   OwnerType: 0
-  FireRate: 100000000
-  ProjectilePrefab: {fileID: 0}
+  FireRate: 1e+9
+  ProjectilePrefab: {fileID: 7750744387637035585, guid: c60c9fe5ed362894683a11132e823bee, type: 3}
   BulletMoveSpeed: 0
   Direction: 0
 --- !u!1001 &2079401239
