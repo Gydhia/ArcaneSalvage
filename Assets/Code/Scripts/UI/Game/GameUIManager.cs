@@ -7,6 +7,7 @@ using Code.Scripts.Helper;
 using TMPro;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 namespace ArcanaSalvage.UI
@@ -35,13 +36,11 @@ namespace ArcanaSalvage.UI
         private EntityManager m_entityManager;
         private Entity m_invEntity;
         
-        private IEnumerator Start()
+        private void Start()
         {
             m_entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-            yield return new WaitForSeconds(0.2f);
-
-            m_invEntity = m_entityManager.CreateEntityQuery(typeof(Inventory)).GetSingletonEntity();
+            StartCoroutine(GetPlayerEntity());
             
             PlayerData.CurrentPlayerData.OnGoldsChanged += UpdateGolds;
             PlayerData.CurrentPlayerData.OnEnemyKillsChanged += UpdateEnemyKills;
@@ -53,6 +52,20 @@ namespace ArcanaSalvage.UI
             m_pauseSection.gameObject.SetActive(false);
 
             startTime = Time.time;
+        }
+        
+        private IEnumerator GetPlayerEntity()
+        {
+            if (m_entityManager.CreateEntityQuery(typeof(Inventory)).HasSingleton<Inventory>())
+            {
+                m_invEntity = m_entityManager.CreateEntityQuery(typeof(Inventory)).GetSingletonEntity();
+                
+            }
+            else
+            {
+                yield return new WaitForEndOfFrame();
+                StartCoroutine(GetPlayerEntity());
+            }
         }
         
         
