@@ -83,5 +83,10 @@ namespace ArcanaSalvage.UI
         {
             SceneController.Instance.LoadScene("Game");
         }
+
+        public void Perf()
+        {
+            SceneController.Instance.LoadScene("Perf");
+        }
     }
 }
