@@ -11,6 +11,8 @@ public enum ShootingDirection
 };
 public class ShootCardinalAuthoring : MonoBehaviour
 {
+    public float BulletDamage;
+    public OwnerType OwnerType;
     public float FireRate;
     public GameObject ProjectilePrefab;
     public float BulletMoveSpeed;
@@ -23,6 +25,8 @@ public class ShootCardinalAuthoring : MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.None);
             AddComponent(entity, new ShootingCardinal
             {
+                OwnerType = authoring.OwnerType,
+                BulletDamage = authoring.BulletDamage,
                 FireRate = authoring.FireRate,
                 OriginalFireRate = authoring.FireRate,
                 ProjectilePrefabEntity = GetEntity(authoring.ProjectilePrefab, TransformUsageFlags.None),
@@ -35,6 +39,8 @@ public class ShootCardinalAuthoring : MonoBehaviour
 
 public struct ShootingCardinal : IComponentData
 {
+    public float BulletDamage;
+    public OwnerType OwnerType;
     public float FireRate;
     public float OriginalFireRate;
     public Entity ProjectilePrefabEntity;
