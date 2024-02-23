@@ -32,13 +32,6 @@ namespace Assets.Code.Scripts.Game.Player
             m_nbEnemiesToSpawn = 10;
         }
 
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            
-            m_enemyPositions.Dispose();
-        }
-
         protected override void OnUpdate()
         {
             if (!SystemAPI.TryGetSingletonEntity<EnemySpawnerComponent>(out m_enemySpawnerEntity))

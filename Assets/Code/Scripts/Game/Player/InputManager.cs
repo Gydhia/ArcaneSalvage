@@ -129,10 +129,5 @@ namespace Code.Scripts.Game.Player
         {
             return _inputActions.MovePointer.Position.ReadValue<Vector2>();
         }
-
-        public void SetActive(bool value)
-        {
-
-        }
     }
 }
