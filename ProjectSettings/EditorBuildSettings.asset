@@ -14,7 +14,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Alexis-Level2.unity
     guid: eb90f74cdfe56de4c9cdefdd9d2ea667
-  - enabled: 1
-    path: Assets/Scenes/Perf.unity
-    guid: 463c27170076cd04399954f4a675eef4
   m_configObjects: {}
