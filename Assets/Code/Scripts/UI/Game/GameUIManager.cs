@@ -93,7 +93,7 @@ namespace ArcanaSalvage.UI
 
                 if (invSingleton.isInPortal && invSingleton.keyNumber == 4)
                 {
-                    OnGameEnded(true);
+                    SceneController.Instance.LoadScene("Alexis-Level2");
                 }
             }
             
