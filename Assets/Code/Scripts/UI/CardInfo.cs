@@ -17,7 +17,7 @@ public enum UpgradeType
 public class CardInfo : ScriptableObject
 {
     public UpgradeType upgradeType;
-    public int modifier;
+    public float modifier = 0.0f;
 
     public Sprite icon;
     public string nameOfCard;
