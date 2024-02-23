@@ -26,5 +26,6 @@ namespace Code.Scripts.Game.Authoring
         public int keyNumber;
         public bool PlayerDead;
         public int KillsCounter;
+        public bool isInPortal;
     }
 }

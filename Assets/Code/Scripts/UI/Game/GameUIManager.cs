@@ -77,6 +77,11 @@ namespace ArcanaSalvage.UI
                     PlayerData.CurrentPlayerData.ModifyEnemyKills(delta);
                     LevelSystem.GainXP(delta);
                 }
+
+                if (invSingleton.isInPortal && invSingleton.keyNumber == 4)
+                {
+                    OnGameEnded(true);
+                }
             }
             
             TimeSpan time = TimeSpan.FromSeconds(Time.time - startTime);
