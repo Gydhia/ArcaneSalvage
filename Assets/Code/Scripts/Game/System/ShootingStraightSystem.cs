@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Code.Scripts.Game.Player;
+using Code.Scripts.Game.Authoring;
 using Unity.Collections;
 using Unity.Burst;
 using Unity.Entities;
@@ -162,7 +163,7 @@ public partial class ShootingStraightSystem : SystemBase
         }
     }
 
-    [BurstCompile, WithNone(typeof(Enemy)), WithAll(typeof(ShootingStraight))]
+    [BurstCompile, WithNone(typeof(Enemy), typeof(BoatPlayer)), WithAll(typeof(ShootingStraight), typeof(PlayerTarget))]
     public partial struct ShootingStraightPlayerJob : IJobEntity
     {
         public float DeltaTime;
@@ -258,7 +259,7 @@ public partial class ShootingStraightSystem : SystemBase
         }
     }
 
-    [BurstCompile, WithAll(typeof(ShootingStraight)), WithNone(typeof(Enemy), typeof(AgentBody))]
+    [BurstCompile, WithAll(typeof(ShootingStraight), typeof(BoatPlayer)), WithNone(typeof(Enemy))]
     public partial struct ShootingStraightForReal : IJobEntity
     {
         public float DeltaTime;

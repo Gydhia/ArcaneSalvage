@@ -43,11 +43,11 @@ public partial struct MovementSystem : ISystem
         };
         movingPlayerJob.Schedule();
 
-        MovingPlayerVelocityJob movingPlayerVelocityJob = new MovingPlayerVelocityJob
-        {
-            dataSingleton = SystemAPI.GetSingleton<DataSingleton>()
-        };
-        movingPlayerVelocityJob.Schedule();
+        // MovingPlayerVelocityJob movingPlayerVelocityJob = new MovingPlayerVelocityJob
+        // {
+        //     dataSingleton = SystemAPI.GetSingleton<DataSingleton>()
+        // };
+        // movingPlayerVelocityJob.Schedule();
 
     }
 
