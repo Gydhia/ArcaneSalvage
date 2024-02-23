@@ -61,6 +61,7 @@ public partial struct HealthSystem : ISystem
             InventorySingleton = invSingletonNative
         };
         playerDeathJob.Schedule();
+
         state.Dependency.Complete();
 
         entityCommandBufferLifetimeManager.Playback(state.EntityManager);
