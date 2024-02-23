@@ -2,6 +2,7 @@ using Assets.Code.Scripts.Game.Player;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ArcanaSalvage;
 using Unity.Entities;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -48,6 +49,16 @@ public class WeaponManager : MonoBehaviour
 
         m_playerEntity = m_entityManager.CreateEntityQuery(typeof(InputVariables)).GetSingletonEntity();
         CalculateOverrides();
+
+        // Set the player max HP according to equipment
+        if (m_entityManager.Exists(m_playerEntity))
+        {
+            var playerHealth = m_entityManager.GetComponentData<Health>(m_playerEntity);
+
+            playerHealth.MaxHealth += PlayerData.CurrentPlayerData.GetHealthOverride();
+            
+            m_entityManager.SetComponentData<Health>(m_playerEntity, playerHealth);
+        }
     }
 
     public void ChooseWeapon(int newWeapon)
