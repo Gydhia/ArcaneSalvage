@@ -6,6 +6,7 @@ using ArcanaSalvage;
 using Unity.Entities;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class WeaponManager : MonoBehaviour
 {
@@ -43,23 +44,38 @@ public class WeaponManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private IEnumerator Start()
+    private void Start()
     {
         m_entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        yield return new WaitForSeconds(0.2f);
-
-        m_playerEntity = m_entityManager.CreateEntityQuery(typeof(InputVariables)).GetSingletonEntity();
-        CalculateOverrides();
-
-        // Set the player max HP according to equipment
-        if (m_entityManager.Exists(m_playerEntity))
+        StartCoroutine(GetPlayerEntity((() =>
         {
-            var playerHealth = m_entityManager.GetComponentData<Health>(m_playerEntity);
-
-            playerHealth.MaxHealth += PlayerData.CurrentPlayerData.GetHealthOverride();
+            m_playerEntity = m_entityManager.CreateEntityQuery(typeof(InputVariables)).GetSingletonEntity();
+            CalculateOverrides();
             
-            m_entityManager.SetComponentData<Health>(m_playerEntity, playerHealth);
+            // Set the player max HP according to equipment
+            if (m_entityManager.Exists(m_playerEntity))
+            {
+                var playerHealth = m_entityManager.GetComponentData<Health>(m_playerEntity);
+            
+                playerHealth.MaxHealth += PlayerData.CurrentPlayerData.GetHealthOverride();
+                
+                m_entityManager.SetComponentData<Health>(m_playerEntity, playerHealth);
+            }
+        })));
+    }
+    
+    private IEnumerator GetPlayerEntity(UnityAction callback)
+    {
+        if (m_entityManager.CreateEntityQuery(typeof(InputVariables)).HasSingleton<InputVariables>())
+        {
+            m_playerEntity = m_entityManager.CreateEntityQuery(typeof(InputVariables)).GetSingletonEntity();
+            callback?.Invoke();
+        }
+        else
+        {
+            yield return new WaitForEndOfFrame();
+            StartCoroutine(GetPlayerEntity(callback));
         }
     }
 
