@@ -9,6 +9,7 @@ using Unity.Jobs;
 using Unity.Transforms;
 using UnityEngine;
 
+[BurstCompile]
 [UpdateAfter(typeof(MovementSystem))]
 public partial struct PlayerTargetSystem : ISystem
 {

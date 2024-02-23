@@ -10,6 +10,7 @@ using Unity.Physics.Systems;
 using Unity.Transforms;
 using UnityEngine;
 
+[BurstCompile]
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 [UpdateAfter(typeof(PhysicsSystemGroup))]
 public partial struct TriggerBulletSystem : ISystem

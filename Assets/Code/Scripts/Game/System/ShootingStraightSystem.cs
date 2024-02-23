@@ -9,6 +9,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
+[BurstCompile]
 [UpdateAfter(typeof(PlayerTargetSystem))]
 public partial class ShootingStraightSystem : SystemBase
 {
